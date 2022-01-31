@@ -1,0 +1,33 @@
+.modalFormContainer {
+  width: 80vw;
+  height: 60vh;
+  padding: 2rem;
+}
+
+.selectionCard {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.orDivider {
+  margin: 1.5rem 1.5rem 0;
+}
+
+.spacer {
+  margin-bottom: 1rem;
+}
+
+.errorText {
+  color: red;
+  width: 100%;
+  text-align: center;
+}
+
+.textField {
+  margin-top: 1rem;
+}
+
+.createDraftOrderForm {
+
+}

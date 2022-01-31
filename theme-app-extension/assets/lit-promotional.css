@@ -1,0 +1,32 @@
+#lit-promotional-container {
+  border: 2px solid #757575;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+
+.discount-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.redeem-text {
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.redeem-button {
+  border: none;
+  background-color: white;
+  margin-bottom: 0.7rem;
+  color: #2c0c72;
+  cursor: pointer;
+}
+
+.hide-checkout-buttons {
+  border: red 5px solid !important;
+  /*display: none !important;*/
+}

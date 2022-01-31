@@ -1,0 +1,39 @@
+@import '../vars';
+
+.error {
+  color: $alert-text;
+  font-size: 14px;
+  line-height: 100%;
+  padding-left: 10px;
+  margin-top: 4px;
+}
+
+.clearable {
+  position: absolute;
+  right: 10px;
+  bottom: 31%;
+  z-index: 2;
+  color: $typo-placeholder;
+  cursor: pointer;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  > div {
+    width: 100%;
+    position: relative;
+    > div {
+      width: 100%;
+      border-color: rgba(0, 66, 105, 0.28);
+    }
+  }
+}
+
+.employeeMainInput {
+  flex: 1 1 auto;
+}
+
+.employeeMainInput {
+  flex: 1 1 auto;
+}
