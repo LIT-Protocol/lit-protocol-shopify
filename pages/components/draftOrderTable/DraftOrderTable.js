@@ -16,14 +16,15 @@ const DraftOrderTable = (props) => {
 
   useEffect(() => {
     if (!!props.draftOrders) {
-      const mappedDraftOrder = props.draftOrders.map((d) => {
+      const mappedDraftOrders = props.draftOrders.map((d) => {
         const mappedDraftOrder = d;
         mappedDraftOrder["draftOrderDetailsObj"] = JSON.parse(
           d.draftOrderDetails
         );
         return mappedDraftOrder;
       });
-      setDraftOrders(mappedDraftOrder);
+      console.log("---> MAPPED DRAFT ORDERS", mappedDraftOrders);
+      setDraftOrders(mappedDraftOrders);
     }
   }, [props.draftOrders]);
 
@@ -42,13 +43,12 @@ const DraftOrderTable = (props) => {
           headings={[
             { title: "Title" },
             { title: "Summary" },
-            // { title: "Date Range" },
             { title: "Access Control Conditions" },
+            { title: "Chain" },
             { title: "Actions" },
           ]}
         >
           {draftOrders &&
-            // draftOrders.length &&
             draftOrders.map((draftOrder, index) => (
               <IndexTable.Row
                 id={index}
@@ -72,6 +72,7 @@ const DraftOrderTable = (props) => {
                     </strong>
                   </span>
                 </IndexTable.Cell>
+                <IndexTable.Cell>{draftOrder.extraData}</IndexTable.Cell>
                 <IndexTable.Cell>
                   <Button
                     outline
@@ -80,7 +81,7 @@ const DraftOrderTable = (props) => {
                       setOpenDeleteConfirmation(true);
                     }}
                   >
-                    Delete Draft Order
+                    Delete Token Access
                   </Button>
                 </IndexTable.Cell>
               </IndexTable.Row>
@@ -118,19 +119,6 @@ const DraftOrderTable = (props) => {
           </Modal>
         </div>
       )}
-      {/*  {openShareModal && (*/}
-      {/*    <ShareModal*/}
-      {/*      showStep="ableToAccess"*/}
-      {/*      className={"share-modal"}*/}
-      {/*      show={false}*/}
-      {/*      onClose={() => setOpenShareModal(false)}*/}
-      {/*      sharingItems={[{ name: currentEditedDraftOrder.id }]}*/}
-      {/*      onAccessControlConditionsSelected={async (restriction) => {*/}
-      {/*        await addAccessControlConditions(restriction);*/}
-      {/*        setOpenShareModal(false);*/}
-      {/*      }}*/}
-      {/*    />*/}
-      {/*  )}*/}
     </div>
   );
 };

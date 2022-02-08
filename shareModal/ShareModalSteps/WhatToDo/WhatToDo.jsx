@@ -2,8 +2,6 @@ import React, { useState } from "react";
 
 import styles from "./what-to-do.module.scss";
 
-
-
 const WhatToDo = ({
   setActiveStep,
   sharingItems,
@@ -15,7 +13,6 @@ const WhatToDo = ({
     <div>
       <div className={styles.titles}>
         <h3>What would you like to do?</h3>
-        {/* <a className={styles.link} onClick={() => setActiveStep('recentRequirement')}>Use a recent requirement</a> */}
       </div>
       <div className={styles.types}>
         {!onlyAllowCopySharingLink ? (

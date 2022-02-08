@@ -28,46 +28,27 @@ Shopify.Context.initialize({
   API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
   SCOPES: process.env.SCOPES.split(","),
   HOST_NAME: process.env.HOST.replace(/https:\/\/|\/$/g, ""),
-  // HOST_NAME: "lit-protocol-shop-promotional.myshopify.com",
   API_VERSION: ApiVersion.October20,
   IS_EMBEDDED_APP: true,
   // This should be replaced with your preferred storage strategy
   SESSION_STORAGE: new Shopify.Session.MemorySessionStorage(),
-  // SESSION_STORAGE: new Shopify.Session.CustomSessionStorage(
-  //   storeCallback,
-  //   loadCallback,
-  //   deleteCallback
-  // ),
 });
 
 // Storing the currently active shops in memory will force them to re-login when your server restarts. You should
 // persist this object in your app.
 let ACTIVE_SHOPIFY_SHOPS = {};
 
-console.log("CHECK CHECK CHECK");
-
-// const saveToken = async (query) => {
-//   console.log("START OF SAVE TOKEN");
-//   try {
-//     const saveRes = await saveAccessToken(ctx.state.shopify);
-//     console.log("Saved", saveRes);
-//   } catch (err) {
-//     console.log("Error saving res", err);
-//   }
-// };
-
 app.prepare().then(async () => {
+  console.log("CHECK ON APP");
   const server = new Koa();
   const router = new Router();
-  console.log("NEW CHECK IN ON PREP");
-  // const res = await loadCallback('lit-protocol');
-  // console.log('===== RES', res.data)
   server.keys = [Shopify.Context.API_SECRET_KEY];
   server.use(
     shopifyAuth({
       myShopifyDomain: "herokuapp.com",
       async afterAuth(ctx) {
         const { shop, accessToken } = ctx.state.shopify;
+        const host = ctx.query.host;
         ACTIVE_SHOPIFY_SHOPS[shop] = true;
 
         // Your app should handle the APP_UNINSTALLED webhook to make sure merchants go through OAuth if they reinstall it
@@ -89,17 +70,17 @@ app.prepare().then(async () => {
         const email =
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
 
-        // const axiosResponse = await axios.post(`https://lit-shop.loca.lt/api/shopify/saveAccessToken`, { accessToken, shop, email })
-        const axiosResponse = await axios.post(
+        const saveAccessTokenResponse = await fetch(
           `https://oauth-app-dev.litgateway.com/api/shopify/saveAccessToken`,
-          // `https://lit-shop.loca.lt/api/shopify/saveAccessToken`,
-          { accessToken, shop, email }
+          {
+            method: "post",
+            body: JSON.stringify({ accessToken, shop, email }),
+          }
         );
-
-        console.log("---> Check axios response,", axiosResponse.data);
-
+        const parsedAccessTokenResponse = await saveAccessTokenResponse.json();
         // Redirect to app with shop parameter upon auth
-        ctx.redirect(`https://${shop}/admin/apps/lit-shop-promotional`);
+        const redirectAddress = `https://${shop}/admin/apps/lit-shop-promotional`;
+        ctx.redirect(redirectAddress);
       },
     })
   );
@@ -134,8 +115,12 @@ app.prepare().then(async () => {
 
     // If this shop hasn't been seen yet, go through OAuth to create a session
     if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
+      // shop has not been seen yet
+      console.log("fresh install");
       ctx.redirect(`/auth?shop=${shop}`);
     } else {
+      console.log("shop has been seen");
+      // shop has been seen
       // Load app skeleton. Don't include sensitive information here!
       await handleRequest(ctx);
     }

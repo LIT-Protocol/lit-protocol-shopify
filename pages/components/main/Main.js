@@ -8,10 +8,8 @@ import {
   saveDraftOrder,
   getAllUserDraftOrders,
   deleteDraftOrder,
-  testEndpoint,
 } from "../../../server/apiCalls";
 import { ShareModal } from "../../../shareModal";
-// import { ShareModal } from "lit-access-control-conditions-modal";
 
 const spoofAuthSig = {
   sig:
@@ -42,8 +40,6 @@ const Main = (props) => {
     "lit-ready",
     function (e) {
       console.log("Lit client ready");
-
-      // setConnectedToLitNodeClient(true);
     },
     false
   );
@@ -118,7 +114,10 @@ const Main = (props) => {
 
   const handleDeleteDraftOrder = async (draftOrderObj) => {
     try {
-      const res = await deleteDraftOrder(draftOrderObj.id);
+      const res = await deleteDraftOrder(
+        draftOrderObj.id,
+        props.shopInfo.shopId
+      );
       await toggleGetAllDraftOrders();
     } catch (err) {
       console.error("Error deleting discount:", err);
@@ -152,56 +151,54 @@ const Main = (props) => {
               <DraftOrderTable
                 draftOrders={draftOrders}
                 handleDeleteDraftOrder={handleDeleteDraftOrder}
-                // saveNewDiscount={saveNewDiscount}
               />
             </span>
           )}
           {draftOrders.length < 5 && (
-            // <Stack>
             <div className={styles.createDraftOrderContainer}>
               <Button
                 className={styles.createDraftOrderButton}
                 onClick={() => setOpenCreateDraftOrderModal(true)}
               >
-                Create Draft Order
+                Create Token Access
               </Button>
             </div>
-            // </Stack>
           )}
         </div>
       )}
-      <span></span>
-      <CreateDraftOrderModal
-        shopId={props.shopInfo.shopId}
-        open={openCreateDraftOrderModal}
-        setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
-        handleCreateAccessControl={handleCreateAccessControl}
-        accessControlConditions={accessControlConditions}
-        setAccessControlConditions={setAccessControlConditions}
-        humanizedAccessControlConditions={humanizedAccessControlConditions}
-        setHumanizedAccessControlConditions={
-          setHumanizedAccessControlConditions
-        }
-        sendDraftOrderToDb={sendDraftOrderToDb}
-        shopInfo={props.shopInfo}
-      />
-      {openShareModal && (
-        <ShareModal
-          showStep="ableToAccess"
-          className={"share-modal"}
-          show={false}
-          onClose={() => {
-            setOpenShareModal(false);
-            setOpenCreateDraftOrderModal(true);
-          }}
-          sharingItems={[]}
-          onAccessControlConditionsSelected={async (restriction) => {
-            await addAccessControlConditions(restriction);
-            setOpenShareModal(false);
-            setOpenCreateDraftOrderModal(true);
-          }}
+      <div>
+        <CreateDraftOrderModal
+          shopId={props.shopInfo.shopId}
+          open={openCreateDraftOrderModal}
+          setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
+          handleCreateAccessControl={handleCreateAccessControl}
+          accessControlConditions={accessControlConditions}
+          setAccessControlConditions={setAccessControlConditions}
+          humanizedAccessControlConditions={humanizedAccessControlConditions}
+          setHumanizedAccessControlConditions={
+            setHumanizedAccessControlConditions
+          }
+          sendDraftOrderToDb={sendDraftOrderToDb}
+          shopInfo={props.shopInfo}
         />
-      )}
+        {openShareModal && (
+          <ShareModal
+            showStep="ableToAccess"
+            className={"share-modal"}
+            show={false}
+            onClose={() => {
+              setOpenShareModal(false);
+              setOpenCreateDraftOrderModal(true);
+            }}
+            sharingItems={[]}
+            onAccessControlConditionsSelected={async (restriction) => {
+              await addAccessControlConditions(restriction);
+              setOpenShareModal(false);
+              setOpenCreateDraftOrderModal(true);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };

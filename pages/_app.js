@@ -9,6 +9,7 @@ import "@shopify/polaris/build/esm/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 
 function userLoggedInFetch(app) {
+  console.log("Check userLoggedInFetch");
   const fetchFunction = authenticatedFetch(app);
 
   return async (uri, options) => {

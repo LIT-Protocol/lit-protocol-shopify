@@ -6,7 +6,7 @@ import {
   Modal,
   TextField,
   Stack,
-  Checkbox,
+  Select,
   TextContainer,
   Button,
   Heading,
@@ -23,15 +23,19 @@ const CreateDraftOrderModal = (props) => {
   const [draftOrderDiscount, setDraftOrderDiscount] = useState("0");
   const [draftOrderOriginalPrice, setDraftOrderOriginalPrice] = useState("10");
   const [draftOrderProduct, setDraftOrderProduct] = useState(null);
-  const [draftOrderDescription, setDraftOrderDescription] = useState("");
+  const [draftOrderDescription, setDraftOrderDescription] = useState(null);
 
-  const [isExclusiveContent, setIsExclusiveContent] = useState(false);
+  const [typeOfAccessControl, setTypeOfAccessControl] = useState("exclusive");
   const [errorText, setErrorText] = useState(null);
+
+  const typeOfAccessOptions = [
+    { label: "Exclusive Access", value: "exclusive" },
+    { label: "Discount", value: "discount" },
+  ];
 
   const exportDraftOrder = () => {
     const draftOrderDetails = {
       id: draftOrderProduct.id,
-      sku: draftOrderProduct.variants[0].sku,
       quantity: 1,
       title: draftOrderTitle,
       description: draftOrderDescription,
@@ -40,9 +44,7 @@ const CreateDraftOrderModal = (props) => {
       valueType: "PERCENTAGE",
     };
 
-    console.log("Draft order Details", draftOrderDetails);
-
-    if (!!isExclusiveContent) {
+    if (typeOfAccessControl === "exclusive") {
       draftOrderDetails.value = 0;
     }
 
@@ -51,21 +53,23 @@ const CreateDraftOrderModal = (props) => {
       access_control_conditions: JSON.stringify(props.accessControlConditions),
       humanized_access_control_conditions:
         props.humanizedAccessControlConditions,
-      asset_type: "draft order",
+      asset_type: typeOfAccessControl,
       asset_id_on_service: draftOrderProduct.id,
       user_id: "",
       draft_order_details: JSON.stringify(draftOrderDetails),
       summary: `${draftOrderDiscount}% off ${draftOrderProduct.title}`,
-      extra_data: "",
+      extra_data: props.accessControlConditions[0].chain,
       active: true,
       shop_id: props.shopInfo.shopId,
     };
 
-    if (!!isExclusiveContent) {
+    if (typeOfAccessControl === "exclusive") {
       draftOrderObj.summary = `Token gated ${draftOrderProduct.title}`;
     } else {
       draftOrderObj.summary = `${draftOrderDiscount}% off ${draftOrderProduct.title}`;
     }
+
+    console.log("---> DRAFT ORDER OBJECT", draftOrderObj);
 
     clearDraftOrder();
 
@@ -89,11 +93,11 @@ const CreateDraftOrderModal = (props) => {
     } else {
       const productPrice = getVariantPrice(products);
       setDraftOrderOriginalPrice(productPrice);
-      setShowProductSelect(false);
       const product = products.selection[0];
       setDraftOrderProduct(product);
       setErrorText(null);
     }
+    setShowProductSelect(false);
   };
 
   const clearAccessControlCondition = () => {
@@ -105,10 +109,22 @@ const CreateDraftOrderModal = (props) => {
     setDraftOrderTitle("");
     setDraftOrderDiscount("0");
     setDraftOrderDescription("");
-    setIsExclusiveContent(false);
+    setTypeOfAccessControl("exclusive");
     setShowProductSelect(false);
     setDraftOrderProduct(null);
     setErrorText(null);
+    clearAccessControlCondition();
+  };
+
+  const checkIfButtonDisabled = () => {
+    if (
+      // !props.humanizedAccessControlConditions ||
+      !draftOrderTitle ||
+      !draftOrderProduct
+    )
+      return true;
+    if (typeOfAccessControl === "discount" && !draftOrderDiscount) return true;
+    return false;
   };
 
   return (
@@ -117,23 +133,16 @@ const CreateDraftOrderModal = (props) => {
         large
         className={styles.createDraftOrderForm}
         open={props.open}
-        title={"Create New Draft Order"}
+        title={"Create New Token Access"}
         onClose={() => {
           clearDraftOrder();
           props.setOpenCreateDraftOrderModal(false);
         }}
         primaryAction={{
-          disabled:
-            (!!props.humanizedAccessControlConditions &&
-              !isExclusiveContent &&
-              (!draftOrderTitle ||
-                !draftOrderProduct ||
-                !draftOrderDiscount)) ||
-            (!!isExclusiveContent && (!draftOrderTitle || !draftOrderProduct)),
+          disabled: checkIfButtonDisabled(),
           content: props.humanizedAccessControlConditions
-            ? "Save Promotion"
-            : // : "Set Access Control",
-              "Next",
+            ? "Save Token Access"
+            : "Next",
           onAction: () => {
             if (!!props.humanizedAccessControlConditions) {
               exportDraftOrder();
@@ -181,36 +190,23 @@ const CreateDraftOrderModal = (props) => {
                     style={{ maxWidth: "5rem" }}
                   />
                   <Stack alignment={"center"}>
-                    {/*{!isExclusiveContent && (*/}
-                    <TextField
-                      type={"number"}
-                      label={"Discount Amount"}
-                      suffix="% off"
-                      align={"right"}
-                      disabled={isExclusiveContent}
-                      value={draftOrderDiscount}
-                      onChange={setDraftOrderDiscount}
-                      autoComplete={"off"}
+                    <Select
+                      label={"Type of Access"}
+                      options={typeOfAccessOptions}
+                      onChange={(e) => setTypeOfAccessControl(e)}
+                      value={typeOfAccessControl}
                     />
-                    {/*// )}*/}
-                    {/*{!isExclusiveContent &&*/}
-                    {/*  (draftOrderDiscount === "0" || !draftOrderDiscount) && (*/}
-                    <p className={styles.orDivider}>or</p>
-                    {/*// )}*/}
-                    {/*{(draftOrderDiscount === "0" || !draftOrderDiscount) && (*/}
-                    <span>
-                      <p>Token-Based Access</p>
-                      <Checkbox
-                        disabled={
-                          draftOrderDiscount !== "0" || !draftOrderDiscount
-                        }
-                        checked={isExclusiveContent}
-                        onChange={() =>
-                          setIsExclusiveContent(!isExclusiveContent)
-                        }
+                    {typeOfAccessControl === "discount" && (
+                      <TextField
+                        type={"number"}
+                        label={"Discount Amount"}
+                        suffix="% off"
+                        align={"right"}
+                        value={draftOrderDiscount}
+                        onChange={setDraftOrderDiscount}
+                        autoComplete={"off"}
                       />
-                    </span>
-                    {/*)}*/}
+                    )}
                   </Stack>
                   {/*<TextField*/}
                   {/*  label={*/}
@@ -244,6 +240,9 @@ const CreateDraftOrderModal = (props) => {
                 resourceType={"Product"}
                 allowMultiple={false}
                 open={showProductSelect}
+                onCancel={() => {
+                  setShowProductSelect(false);
+                }}
               />
             </FormLayout>
           </Form>

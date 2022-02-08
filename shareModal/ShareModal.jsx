@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 
 import styles from "./share-modal.module.scss";
 
-import { Dialog, DialogTitle, Snackbar, Alert, IconButton, DialogContent } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  Snackbar,
+  Alert,
+  IconButton,
+  DialogContent,
+} from "@mui/material";
 
 // import Modal from "./Modal";
 
@@ -16,8 +23,6 @@ import {
   DAOMembers,
   AccessCreated,
   SelectTokens,
-  RecentRequirement,
-  CurrentRequirements,
   ChoosePOAP,
 } from "./ShareModalSteps";
 import UnsavedPopup from "./Modal/UnsavedPopup";
@@ -31,8 +36,6 @@ const ModalComponents = {
   DAOMembers: DAOMembers,
   accessCreated: AccessCreated,
   selectTokens: SelectTokens,
-  recentRequirement: RecentRequirement,
-  currentRequirements: CurrentRequirements,
   choosePOAP: ChoosePOAP,
 };
 
@@ -48,8 +51,6 @@ const ShareModal = (props) => {
     copyLinkText,
     myWalletAddress,
   } = props;
-
-  //console.log("rendering ShareModal and sharingItems is", sharingItems);
 
   const [showingSnackbar, setShowingSnackbar] = useState(false);
   const [activeStep, setActiveStep] = useState(showStep || "whatToDo");
@@ -68,17 +69,9 @@ const ShareModal = (props) => {
     go();
   }, []);
 
-  // useEffect(() => {
-  //   if (activeStep !== "accessCreated") {
-  //     setShowUnsavedPopup(true);
-  //   }
-  // }, [activeStep])
-
   useEffect(() => {
-    setOpenErrorSnackbar(true)
-  }, [error])
-
-  // console.log('accessControlConditions', accessControlConditions)
+    setOpenErrorSnackbar(true);
+  }, [error]);
 
   const copyToClipboard = async () => {
     const fileUrl = getSharingLink(sharingItems[0]);
@@ -87,13 +80,13 @@ const ShareModal = (props) => {
     setTimeout(() => setShowingSnackbar(false), 5000);
   };
 
-  let totalAccessControlConditions = 1;
-  if (sharingItems.length === 1) {
-    if (sharingItems[0].additionalAccessControlConditions) {
-      totalAccessControlConditions +=
-        sharingItems[0].additionalAccessControlConditions.length;
-    }
-  }
+  // let totalAccessControlConditions = 1;
+  // if (sharingItems.length === 1) {
+  //   if (sharingItems[0].additionalAccessControlConditions) {
+  //     totalAccessControlConditions +=
+  //       sharingItems[0].additionalAccessControlConditions.length;
+  //   }
+  // }
 
   const ModalComponent = (props) => {
     const { type } = props;
@@ -118,7 +111,6 @@ const ShareModal = (props) => {
     );
   };
 
-  // const title = sharingItems.length > 1 ? `${sharingItems.length} Files` : sharingItems?.[0]?.name ?? '';
   let title = "";
   if (sharingItems.length > 0) {
     title =
@@ -128,35 +120,34 @@ const ShareModal = (props) => {
   }
 
   const handleClose = () => {
-    console.log('HANDLE CLOSE', activeStep)
+    console.log("HANDLE CLOSE", activeStep);
     if (activeStep !== "accessCreated") {
-      setShowUnsavedPopup(true)
+      setShowUnsavedPopup(true);
     } else {
-      props.onClose()
+      props.onClose();
     }
-  }
+  };
 
   return (
     <div>
-      <Dialog open={true}
-              onClose={props.onClose}
-              onBackdropClick={false}
-              maxWidth={'l'}
+      <Dialog
+        open={true}
+        onClose={props.onClose}
+        onBackdropClick={false}
+        maxWidth={"l"}
       >
         <DialogTitle className={styles.shareModalTitle}>
           <span>{title}</span>
-          <IconButton className={styles.icon} onClick={handleClose} >
-            <Close/>
+          <IconButton className={styles.icon} onClick={handleClose}>
+            <Close />
           </IconButton>
         </DialogTitle>
         <DialogContent id={styles.shareModalContainer}>
           {error ? (
             <div className={styles.error}>
               <div style={{ height: 24 }} />
-              <Snackbar open={openErrorSnackbar}
-                        autoHideDuration={5000}
-              >
-                <Alert severity={'error'}>
+              <Snackbar open={openErrorSnackbar} autoHideDuration={5000}>
+                <Alert severity={"error"}>
                   {error.title} - {error.details}
                 </Alert>
               </Snackbar>
@@ -167,7 +158,7 @@ const ShareModal = (props) => {
             <Snackbar
               open={showingSnackbar}
               autoHideDuration={3000}
-              message={'Copied!'}
+              message={"Copied!"}
             />
           </div>
           <UnsavedPopup

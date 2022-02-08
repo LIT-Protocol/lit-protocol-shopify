@@ -1,6 +1,6 @@
 <div>
   {% for tag in product.tags %}
-    {% if tag == "litpromotional" %}
+    {% if tag == "lit-discount" %}
       <div id="lit-promotional-container" onclick="forwardToLitPromotion()">
         <div class="discount-container">
           <p class="redeem-text"> This product qualifies for a token-based discount!</p>
@@ -10,7 +10,7 @@
         </div>
       </div>
       {% endif %}
-      {% if tag == "litexclusive" %}
+      {% if tag == "lit-exclusive" %}
       <div id="lit-promotional-container" onclick="forwardToLitPromotion()">
         <div class="discount-container">
           {{ product.metafields.my_fields.litexclusive.value}}
@@ -20,14 +20,11 @@
           </button>
         </div>
         <script type="text/javascript">
-          console.log('check metafields', "{{ product.metafields }}")
-          console.log('check myfields', "{{ product.metafields.my_fields }}")
           const productFormButtons = document.getElementsByClassName("product-form__buttons");
           setTimeout(() => {
-            if ("{{ tag }}" === 'litexclusive') {
-              console.log('window.load litexclusive')
+            if ("{{ tag }}" === 'lit-exclusive') {
               for (let i = 0; i < productFormButtons.length; i++) {
-                productFormButtons[i].style.display = 'none';
+                productFormButtons[i].remove();
               }
             }
           }, 0)

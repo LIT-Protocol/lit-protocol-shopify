@@ -25,11 +25,6 @@ const SelectTokens = ({
   const [chain, setChain] = useState(null);
   const [contractType, setContractType] = useState("ERC721");
 
-  // useEffect(() => {
-  //   console.log('CHECK SELECTED', selectedToken)
-  //   console.log('CONTRACT ADDRESS', contractAddress)
-  // }, [selectedToken, contractAddress])
-
   const handleSubmit = async () => {
     console.log("handleSubmit and selectedToken is", selectedToken);
 
@@ -170,12 +165,16 @@ const SelectTokens = ({
       <div className={styles.form}>
         <div className={styles.inputMaxWidth}>
           <div className={styles.select}>
-            <label className={styles.label}>Select blockchain to check requirements against:</label>
+            <label className={styles.label}>
+              Select blockchain to check requirements against:
+            </label>
             <ChainSelector chain={chain} setChain={setChain} />
           </div>
         </div>
         <div className={styles.select}>
-          <label className={styles.label}>Select token/NFT or enter contract address: </label>
+          <label className={styles.label}>
+            Select token/NFT or enter contract address:{" "}
+          </label>
           <div className={styles.tokenOrContractAddress}>
             {(!contractAddress || !contractAddress.length) && !selectedToken && (
               <span className={styles.leftSelect}>
