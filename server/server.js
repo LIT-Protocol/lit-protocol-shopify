@@ -71,7 +71,7 @@ app.prepare().then(async () => {
         );
         const parsedAccessTokenResponse = await saveAccessTokenResponse.json();
         // Redirect to app with shop parameter upon auth
-        const redirectAddress = `https://${shop}/admin/apps/lit_token_access_(public)`;
+        const redirectAddress = `https://${shop}/admin/apps/lit_token_access_public`;
         ctx.redirect(redirectAddress);
       },
     })
