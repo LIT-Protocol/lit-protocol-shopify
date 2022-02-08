@@ -140,6 +140,7 @@ const Main = (props) => {
 
   return (
     <div>
+      Test render
       {!!loading || draftOrders === null ? (
         <span className={styles.centerSpinner}>
           Loading...
