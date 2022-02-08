@@ -131,6 +131,7 @@ const Main = (props) => {
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
       setDraftOrders(allDraftOrders.data);
+      console.log('CHECK DRAFT ORDERS', allDraftOrders.data)
       setLoading(false);
     } catch (err) {
       console.error("Error getting draft orders:", err);
