@@ -71,7 +71,7 @@ app.prepare().then(async () => {
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
 
         const saveAccessTokenResponse = await fetch(
-          `https://oauth-app-dev.litgateway.com/api/shopify/saveAccessToken`,
+          `https://oauth-app.litgateway.com/api/shopify/saveAccessToken`,
           {
             method: "post",
             body: JSON.stringify({ accessToken, shop, email }),
@@ -79,7 +79,7 @@ app.prepare().then(async () => {
         );
         const parsedAccessTokenResponse = await saveAccessTokenResponse.json();
         // Redirect to app with shop parameter upon auth
-        const redirectAddress = `https://${shop}/admin/apps/lit-shop-promotional`;
+        const redirectAddress = `https://${shop}/admin/apps/lit_token_access_(public)`;
         ctx.redirect(redirectAddress);
       },
     })
