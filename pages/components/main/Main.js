@@ -133,6 +133,8 @@ const Main = (props) => {
       setDraftOrders(allDraftOrders.data);
       console.log('CHECK DRAFT ORDERS', allDraftOrders.data)
       setLoading(false);
+      console.log('---> Check data -> draftOrders', draftOrders)
+      console.log('---> Check data -> loading', loading)
     } catch (err) {
       console.error("Error getting draft orders:", err);
       setLoading(false);
