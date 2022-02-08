@@ -88,7 +88,8 @@ const Main = (props) => {
 
       const resp = await saveDraftOrder(draftOrderObj);
       const resourceId = {
-        baseUrl: "https://oauth-app-dev.litgateway.com",
+        // baseUrl: "https://oauth-app-dev.litgateway.com",
+        baseUrl: "https://oauth-app.litgateway.com",
         path: "/shopify/l/" + resp.data,
         orgId: "",
         role: "customer",
@@ -154,7 +155,7 @@ const Main = (props) => {
               />
             </span>
           )}
-          {draftOrders.length < 5 && (
+          {draftOrders.length < 5 || !draftOrders && (
             <div className={styles.createDraftOrderContainer}>
               <Button
                 className={styles.createDraftOrderButton}

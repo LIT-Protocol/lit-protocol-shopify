@@ -3,7 +3,8 @@ import axios from "axios";
 export const saveDraftOrder = async (draftOrder) => {
   console.log("SAVE DISCOUNT", draftOrder);
   const resp = await axios.post(
-    `https://oauth-app-dev.litgateway.com/api/shopify/saveDraftOrder`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/saveDraftOrder`,
+    `https://oauth-app.litgateway.com/api/shopify/saveDraftOrder`,
     {
       ...draftOrder,
     }
@@ -14,7 +15,8 @@ export const saveDraftOrder = async (draftOrder) => {
 
 export const getAllDraftOrders = async (shop_id) => {
   return await axios.get(
-    `https://oauth-app-dev.litgateway.com/api/shopify/getAllStoreDraftOrders`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/getAllStoreDraftOrders`,
+    `https://oauth-app.litgateway.com/api/shopify/getAllStoreDraftOrders`,
     {
       shop_id,
     }
@@ -23,7 +25,8 @@ export const getAllDraftOrders = async (shop_id) => {
 
 export const checkIfProductHasBeenUsed = async (gid) => {
   return await axios.post(
-    `https://oauth-app-dev.litgateway.com/api/shopify/checkIfProductHasBeenUsed`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/checkIfProductHasBeenUsed`,
+    `https://oauth-app.litgateway.com/api/shopify/checkIfProductHasBeenUsed`,
     {
       gid,
     }
@@ -33,7 +36,8 @@ export const checkIfProductHasBeenUsed = async (gid) => {
 export const getAllUserDraftOrders = async (shopId) => {
   console.log("Get all draft orders call");
   return await axios.post(
-    `https://oauth-app-dev.litgateway.com/api/shopify/getAllUserDraftOrders`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/getAllUserDraftOrders`,
+    `https://oauth-app.litgateway.com/api/shopify/getAllUserDraftOrders`,
     {
       shopId,
     }
@@ -42,7 +46,8 @@ export const getAllUserDraftOrders = async (shopId) => {
 
 export const deleteDraftOrder = async (id, shopId) => {
   const resp = await axios.post(
-    `https://oauth-app-dev.litgateway.com/api/shopify/deleteDraftOrder`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/deleteDraftOrder`,
+    `https://oauth-app.litgateway.com/api/shopify/deleteDraftOrder`,
     {
       id,
       shopId,
@@ -54,7 +59,8 @@ export const deleteDraftOrder = async (id, shopId) => {
 
 export const deleteAllDraftOrders = async (product) => {
   const resp = await axios.post(
-    `https://oauth-app-dev.litgateway.com/api/shopify/deleteAllDiscounts`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/deleteAllDiscounts`,
+    `https://oauth-app.litgateway.com/api/shopify/deleteAllDiscounts`,
     {}
   );
 
@@ -63,7 +69,8 @@ export const deleteAllDraftOrders = async (product) => {
 
 export const testEndpoint = async () => {
   const resp = await axios.post(
-    `https://oauth-app-dev.litgateway.com/api/shopify/testEndpoint`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/testEndpoint`,
+    `https://oauth-app.litgateway.com/api/shopify/testEndpoint`,
     {
       test: "testData",
     }

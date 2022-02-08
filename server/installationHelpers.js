@@ -15,18 +15,17 @@ export const saveAccessToken = async (shopifyState) => {
   }
 
   const resp = await axios.post(
-    // `https://lit-shop.loca.lt/api/shopify/saveAccessToken`,
-    `https://oauth-app-dev.litgateway.com/api/shopify/storeCallback`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/storeCallback`,
+    `https://oauth-app.litgateway.com/api/shopify/storeCallback`,
     shopAccessObject
   );
   return resp;
 };
 
 export const checkForAccessToken = async (shop) => {
-  console.log("CHECK FOR ACCESS CALL", shop);
   return await axios.post(
-    // `https://lit-shop.loca.lt/api/shopify/checkForAccessToken`,
-    `https://oauth-app-dev.litgateway.com/api/shopify/storeCallback`,
+    // `https://oauth-app-dev.litgateway.com/api/shopify/storeCallback`,
+    `https://oauth-app.litgateway.com/api/shopify/storeCallback`,
     "cally call call",
     {
       headers: {

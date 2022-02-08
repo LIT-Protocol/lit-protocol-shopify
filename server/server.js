@@ -64,6 +64,7 @@ app.prepare().then(async () => {
 
         const saveAccessTokenResponse = await fetch(
           `https://oauth-app.litgateway.com/api/shopify/saveAccessToken`,
+          // `https://oauth-app-dev.litgateway.com/api/shopify/saveAccessToken`,
           {
             method: "post",
             body: JSON.stringify({ accessToken, shop, email }),
