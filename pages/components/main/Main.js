@@ -130,8 +130,10 @@ const Main = (props) => {
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
       if(!allDraftOrders.data || !allDraftOrders.data.length) {
+        console.log('---> No draft orders')
         setDraftOrders([]);
       } else {
+        console.log('---> Yes draft orders')
         setDraftOrders(allDraftOrders.data);
       }
       setLoading(false);
