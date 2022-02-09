@@ -172,6 +172,9 @@ const Main = (props) => {
               </Button>
             </div>
           )}
+          <span>Thank you for using Lit Gateway: Token Access!</span>
+          <span><a href={"https://lit-services-docs.netlify.app/docs/shopify-docs/intro"} target={'_blank'}>Documentation can be found here.</a></span>
+          {/*<span>Questions or comments? Contact us here.</span>*/}
         </div>
       )}
       <div>
