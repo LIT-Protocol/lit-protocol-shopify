@@ -130,7 +130,7 @@ const Main = (props) => {
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
       if(!allDraftOrders.data || !allDraftOrders.data.length) {
-        console.log('---> No draft orders')
+        console.log('---> No draft orders', allDraftOrders.data)
         setDraftOrders([]);
       } else {
         console.log('---> Yes draft orders')
@@ -147,12 +147,6 @@ const Main = (props) => {
 
   return (
     <div>
-      <span>
-        check loading: {loading}
-      </span>
-      <span>
-        check draftOrders: {draftOrders}
-      </span>
       {!!loading || draftOrders === null ? (
         <span className={styles.centerSpinner}>
           Loading...
