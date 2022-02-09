@@ -21,7 +21,7 @@ const spoofAuthSig = {
 };
 
 const Main = (props) => {
-  const [draftOrders, setDraftOrders] = useState(null);
+  const [draftOrders, setDraftOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [connectedToLit, setConnectedToLit] = useState(false);
 
@@ -60,6 +60,7 @@ const Main = (props) => {
     const litNodeClient = new LitJsSdk.LitNodeClient();
     litNodeClient.connect();
     window.litNodeClient = litNodeClient;
+    setConnectedToLit(true);
   };
 
   const handleCreateAccessControl = async () => {
@@ -129,13 +130,8 @@ const Main = (props) => {
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
-      if(!allDraftOrders.data || !allDraftOrders.data.length) {
-        console.log('---> No draft orders', allDraftOrders.data)
-        setDraftOrders([]);
-      } else {
-        console.log('---> Yes draft orders')
-        setDraftOrders(allDraftOrders.data);
-      }
+      console.log('---> No draft orders', allDraftOrders.data)
+      setDraftOrders(allDraftOrders.data);
       setLoading(false);
       console.log('---> Check all draft orders', draftOrders)
       console.log('---> Check loading', loading)
@@ -147,7 +143,8 @@ const Main = (props) => {
 
   return (
     <div>
-      {!!loading || draftOrders === null ? (
+      {/*{!!loading || draftOrders === null ? (*/}
+      {!!loading || !connectedToLit ? (
         <span className={styles.centerSpinner}>
           Loading...
           <Spinner size="large" />
