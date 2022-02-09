@@ -157,7 +157,8 @@ const Main = (props) => {
         </span>
       ) : (
         <div>
-          {!!draftOrders.length && (
+          test for ternary
+          {(draftOrders.length > 0) && (
             <span>
               <DraftOrderTable
                 draftOrders={draftOrders}
@@ -165,7 +166,7 @@ const Main = (props) => {
               />
             </span>
           )}
-          {draftOrders.length < 5 || !draftOrders && (
+          {draftOrders.length < 5 && (
             <div className={styles.createDraftOrderContainer}>
               <Button
                 className={styles.createDraftOrderButton}
