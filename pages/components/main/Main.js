@@ -47,7 +47,9 @@ const Main = (props) => {
   useEffect(() => {
     console.log('---> useEffect update for loading', loading)
     console.log('---> useEffect update for draftOrders', draftOrders)
-  }, [loading, draftOrders])
+    console.log('---> useEffect update for connectedToLit', connectedToLit)
+    console.log('---> useEffect test condition for draftOrders', draftOrders === null)
+  }, [loading, draftOrders, connectedToLit])
 
   useEffect(() => {
     if (!!props.shopInfo.shopId) {
@@ -149,6 +151,10 @@ const Main = (props) => {
   return (
     <div>
       {/*{!!loading || draftOrders === null ? (*/}
+      <span className={styles.centerSpinner}>
+          Loading...
+          <Spinner size="large" />
+        </span>
       {!!loading || !connectedToLit || draftOrders === null ? (
         <span className={styles.centerSpinner}>
           Loading...
