@@ -61,6 +61,7 @@ const CreateDraftOrderModal = (props) => {
       extra_data: props.accessControlConditions[0].chain,
       active: true,
       shop_id: props.shopInfo.shopId,
+      shop_name: props.shopInfo.name,
     };
 
     if (typeOfAccessControl === "exclusive") {

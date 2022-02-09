@@ -59,6 +59,7 @@ app.prepare().then(async () => {
           );
         }
         console.log('---> Context', ctx.state.shopify)
+        console.log('---> State', ctx.state)
 
         const email =
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
