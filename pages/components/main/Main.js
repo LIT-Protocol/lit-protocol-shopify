@@ -135,6 +135,8 @@ const Main = (props) => {
         setDraftOrders(allDraftOrders.data);
       }
       setLoading(false);
+      console.log('---> Check all draft orders', draftOrders)
+      console.log('---> Check loading', loading)
     } catch (err) {
       console.error("Error getting draft orders:", err);
       setLoading(false);
@@ -143,6 +145,12 @@ const Main = (props) => {
 
   return (
     <div>
+      <span>
+        check loading: {loading}
+      </span>
+      <span>
+        check draftOrders: {draftOrders}
+      </span>
       {!!loading || draftOrders === null ? (
         <span className={styles.centerSpinner}>
           Loading...
