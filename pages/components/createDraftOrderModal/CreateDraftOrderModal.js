@@ -82,11 +82,9 @@ const CreateDraftOrderModal = (props) => {
   };
 
   const saveProducts = async (products) => {
-    console.log("Products", products);
     const productHasAlreadyBeenUsed = await checkIfProductHasBeenUsed(
       products.selection[0].id
     );
-    console.log("productHasAlreadyBeenUsed", productHasAlreadyBeenUsed);
     if (!!productHasAlreadyBeenUsed.data.length) {
       const product = productHasAlreadyBeenUsed.data[0];
       setErrorText(product.title);

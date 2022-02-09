@@ -44,12 +44,12 @@ const Main = (props) => {
     false
   );
 
-  useEffect(() => {
-    console.log('---> useEffect update for loading', loading)
-    console.log('---> useEffect update for draftOrders', draftOrders)
-    console.log('---> useEffect update for connectedToLit', connectedToLit)
-    console.log('---> useEffect test conditions = false is good', (loading || !connectedToLit || draftOrders === null))
-  }, [loading, draftOrders, connectedToLit])
+  // useEffect(() => {
+  //   console.log('---> useEffect update for loading', loading)
+  //   console.log('---> useEffect update for draftOrders', draftOrders)
+  //   console.log('---> useEffect update for connectedToLit', connectedToLit)
+  //   console.log('---> useEffect test conditions = false is good', (loading || !connectedToLit || draftOrders === null))
+  // }, [loading, draftOrders, connectedToLit])
 
   useEffect(() => {
     if (!!props.shopInfo.shopId) {
@@ -137,11 +137,8 @@ const Main = (props) => {
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
-      console.log('---> No draft orders', allDraftOrders.data)
       setDraftOrders(allDraftOrders.data);
       setLoading(false);
-      console.log('---> Check all draft orders', draftOrders)
-      console.log('---> Check loading', loading)
     } catch (err) {
       console.error("Error getting draft orders:", err);
       setLoading(false);

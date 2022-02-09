@@ -7,13 +7,12 @@ const ProductTable = ({ id, draftOrderProduct, setDraftOrderProduct }) => {
   const [dataTableEntries, setDataTableEntries] = useState(null);
 
   useEffect(() => {
-    console.log("draftOrderProduct", draftOrderProduct);
     const modifyProductInfo = [
       draftOrderProduct.title,
       draftOrderProduct.id,
       <Button onClick={() => setDraftOrderProduct(null)}>Remove</Button>,
     ];
-    console.log("modifyProductInfo", modifyProductInfo);
+
     setDataTableEntries([modifyProductInfo]);
   }, [draftOrderProduct]);
 

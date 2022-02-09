@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const saveDraftOrder = async (draftOrder) => {
-  console.log("SAVE DISCOUNT", draftOrder);
   const resp = await axios.post(
     // `https://oauth-app-dev.litgateway.com/api/shopify/saveDraftOrder`,
     `https://oauth-app.litgateway.com/api/shopify/saveDraftOrder`,
