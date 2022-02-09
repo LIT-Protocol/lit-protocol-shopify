@@ -89,7 +89,8 @@ const DraftOrderTable = (props) => {
         </IndexTable>
       </Card>
       {openDeleteConfirmation && (
-        <div style={{ height: "500px" }}>
+        // <div style={{ height: "500px" }}>
+        // <div>
           <Modal
             open={openDeleteConfirmation}
             title="Are you sure you want to delete this draft order?"
@@ -117,7 +118,7 @@ const DraftOrderTable = (props) => {
               </TextContainer>
             </Modal.Section>
           </Modal>
-        </div>
+        // </div>
       )}
     </div>
   );
