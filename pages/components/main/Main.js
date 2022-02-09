@@ -126,15 +126,15 @@ const Main = (props) => {
   };
 
   const toggleGetAllDraftOrders = async () => {
-    console.log("Draft orders kick off", props.shopInfo);
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
-      setDraftOrders(allDraftOrders.data);
-      console.log('CHECK DRAFT ORDERS', allDraftOrders.data)
+      if(!allDraftOrders.data || !allDraftOrders.data.length) {
+        setDraftOrders([]);
+      } else {
+        setDraftOrders(allDraftOrders.data);
+      }
       setLoading(false);
-      console.log('---> Check data -> draftOrders', draftOrders)
-      console.log('---> Check data -> loading', loading)
     } catch (err) {
       console.error("Error getting draft orders:", err);
       setLoading(false);
@@ -143,7 +143,6 @@ const Main = (props) => {
 
   return (
     <div>
-      Test render
       {!!loading || draftOrders === null ? (
         <span className={styles.centerSpinner}>
           Loading...
