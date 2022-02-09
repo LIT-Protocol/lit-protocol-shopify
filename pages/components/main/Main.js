@@ -48,7 +48,7 @@ const Main = (props) => {
     console.log('---> useEffect update for loading', loading)
     console.log('---> useEffect update for draftOrders', draftOrders)
     console.log('---> useEffect update for connectedToLit', connectedToLit)
-    console.log('---> useEffect test condition for draftOrders', draftOrders === null)
+    console.log('---> useEffect test conditions = false is good', (loading || !connectedToLit || draftOrders === null))
   }, [loading, draftOrders, connectedToLit])
 
   useEffect(() => {
