@@ -150,13 +150,7 @@ const Main = (props) => {
 
   return (
     <div>
-      {/*{!!loading || draftOrders === null ? (*/}
-      <span className={styles.centerSpinner}>
-          Loading...
-          <Spinner size="large" />
-        </span>
-      {/*{(loading || !connectedToLit || draftOrders === null) ? (*/}
-      {loading ? (
+      {(loading || !connectedToLit || draftOrders === null) ? (
         <span className={styles.centerSpinner}>
           Loading...
           <Spinner size="large" />
