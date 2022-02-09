@@ -58,7 +58,7 @@ app.prepare().then(async () => {
             `Failed to register APP_UNINSTALLED webhook: ${response.result}`
           );
         }
-        console.log('---> ')
+        console.log('---> Context', ctx.state.shopify)
 
         const email =
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
