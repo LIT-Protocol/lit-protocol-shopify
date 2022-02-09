@@ -14,6 +14,16 @@
 
 }
 
-  .createDraftOrderButton {
+.createDraftOrderButton {
   width: 90%;
+}
+
+.infoBox {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.documentationLink {
+  text-decoration: none;
 }

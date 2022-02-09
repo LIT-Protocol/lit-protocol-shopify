@@ -172,8 +172,10 @@ const Main = (props) => {
               </Button>
             </div>
           )}
-          <span>Thank you for using Lit Gateway: Token Access!</span>
-          <span><a href={"https://lit-services-docs.netlify.app/docs/shopify-docs/intro"} target={'_blank'}>Documentation can be found here.</a></span>
+          <div className={styles.infoBox}>
+            <span><strong>Thank you for using Lit Gateway: Token Access!</strong></span>
+            <span><a className={styles.documentationLink} href={"https://lit-services-docs.netlify.app/docs/shopify-docs/intro"} target={'_blank'}>Documentation can be found here.</a></span>
+          </div>
           {/*<span>Questions or comments? Contact us here.</span>*/}
         </div>
       )}
