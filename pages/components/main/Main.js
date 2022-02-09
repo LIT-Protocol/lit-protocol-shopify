@@ -21,7 +21,7 @@ const spoofAuthSig = {
 };
 
 const Main = (props) => {
-  const [draftOrders, setDraftOrders] = useState([]);
+  const [draftOrders, setDraftOrders] = useState(null);
   const [loading, setLoading] = useState(true);
   const [connectedToLit, setConnectedToLit] = useState(false);
 
@@ -43,6 +43,11 @@ const Main = (props) => {
     },
     false
   );
+
+  useEffect(() => {
+    console.log('---> useEffect update for loading', loading)
+    console.log('---> useEffect update for draftOrders', draftOrders)
+  }, [loading, draftOrders])
 
   useEffect(() => {
     if (!!props.shopInfo.shopId) {
@@ -144,7 +149,7 @@ const Main = (props) => {
   return (
     <div>
       {/*{!!loading || draftOrders === null ? (*/}
-      {!!loading || !connectedToLit ? (
+      {!!loading || !connectedToLit || draftOrders === null ? (
         <span className={styles.centerSpinner}>
           Loading...
           <Spinner size="large" />
