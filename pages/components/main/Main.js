@@ -157,7 +157,6 @@ const Main = (props) => {
         </span>
       ) : (
         <div>
-          test for ternary
           {(draftOrders.length > 0) && (
             <span>
               <DraftOrderTable
