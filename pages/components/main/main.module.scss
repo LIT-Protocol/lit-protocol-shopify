@@ -7,11 +7,12 @@
 }
 
 .createDraftOrderContainer {
+  margin-top: 1.6rem;
   padding: 2rem;
   outline: 0.1rem solid transparent;
   box-shadow: var(--p-card-shadow);
   background-color: var(--p-surface);
-
+  border-radius: 0.8rem;
 }
 
 .createDraftOrderButton {
@@ -21,7 +22,13 @@
 .infoBox {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  // padding: 1rem;
+  margin-top: 1.6rem;
+}
+
+.instructionToggle {
+  display: flex;
+  flex-direction: column;
 }
 
 .documentationLink {

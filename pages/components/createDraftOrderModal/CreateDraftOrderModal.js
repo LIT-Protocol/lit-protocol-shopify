@@ -9,6 +9,8 @@ import {
   TextContainer,
   Button,
   Heading,
+  TextStyle,
+  List,
 } from "@shopify/polaris";
 import styles from "../createDraftOrderModal/create-draft-order-modal.module.scss";
 import { ResourcePicker } from "@shopify/app-bridge-react";
@@ -101,6 +103,7 @@ const CreateDraftOrderModal = (props) => {
   const clearAccessControlCondition = () => {
     props.setHumanizedAccessControlConditions(null);
     props.setAccessControlConditions(null);
+    props.setPermanent(true);
   };
 
   const clearDraftOrder = () => {
@@ -115,12 +118,7 @@ const CreateDraftOrderModal = (props) => {
   };
 
   const checkIfButtonDisabled = () => {
-    if (
-      // !props.humanizedAccessControlConditions ||
-      !draftOrderTitle ||
-      !draftOrderProduct
-    )
-      return true;
+    if (!draftOrderTitle || !draftOrderProduct) return true;
     if (typeOfAccessControl === "discount" && !draftOrderDiscount) return true;
     return false;
   };
@@ -175,18 +173,39 @@ const CreateDraftOrderModal = (props) => {
                         draftOrderProduct={draftOrderProduct}
                       />
                     ) : (
-                      <Button onClick={() => setShowProductSelect(true)}>
-                        Choose Product
-                      </Button>
+                      <Stack align="center">
+                        <Button onClick={() => setShowProductSelect(true)}>
+                          Choose Product
+                        </Button>
+                        {!props.hideInstructions && (
+                          <TextStyle variation="positive">
+                            <List>
+                              <List.Item>
+                                Select a product to put behind token access.
+                              </List.Item>
+                            </List>
+                          </TextStyle>
+                        )}
+                      </Stack>
                     )}
                   </div>
-                  <TextField
-                    label={"Title"}
-                    value={draftOrderTitle}
-                    onChange={setDraftOrderTitle}
-                    autoComplete={"off"}
-                    style={{ maxWidth: "5rem" }}
-                  />
+                  <Stack alignment={"center"}>
+                    <Stack.Item fill>
+                      <TextField
+                        label={"Title"}
+                        value={draftOrderTitle}
+                        onChange={setDraftOrderTitle}
+                        autoComplete={"off"}
+                      />
+                    </Stack.Item>
+                    {!props.hideInstructions && (
+                      <TextStyle variation="positive">
+                        <List>
+                          <List.Item>Enter a title for the discount.</List.Item>
+                        </List>
+                      </TextStyle>
+                    )}
+                  </Stack>
                   <Stack alignment={"center"}>
                     <Select
                       label={"Type of Access"}
@@ -205,17 +224,38 @@ const CreateDraftOrderModal = (props) => {
                         autoComplete={"off"}
                       />
                     )}
+                    {!props.hideInstructions && (
+                      <TextStyle variation="positive">
+                        <List style={{ color: "" }}>
+                          <List.Item>
+                            Select whether to gate product as exclusive or
+                            discounted.
+                          </List.Item>
+                          <List.Item>
+                            Once all fields are completed, the{" "}
+                            <strong>Next</strong> button will be enabled. Click
+                            it to create access control conditions.
+                          </List.Item>
+                          <List.Item>
+                            If gating product as exclusive, we recommend
+                            providing an alternate template for the product to
+                            remove the Add to Cart and Buy buttons.
+                            <a
+                              style={{ textDecoration: "underline" }}
+                              href={
+                                "https://lit-services-docs.netlify.app/docs/shopify-docs/creating-a-new-product-template"
+                              }
+                              target={"_blank"}
+                            >
+                              {" "}
+                              Instructions on how to do this can be found{" "}
+                              <strong>here</strong>.
+                            </a>
+                          </List.Item>
+                        </List>
+                      </TextStyle>
+                    )}
                   </Stack>
-                  {/*<TextField*/}
-                  {/*  label={*/}
-                  {/*    "Discount Description (optional)"*/}
-                  {/*  }*/}
-                  {/*  value={draftOrderDescription}*/}
-                  {/*  onChange={setDraftOrderDescription}*/}
-                  {/*  autoComplete={"off"}*/}
-                  {/*/>*/}
-                  {/*</TextContainer>*/}
-                  {/*  // <TextContainer>*/}
                   {props.humanizedAccessControlConditions && (
                     <div>
                       <Heading>Access Control Conditions</Heading>

@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import LitJsSdk from "lit-js-sdk";
-import { Spinner, Button, Stack, Card } from "@shopify/polaris";
+import {
+  Spinner,
+  Button,
+  SettingToggle,
+  TextContainer,
+  Heading,
+} from "@shopify/polaris";
 import CreateDraftOrderModal from "../createDraftOrderModal/CreateDraftOrderModal";
 import styles from "./main.module.scss";
 import DraftOrderTable from "../draftOrderTable/DraftOrderTable";
@@ -9,7 +15,9 @@ import {
   getAllUserDraftOrders,
   deleteDraftOrder,
 } from "../../../server/apiCalls";
-import { ShareModal } from "../../../shareModal";
+import { ShareModal } from "lit-modal-vite";
+import Instructions from "./Instructions";
+// import 'lit-modal-vite/dist/style.css';
 
 const spoofAuthSig = {
   sig:
@@ -30,6 +38,8 @@ const Main = (props) => {
   );
   const [openShareModal, setOpenShareModal] = useState(false);
   const [accessControlConditions, setAccessControlConditions] = useState(null);
+  const [permanent, setPermanent] = useState(true);
+  const [hideInstructions, setHideInstructions] = useState(true);
 
   const [
     humanizedAccessControlConditions,
@@ -43,13 +53,6 @@ const Main = (props) => {
     },
     false
   );
-
-  // useEffect(() => {
-  //   console.log('---> useEffect update for loading', loading)
-  //   console.log('---> useEffect update for draftOrders', draftOrders)
-  //   console.log('---> useEffect update for connectedToLit', connectedToLit)
-  //   console.log('---> useEffect test conditions = false is good', (loading || !connectedToLit || draftOrders === null))
-  // }, [loading, draftOrders, connectedToLit])
 
   useEffect(() => {
     if (!!props.shopInfo.shopId) {
@@ -81,11 +84,10 @@ const Main = (props) => {
     });
   };
 
-  const addAccessControlConditions = async (accessControlCondition) => {
-    const humanizedAcc = await humanizeAccessControlConditions(
-      accessControlCondition
-    );
-    setAccessControlConditions(accessControlCondition);
+  const addAccessControlConditions = async (acc) => {
+    console.log("check setting acc", acc);
+    const humanizedAcc = await humanizeAccessControlConditions(acc);
+    setAccessControlConditions(acc);
     setHumanizedAccessControlConditions(humanizedAcc);
   };
 
@@ -115,6 +117,7 @@ const Main = (props) => {
 
       setAccessControlConditions(null);
       setHumanizedAccessControlConditions(null);
+      setPermanent(true);
       await toggleGetAllDraftOrders();
     } catch (err) {
       console.error("Failed to save draft order:", err);
@@ -147,14 +150,14 @@ const Main = (props) => {
 
   return (
     <div>
-      {(loading || !connectedToLit || draftOrders === null) ? (
+      {loading || !connectedToLit || draftOrders === null ? (
         <span className={styles.centerSpinner}>
           Loading...
           <Spinner size="large" />
         </span>
       ) : (
         <div>
-          {(draftOrders.length > 0) && (
+          {draftOrders.length > 0 && (
             <span>
               <DraftOrderTable
                 draftOrders={draftOrders}
@@ -173,10 +176,42 @@ const Main = (props) => {
             </div>
           )}
           <div className={styles.infoBox}>
-            <span><strong>Thank you for using Lit Gateway: Token Access!</strong></span>
-            <span><a className={styles.documentationLink} href={"https://lit-services-docs.netlify.app/docs/shopify-docs/intro"} target={'_blank'}>Documentation can be found here.</a></span>
+            <SettingToggle
+              action={{
+                content: hideInstructions
+                  ? "Show Instructions"
+                  : "Hide Instructions",
+                onAction: () => setHideInstructions(!hideInstructions),
+              }}
+              enabled={!hideInstructions}
+            >
+              <TextContainer className={styles.instructionToggle}>
+                <Heading>Thank you for using Lit Token Access!</Heading>
+                <p>
+                  Click the button to right to show or hide additional
+                  instructions. Instructions are currently{" "}
+                  <strong>{!hideInstructions ? "shown" : "hidden"}</strong>.
+                </p>
+                <p>
+                  <a
+                    style={{ color: "#5E36B7" }}
+                    className={styles.documentationLink}
+                    href={
+                      "https://lit-services-docs.netlify.app/docs/shopify-docs/intro"
+                    }
+                    target={"_blank"}
+                  >
+                    Additional documentation can be found <strong>here</strong>.
+                  </a>
+                </p>
+              </TextContainer>
+            </SettingToggle>
+            {!hideInstructions && (
+              <Instructions
+                setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
+              />
+            )}
           </div>
-          {/*<span>Questions or comments? Contact us here.</span>*/}
         </div>
       )}
       <div>
@@ -187,25 +222,31 @@ const Main = (props) => {
           handleCreateAccessControl={handleCreateAccessControl}
           accessControlConditions={accessControlConditions}
           setAccessControlConditions={setAccessControlConditions}
+          setPermanent={setPermanent}
           humanizedAccessControlConditions={humanizedAccessControlConditions}
           setHumanizedAccessControlConditions={
             setHumanizedAccessControlConditions
           }
           sendDraftOrderToDb={sendDraftOrderToDb}
           shopInfo={props.shopInfo}
+          hideInstructions={hideInstructions}
         />
         {openShareModal && (
           <ShareModal
             showStep="ableToAccess"
             className={"share-modal"}
-            show={false}
+            showModal={openShareModal}
             onClose={() => {
               setOpenShareModal(false);
+              setPermanent(true);
               setOpenCreateDraftOrderModal(true);
             }}
-            sharingItems={[]}
             onAccessControlConditionsSelected={async (restriction) => {
-              await addAccessControlConditions(restriction);
+              console.log("----> on add acc", restriction);
+              await addAccessControlConditions(
+                restriction.accessControlConditions
+              );
+              await setPermanent(restriction.permanent);
               setOpenShareModal(false);
               setOpenCreateDraftOrderModal(true);
             }}
