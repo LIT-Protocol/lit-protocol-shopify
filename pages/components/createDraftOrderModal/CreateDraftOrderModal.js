@@ -178,7 +178,7 @@ const CreateDraftOrderModal = (props) => {
                           Choose Product
                         </Button>
                         {!props.hideInstructions && (
-                          <TextStyle variation="positive">
+                          <TextStyle>
                             <List>
                               <List.Item>
                                 Select a product to put behind token access.
@@ -199,7 +199,7 @@ const CreateDraftOrderModal = (props) => {
                       />
                     </Stack.Item>
                     {!props.hideInstructions && (
-                      <TextStyle variation="positive">
+                      <TextStyle>
                         <List>
                           <List.Item>Enter a title for the discount.</List.Item>
                         </List>
@@ -225,7 +225,7 @@ const CreateDraftOrderModal = (props) => {
                       />
                     )}
                     {!props.hideInstructions && (
-                      <TextStyle variation="positive">
+                      <TextStyle>
                         <List style={{ color: "" }}>
                           <List.Item>
                             Select whether to gate product as exclusive or

@@ -43,7 +43,7 @@ const Instructions = (props) => {
               We highly recommend cloning a product template for use with
               products marked 'exclusive'.
             </strong>{" "}
-            Directions can be found under the
+            Directions can be found in our docs under
             <a
               href={
                 "https://lit-services-docs.netlify.app/docs/shopify-docs/creating-a-new-product-template"
@@ -52,7 +52,7 @@ const Instructions = (props) => {
             >
               <strong style={{ color: "#5E36B7" }}>
                 {" "}
-                Creating a new product template entry.
+                Creating a new product template.
               </strong>
             </a>
           </List.Item>
