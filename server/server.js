@@ -58,15 +58,15 @@ app.prepare().then(async () => {
             `Failed to register APP_UNINSTALLED webhook: ${response.result}`
           );
         }
-        console.log('---> Context', ctx.state.shopify)
-        console.log('---> State', ctx.state)
+        console.log("---> Context", ctx.state.shopify);
+        console.log("---> State", ctx.state);
 
         const email =
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
 
         const saveAccessTokenResponse = await fetch(
           `https://oauth-app.litgateway.com/api/shopify/saveAccessToken`,
-          // `https://oauth-app-dev.litgateway.com/api/shopify/saveAccessToken`,
+          // `http://localhost:4000/api/shopify/saveAccessToken`,
           {
             method: "post",
             body: JSON.stringify({ accessToken, shop, email }),
