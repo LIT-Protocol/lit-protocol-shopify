@@ -237,22 +237,21 @@ const CreateDraftOrderModal = (props) => {
                             it to create access control conditions.
                           </List.Item>
                           <List.Item>
-                            If gating product as exclusive, we recommend
-                            providing an alternate template for the product to
-                            remove the Add to Cart and Buy buttons.
+                            <strong>
+                              We highly recommend cloning a product template for
+                              use with products marked 'exclusive'.
+                            </strong>{" "}
+                            Directions can be found in our docs under
                             <a
-                              style={{
-                                textDecoration: "underline",
-                                color: "#5E36B7",
-                              }}
                               href={
                                 "https://lit-services-docs.netlify.app/docs/shopify-docs/creating-a-new-product-template"
                               }
-                              target={"_blank"}
+                              target="_blank"
                             >
-                              {" "}
-                              Instructions on how to do this can be found{" "}
-                              <strong>here</strong>.
+                              <strong style={{ color: "#5E36B7" }}>
+                                {" "}
+                                Creating a new product template.
+                              </strong>
                             </a>
                           </List.Item>
                         </List>
