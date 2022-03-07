@@ -241,7 +241,10 @@ const CreateDraftOrderModal = (props) => {
                             providing an alternate template for the product to
                             remove the Add to Cart and Buy buttons.
                             <a
-                              style={{ textDecoration: "underline" }}
+                              style={{
+                                textDecoration: "underline",
+                                color: "#5E36B7",
+                              }}
                               href={
                                 "https://lit-services-docs.netlify.app/docs/shopify-docs/creating-a-new-product-template"
                               }
