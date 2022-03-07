@@ -15,7 +15,7 @@ export const saveAccessToken = async (shopifyState) => {
   }
 
   const resp = await axios.post(
-    // `https://oauth-app-dev.litgateway.com/api/shopify/storeCallback`,
+    // `http://localhost:4000/api/shopify/storeCallback`,
     `https://oauth-app.litgateway.com/api/shopify/storeCallback`,
     shopAccessObject
   );
@@ -24,7 +24,7 @@ export const saveAccessToken = async (shopifyState) => {
 
 export const checkForAccessToken = async (shop) => {
   return await axios.post(
-    // `https://oauth-app-dev.litgateway.com/api/shopify/storeCallback`,
+    // `http://localhost:4000/api/shopify/storeCallback`,
     `https://oauth-app.litgateway.com/api/shopify/storeCallback`,
     "cally call call",
     {
