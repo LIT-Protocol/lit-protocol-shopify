@@ -4,12 +4,24 @@ import styles from "./instructions.module.scss";
 
 const Instructions = (props) => {
   return (
-    <Card
-      title="Welcome to Lit Token Access!"
-      sectioned
-      className={styles.instructionsContainer}
-    >
+    <Card title="Hello!" sectioned className={styles.instructionsContainer}>
       <TextContainer style={{ paddingTop: "0 !important" }}>
+        <p>
+          <strong>
+            For first time users - In order to function properly, the Lit Token
+            Access theme extension must be added to your Shopify store.{" "}
+          </strong>
+          <a
+            href={
+              "https://lit-services-docs.netlify.app/docs/shopify-docs/add-lit-block-to-store"
+            }
+            target="_blank"
+          >
+            <strong style={{ color: "#5E36B7" }}>
+              Instructions can be found here.
+            </strong>
+          </a>
+        </p>
         <p>
           To get started creating a discount or exclusive access, click the{" "}
           <span className={"styles.exampleButton"}>
@@ -23,25 +35,27 @@ const Instructions = (props) => {
           </span>{" "}
           button at the top of the page.
         </p>
-        <p>There are a few things to be aware of:</p>
+        <h3>
+          <strong>There are a few things to be aware of:</strong>
+        </h3>
         <List type="bullet">
           <List.Item>
-            Each set of access control conditions can only have one product
-            associated with them. This will be expanded to allow multiple
-            products to be bundled together in the future.
+            Each set of access control conditions can only have one associated
+            product. In the future, this will be expanded to allow merchants to
+            bundle multiple products together.
           </List.Item>
           <List.Item>
-            After a product is token gated, a <strong>lit-exclusive</strong> or{" "}
-            <strong>lit-discount</strong> tag will be appended to the product.
-            This is how the app knows what content is gated and when to show the
-            customer. Removing the tags will stop the app block from rendering.
-            The tags will be automatically removed when the Token Access entry
-            is deleted.
+            When the access control conditions are saved, a{" "}
+            <strong>lit-exclusive</strong> or <strong>lit-discount</strong> tag
+            will be appended to the respective product. This is how the app
+            knows what content is gated and when to show the customer. Removing
+            the tags will stop the app block from rendering. The tags will be
+            automatically removed when the Token Access entry is deleted.
           </List.Item>
           <List.Item>
             <strong>
               We highly recommend cloning a product template for use with
-              products marked 'exclusive'.
+              products designated for Exclusive Access.
             </strong>{" "}
             Directions can be found in our docs under
             <a

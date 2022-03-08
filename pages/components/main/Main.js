@@ -188,7 +188,7 @@ const Main = (props) => {
               <TextContainer className={styles.instructionToggle}>
                 <Heading>Thank you for using Lit Token Access!</Heading>
                 <p>
-                  Click the button to right to show or hide additional
+                  Click the button on the right to show or hide additional
                   instructions. Instructions are currently{" "}
                   <strong>{!hideInstructions ? "shown" : "hidden"}</strong>.
                 </p>
@@ -201,7 +201,7 @@ const Main = (props) => {
                     }
                     target={"_blank"}
                   >
-                    Additional documentation can be found <strong>here</strong>.
+                    <strong>Additional documentation can be found here</strong>.
                   </a>
                 </p>
               </TextContainer>
