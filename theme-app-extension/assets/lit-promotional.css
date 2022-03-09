@@ -1,10 +1,12 @@
 #lit-promotional-container {
-  border: 2px solid #757575;
-  padding: 0.5rem 0.8rem;
+  /* border: 2px solid #757575; */
+  /* border-style: solid;
+  border-width: 2px; */
   cursor: pointer;
 }
 
 .discount-container {
+  padding: 0.5rem 0.8rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,17 +18,15 @@
   margin-top: 0.3rem;
   margin-bottom: 0.5rem;
   cursor: pointer;
+  text-align: center;
 }
 
 .redeem-button {
   border: none;
-  background-color: white;
+  /* background-color: white; */
+  background-color: transparent;
   margin-bottom: 0.7rem;
-  color: #2c0c72;
+  /* color: #2c0c72; */
   cursor: pointer;
-}
-
-.hide-checkout-buttons {
-  border: red 5px solid !important;
-  /*display: none !important;*/
+  text-align: center;
 }

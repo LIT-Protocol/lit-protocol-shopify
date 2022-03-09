@@ -1,21 +1,20 @@
 <div>
   {% for tag in product.tags %}
     {% if tag == "lit-discount" %}
-      <div id="lit-promotional-container" onclick="forwardToLitPromotion()">
-        <div class="discount-container">
-          <p class="redeem-text"> This product qualifies for a token-based discount!</p>
-          <button id="log-discounts" class="redeem-button">
+      <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}, borderRadius: {{block.settings.border_radius}}px" onclick="forwardToLitPromotion()">
+        <div class="discount-container" style="background: {{block.settings.background_color}}">
+          <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.discount_text}}</p>
+          <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
             Click to connect wallet and view discount
           </button>
         </div>
       </div>
       {% endif %}
       {% if tag == "lit-exclusive" %}
-      <div id="lit-promotional-container" onclick="forwardToLitPromotion()">
-        <div class="discount-container">
-          {{ product.metafields.my_fields.litexclusive.value}}
-          <p class="redeem-text"> This product is token-gated and only available to qualified users.</p>
-          <button id="log-discounts" class="redeem-button">
+      <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
+        <div class="discount-container" style="background: {{block.settings.background_color}}">
+          <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.exclusive_text}}</p>
+          <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
             Click to connect wallet and check access
           </button>
         </div>
@@ -36,10 +35,19 @@
 
 {% schema %}
 {
-"name": "Lit Promotional",
-"target": "section",
-"javascript": "lit-promotional.js",
-"stylesheet": "lit-promotional.css"
+  "name": "Lit Promotional",
+  "target": "section",
+  "javascript": "lit-promotional.js",
+  "stylesheet": "lit-promotional.css",
+  "settings": [
+    { "type": "text", "id": "exclusive_text", "label": "Exclusive Text", "default": "This product is token-gated and only available to qualified users." },
+    { "type": "text", "id": "discount_text", "label": "Discount Text", "default": "This product qualifies for a token-based discount!" },
+    { "type": "color_background", "id": "background_color", "label": "Background Color", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Border Color", "default": "#757575" },
+    { "type": "number", "id": "border_radius", "label": "Border Radius (px)", "default": 0 },
+    { "type": "color", "id": "detail_text_color", "label": "Detail Text Color", "default": "#757575" },
+    { "type": "color", "id": "connect_text_color", "label": "Connect Text Color", "default": "#2c0c72" }
+  ]
 }
 {% endschema %}
 

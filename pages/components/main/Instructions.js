@@ -9,7 +9,8 @@ const Instructions = (props) => {
         <p>
           <strong>
             For first time users - In order to function properly, the Lit Token
-            Access theme extension must be added to your Shopify store.{" "}
+            Access app block must be added to your Shopify store's product
+            template.{" "}
           </strong>
           <a
             href={
@@ -42,7 +43,7 @@ const Instructions = (props) => {
           <List.Item>
             Each set of access control conditions can only have one associated
             product. In the future, this will be expanded to allow merchants to
-            bundle multiple products together.
+            bundle multiple products.
           </List.Item>
           <List.Item>
             When the access control conditions are saved, a{" "}
