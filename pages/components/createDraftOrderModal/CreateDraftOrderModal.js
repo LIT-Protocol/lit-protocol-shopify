@@ -35,6 +35,7 @@ const CreateDraftOrderModal = (props) => {
   ];
 
   const exportDraftOrder = () => {
+    console.log("---> ACC", props.accessControlConditions);
     const draftOrderDetails = {
       id: draftOrderProduct.id,
       quantity: 1,
