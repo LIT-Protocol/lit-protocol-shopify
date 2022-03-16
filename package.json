@@ -46,7 +46,7 @@
     "koa": "^2.13.1",
     "koa-router": "^10.0.0",
     "koa-session": "^6.1.0",
-    "lit-js-sdk": "^1.1.146",
+    "lit-js-sdk": "^1.1.143",
     "lit-modal-vite": "^0.0.69",
     "next": "^10.0.4",
     "next-env": "^1.1.0",
