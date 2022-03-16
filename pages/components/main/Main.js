@@ -92,6 +92,8 @@ const Main = (props) => {
   };
 
   const sendDraftOrderToDb = async (draftOrderObj) => {
+    let chain;
+
     try {
       setOpenShareModal(false);
       setOpenCreateDraftOrderModal(false);
@@ -107,10 +109,11 @@ const Main = (props) => {
       };
 
       console.log("!!!!Access", accessControlConditions);
-      const chain = accessControlConditions[0].chain;
-      // if (!chain) {
-      //   chain = accessControlConditions[0][0].chain;
-      // }
+      if (!!accessControlConditions && accessControlConditions[0]["chain"]) {
+        chain = accessControlConditions[0].chain;
+      } else if (!!accessControlConditions[0][0]["chain"]) {
+        chain = accessControlConditions[0][0].chain;
+      }
       console.log("Chain", chain);
 
       litNodeClient.saveSigningCondition({
