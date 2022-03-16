@@ -106,10 +106,11 @@ const Main = (props) => {
         extraData: "",
       };
 
+      console.log("!!!!Access", accessControlConditions);
       const chain = accessControlConditions[0].chain;
-      if (!chain) {
-        chain = accessControlConditions[0][0].chain;
-      }
+      // if (!chain) {
+      //   chain = accessControlConditions[0][0].chain;
+      // }
       console.log("Chain", chain);
 
       litNodeClient.saveSigningCondition({
