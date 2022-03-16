@@ -692,6 +692,10 @@ video {
   background-color: #000000a6;
 }
 
+.lms-bg-light-modal-overlay {
+  background-color: #0000004d;
+}
+
 .lms-bg-initial-blue {
   background-color: #0094ff38;
 }
