@@ -297,6 +297,18 @@ video {
   position: absolute;
 }
 
+.lms-block {
+  display: block;
+}
+
+.lms-hidden {
+  display: none;
+}
+
+.lms-relative {
+  position: relative;
+}
+
 .lms-bottom-0 {
   bottom: 0px;
 }
@@ -939,6 +951,11 @@ button {
 
 .hover\:lms-border-2:hover {
   border-width: 2px;
+}
+
+.hover\:lms-bg-gray:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(212 212 212 / var(--tw-bg-opacity));
 }
 
 .disabled\:lms-bg-gray:disabled {
