@@ -31,7 +31,6 @@ Shopify.Context.initialize({
 let ACTIVE_SHOPIFY_SHOPS = {};
 
 app.prepare().then(async () => {
-  console.log("CHECK ON APP");
   const server = new Koa();
   const router = new Router();
   server.keys = [Shopify.Context.API_SECRET_KEY];
@@ -42,6 +41,10 @@ app.prepare().then(async () => {
         const { shop, accessToken } = ctx.state.shopify;
         const host = ctx.query.host;
         ACTIVE_SHOPIFY_SHOPS[shop] = true;
+        ctx.set(
+          "Content-Security-Policy",
+          `frame-ancestors https://${shop} https://admin.shopify.com`
+        );
 
         // Your app should handle the APP_UNINSTALLED webhook to make sure merchants go through OAuth if they reinstall it
         const response = await Shopify.Webhooks.Registry.register({
@@ -58,8 +61,6 @@ app.prepare().then(async () => {
             `Failed to register APP_UNINSTALLED webhook: ${response.result}`
           );
         }
-        console.log("---> Context", ctx.state.shopify);
-        console.log("---> State", ctx.state);
 
         const email =
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
@@ -107,6 +108,11 @@ app.prepare().then(async () => {
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
   router.get("/", async (ctx) => {
     const shop = ctx.query.shop;
+    ctx.set(
+      "Content-Security-Policy",
+      `frame-ancestors https://${shop} https://admin.shopify.com`
+    );
+    console.log("cts.", ctx.response.has("Content-Security-Policy"));
 
     // If this shop hasn't been seen yet, go through OAuth to create a session
     if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
