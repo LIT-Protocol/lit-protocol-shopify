@@ -15,9 +15,8 @@ import {
   getAllUserDraftOrders,
   deleteDraftOrder,
 } from "../../../server/apiCalls";
-import { ShareModal } from "lit-modal-vite";
+import { ShareModal } from "lit-share-modal";
 import Instructions from "./Instructions";
-// import 'lit-modal-vite/dist/style.css';
 
 const spoofAuthSig = {
   sig:
