@@ -240,9 +240,9 @@ const Main = (props) => {
         />
         {openShareModal && (
           <ShareModal
-            showStep="ableToAccess"
             className={"share-modal"}
             showModal={openShareModal}
+            injectCSS={false}
             onClose={() => {
               setOpenShareModal(false);
               setPermanent(true);
