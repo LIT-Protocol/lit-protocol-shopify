@@ -16,7 +16,7 @@ import {
 // import styles from "../createDraftOrderModal/create-draft-order-modal.module.scss";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import ProductTable from "./ProductTable";
-import { checkIfProductHasBeenUsed } from "../../apiCalls.js";
+import { checkIfProductHasBeenUsed } from "../../../helpers/apiCalls.js";
 
 const CreateDraftOrderModal = (props) => {
   const [showProductSelect, setShowProductSelect] = useState(false);
