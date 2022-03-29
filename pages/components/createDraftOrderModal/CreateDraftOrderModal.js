@@ -196,14 +196,12 @@ const CreateDraftOrderModal = (props) => {
                     )}
                   </div>
                   <Stack alignment={"center"}>
-                    <Stack.Item fill>
-                      <TextField
-                        label={"Title"}
-                        value={draftOrderTitle}
-                        onChange={setDraftOrderTitle}
-                        autoComplete={"off"}
-                      />
-                    </Stack.Item>
+                    <TextField
+                      label={"Title"}
+                      value={draftOrderTitle}
+                      onChange={setDraftOrderTitle}
+                      autoComplete={"off"}
+                    />
                     {!props.hideInstructions && (
                       <TextStyle>
                         <List>

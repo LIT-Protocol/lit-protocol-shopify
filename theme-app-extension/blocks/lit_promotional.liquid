@@ -1,7 +1,7 @@
 <div>
   {% for tag in product.tags %}
     {% if tag == "lit-discount" %}
-      <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}, borderRadius: {{block.settings.border_radius}}px" onclick="forwardToLitPromotion()">
+      <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
         <div class="discount-container" style="background: {{block.settings.background_color}}">
           <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.discount_text}}</p>
           <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
