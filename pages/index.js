@@ -30,8 +30,11 @@ export default function Index() {
         name: data.shop.myshopifyDomain,
         shopId: shopIdNumber,
       };
-      console.log("---> formattedShopData", formattedShopData);
       setShopInfo(formattedShopData);
+
+      axios.defaults.headers.common[
+        "Content-Security-Policy"
+      ] = `frame-ancestors https://${data.shop.myshopifyDomain} https://admin.shopify.com`;
     }
   }, [data]);
 
