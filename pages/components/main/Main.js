@@ -17,7 +17,7 @@ import {
   getAllUserDraftOrders,
   deleteDraftOrder,
 } from "../../../helpers/apiCalls.js";
-import { ShareModal } from "lit-share-modal";
+import ShareModal from "lit-share-modal";
 import Instructions from "./Instructions";
 
 const spoofAuthSig = {
