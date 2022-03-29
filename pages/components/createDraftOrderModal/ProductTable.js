@@ -1,7 +1,5 @@
 import { DataTable, Button } from "@shopify/polaris";
 import React, { useState, useEffect } from "react";
-import { useQuery } from "react-apollo";
-import { GET_PRODUCT_DATA } from "../../../server/handlers/queries/get-product-data";
 
 const ProductTable = ({ id, draftOrderProduct, setDraftOrderProduct }) => {
   const [dataTableEntries, setDataTableEntries] = useState(null);

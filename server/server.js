@@ -1,7 +1,7 @@
 import "@babel/polyfill";
 import dotenv from "dotenv";
 import "isomorphic-fetch";
-import shopifyAuth, { verifyRequest } from "@shopify/koa-shopify-auth";
+import createShopifyAuth, { verifyRequest } from "@shopify/koa-shopify-auth";
 import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import Koa from "koa";
 import next from "next";
@@ -28,39 +28,44 @@ Shopify.Context.initialize({
 
 // Storing the currently active shops in memory will force them to re-login when your server restarts. You should
 // persist this object in your app.
-let ACTIVE_SHOPIFY_SHOPS = {};
+const ACTIVE_SHOPIFY_SHOPS = {};
+
+Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
+  path: "/webhooks",
+  webhookHandler: async (topic, shop, body) =>
+    delete ACTIVE_SHOPIFY_SHOPS[shop],
+});
 
 app.prepare().then(async () => {
   const server = new Koa();
   const router = new Router();
   server.keys = [Shopify.Context.API_SECRET_KEY];
   server.use(
-    shopifyAuth({
-      myShopifyDomain: "herokuapp.com",
+    createShopifyAuth({
       async afterAuth(ctx) {
-        const { shop, accessToken } = ctx.state.shopify;
+        // Access token and shop available in ctx.state.shopify
+        const { shop, accessToken, scope } = ctx.state.shopify;
         const host = ctx.query.host;
-        ACTIVE_SHOPIFY_SHOPS[shop] = true;
+        ACTIVE_SHOPIFY_SHOPS[shop] = scope;
         ctx.set(
           "Content-Security-Policy",
           `frame-ancestors https://${shop} https://admin.shopify.com`
         );
 
-        // Your app should handle the APP_UNINSTALLED webhook to make sure merchants go through OAuth if they reinstall it
-        const response = await Shopify.Webhooks.Registry.register({
+        const responses = await Shopify.Webhooks.Registry.register({
           shop,
           accessToken,
           path: "/webhooks",
           topic: "APP_UNINSTALLED",
-          webhookHandler: async (topic, shop, body) =>
-            delete ACTIVE_SHOPIFY_SHOPS[shop],
         });
 
-        if (!response.success) {
+        if (!responses["APP_UNINSTALLED"].success) {
           console.log(
-            `Failed to register APP_UNINSTALLED webhook: ${response.result}`
+            `Failed to register APP_UNINSTALLED webhook: ${responses.result}`
           );
         }
+
+        console.log("check access Token", accessToken);
 
         const email =
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
@@ -74,9 +79,10 @@ app.prepare().then(async () => {
           }
         );
         const parsedAccessTokenResponse = await saveAccessTokenResponse.json();
+        console.log("check before auth");
+
         // Redirect to app with shop parameter upon auth
-        const redirectAddress = `https://${shop}/admin/apps/lit_token_access_public`;
-        ctx.redirect(redirectAddress);
+        ctx.redirect(`/?shop=${shop}&host=${host}`);
       },
     })
   );
@@ -106,23 +112,13 @@ app.prepare().then(async () => {
 
   router.get("(/_next/static/.*)", handleRequest); // Static content is clear
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
-  router.get("/", async (ctx) => {
+  router.get("(.*)", async (ctx) => {
     const shop = ctx.query.shop;
-    ctx.set(
-      "Content-Security-Policy",
-      `frame-ancestors https://${shop} https://admin.shopify.com`
-    );
-    console.log("cts.", ctx.response.has("Content-Security-Policy"));
 
-    // If this shop hasn't been seen yet, go through OAuth to create a session
+    // This shop hasn't been seen yet, go through OAuth to create a session
     if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
-      // shop has not been seen yet
-      console.log("fresh install");
       ctx.redirect(`/auth?shop=${shop}`);
     } else {
-      console.log("shop has been seen");
-      // shop has been seen
-      // Load app skeleton. Don't include sensitive information here!
       await handleRequest(ctx);
     }
   });

@@ -6,15 +6,17 @@ import {
   SettingToggle,
   TextContainer,
   Heading,
+  Card,
+  Layout,
 } from "@shopify/polaris";
 import CreateDraftOrderModal from "../createDraftOrderModal/CreateDraftOrderModal";
-import styles from "./main.module.scss";
+// import styles from "./main.module.scss";
 import DraftOrderTable from "../draftOrderTable/DraftOrderTable";
 import {
   saveDraftOrder,
   getAllUserDraftOrders,
   deleteDraftOrder,
-} from "../../../server/apiCalls";
+} from "../../apiCalls.js";
 import { ShareModal } from "lit-share-modal";
 import Instructions from "./Instructions";
 
@@ -45,13 +47,15 @@ const Main = (props) => {
     setHumanizedAccessControlConditions,
   ] = useState(null);
 
-  document.addEventListener(
-    "lit-ready",
-    function (e) {
-      console.log("Lit client ready");
-    },
-    false
-  );
+  // console.log('document', document)
+
+  // document.addEventListener(
+  //   "lit-ready",
+  //   function (e) {
+  //     console.log("Lit client ready");
+  //   },
+  //   false
+  // );
 
   useEffect(() => {
     if (!!props.shopInfo.shopId) {
@@ -147,6 +151,7 @@ const Main = (props) => {
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
+      console.log("check all draft orders", allDraftOrders);
       setDraftOrders(allDraftOrders.data);
       setLoading(false);
     } catch (err) {
@@ -156,70 +161,79 @@ const Main = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: "5rem" }}>
       {loading || !connectedToLit || draftOrders === null ? (
-        <span className={styles.centerSpinner}>
-          Loading...
-          <Spinner size="large" />
-        </span>
+        <Layout>
+          <Layout.Section>
+            <TextContainer>
+              <Heading>Loading...</Heading>
+              <Spinner size="large" />
+            </TextContainer>
+          </Layout.Section>
+        </Layout>
       ) : (
-        <div>
+        <Layout>
           {draftOrders.length > 0 && (
-            <span>
-              <DraftOrderTable
-                draftOrders={draftOrders}
-                handleDeleteDraftOrder={handleDeleteDraftOrder}
-              />
-            </span>
+            <Layout.Section>
+              <Card>
+                <DraftOrderTable
+                  draftOrders={draftOrders}
+                  handleDeleteDraftOrder={handleDeleteDraftOrder}
+                />
+              </Card>
+            </Layout.Section>
           )}
           {draftOrders.length < 5 && (
-            <div className={styles.createDraftOrderContainer}>
-              <Button
-                className={styles.createDraftOrderButton}
-                onClick={() => setOpenCreateDraftOrderModal(true)}
-              >
+            <Layout.Section>
+              <Button onClick={() => setOpenCreateDraftOrderModal(true)}>
                 Create Token Access
               </Button>
-            </div>
+            </Layout.Section>
           )}
-          <div className={styles.infoBox}>
-            <SettingToggle
-              action={{
-                content: hideInstructions
-                  ? "Show Instructions"
-                  : "Hide Instructions",
-                onAction: () => setHideInstructions(!hideInstructions),
-              }}
-              enabled={!hideInstructions}
-            >
-              <TextContainer className={styles.instructionToggle}>
-                <Heading>Thank you for using Lit Token Access!</Heading>
-                <p>
-                  Click the button on the right to show or hide additional
-                  instructions. Instructions are currently{" "}
-                  <strong>{!hideInstructions ? "shown" : "hidden"}</strong>.
-                </p>
-                <p>
-                  <a
-                    style={{ color: "#5E36B7" }}
-                    className={styles.documentationLink}
-                    href={
-                      "https://lit-services-docs.netlify.app/docs/shopify-docs/intro"
-                    }
-                    target={"_blank"}
-                  >
-                    <strong>Additional documentation can be found here</strong>.
-                  </a>
-                </p>
-              </TextContainer>
-            </SettingToggle>
+          <Layout.Section>
+            <Card>
+              <SettingToggle
+                action={{
+                  content: hideInstructions
+                    ? "Show Instructions"
+                    : "Hide Instructions",
+                  onAction: () => setHideInstructions(!hideInstructions),
+                }}
+                enabled={!hideInstructions}
+              >
+                <TextContainer>
+                  <Heading>Thank you for using Lit Token Access!</Heading>
+                  <p>
+                    Click the button on the right to show or hide additional
+                    instructions. Instructions are currently{" "}
+                    <strong>{!hideInstructions ? "shown" : "hidden"}</strong>.
+                  </p>
+                  <p>
+                    <a
+                      style={{ color: "#5E36B7" }}
+                      href={
+                        "https://lit-services-docs.netlify.app/docs/shopify-docs/intro"
+                      }
+                      target={"_blank"}
+                    >
+                      <strong>
+                        Additional documentation can be found here
+                      </strong>
+                      .
+                    </a>
+                  </p>
+                </TextContainer>
+              </SettingToggle>
+            </Card>
+          </Layout.Section>
+          <Layout.Section>
             {!hideInstructions && (
               <Instructions
                 setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
               />
             )}
-          </div>
-        </div>
+          </Layout.Section>
+        </Layout>
       )}
       <div>
         <CreateDraftOrderModal

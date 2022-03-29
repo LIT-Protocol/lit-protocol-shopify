@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Heading, Page } from "@shopify/polaris";
-import dynamic from "next/dynamic";
-import { GET_SHOP_DATA } from "../server/handlers/queries/get-shop-data";
+import Main from "./components/main/Main";
 import { useQuery } from "react-apollo";
+import { GET_SHOP_DATA } from "../server/handlers/queries/get-shop-data";
 import { getSessionToken } from "@shopify/app-bridge-utils";
-import axios from "axios";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import axios from "axios";
 
-const NoSSRMain = dynamic(() => import("./components/main/Main"), {
-  ssr: false,
-});
-const Index = () => {
+export default function Index() {
   const [shopInfo, setShopInfo] = useState({});
   const { error, loading, data } = useQuery(GET_SHOP_DATA);
-  const [sessionToken, setSessionToken] = useState("");
 
   const app = useAppBridge();
 
@@ -41,9 +37,8 @@ const Index = () => {
 
   return (
     <Page fullWidth>
-      <NoSSRMain shopInfo={shopInfo} />
+      <Heading></Heading>
+      <Main shopInfo={shopInfo} />
     </Page>
   );
-};
-
-export default Index;
+}

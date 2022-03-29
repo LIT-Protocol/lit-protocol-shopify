@@ -52,15 +52,14 @@ function MyProvider(props) {
 
 class MyApp extends App {
   render() {
-    const { Component, pageProps } = this.props;
-    const { host, shop } = this.props.router.query;
-    let encodedHost = btoa(shop);
+    const { Component, pageProps, host } = this.props;
     return (
       <AppProvider i18n={translations}>
         <Provider
           config={{
             apiKey: API_KEY,
-            host: encodedHost,
+            host: host,
+            forceRedirect: true,
           }}
         >
           <MyProvider Component={Component} {...pageProps} />

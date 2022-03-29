@@ -10,12 +10,13 @@ import {
   Button,
   Heading,
   TextStyle,
+  Layout,
   List,
 } from "@shopify/polaris";
-import styles from "../createDraftOrderModal/create-draft-order-modal.module.scss";
+// import styles from "../createDraftOrderModal/create-draft-order-modal.module.scss";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import ProductTable from "./ProductTable";
-import { checkIfProductHasBeenUsed } from "../../../server/apiCalls";
+import { checkIfProductHasBeenUsed } from "../../apiCalls.js";
 
 const CreateDraftOrderModal = (props) => {
   const [showProductSelect, setShowProductSelect] = useState(false);
@@ -128,7 +129,6 @@ const CreateDraftOrderModal = (props) => {
     <div>
       <Modal
         large
-        className={styles.createDraftOrderForm}
         open={props.open}
         title={"Create New Token Access"}
         onClose={() => {
@@ -149,22 +149,27 @@ const CreateDraftOrderModal = (props) => {
           },
         }}
       >
-        <Modal.Section className={styles.modalFormContainer}>
+        <Modal.Section>
           <Form>
             <FormLayout>
-              <div className={styles.selectionCard}>
+              <div>
                 <TextContainer>
                   {!!errorText && (
-                    <div>
-                      <div className={styles.errorText}>
-                        This product has already been used in entry entitled:{" "}
-                        <strong>{errorText}</strong>
-                      </div>
-                      <div className={styles.errorText}>
-                        Using a single product in multiple discounts/exclusives
-                        in not currently supported, but will be soon.
-                      </div>
-                    </div>
+                    <Layout>
+                      <Layout.Section>
+                        <TextStyle variation="negative">
+                          This product has already been used in entry entitled:{" "}
+                          <strong>{errorText}</strong>
+                        </TextStyle>
+                      </Layout.Section>
+                      <Layout.Section>
+                        <TextStyle variation="negative">
+                          Using a single product in multiple
+                          discounts/exclusives in not currently supported, but
+                          will be soon.
+                        </TextStyle>
+                      </Layout.Section>
+                    </Layout>
                   )}
                   <div>
                     {!!draftOrderProduct && draftOrderProduct["id"] ? (

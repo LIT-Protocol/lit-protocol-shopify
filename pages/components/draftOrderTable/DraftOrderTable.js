@@ -7,7 +7,7 @@ import {
   Modal,
   TextContainer,
 } from "@shopify/polaris";
-import styles from "./draft-order-table.module.scss";
+// import styles from "./draft-order-table.module.scss";
 
 const DraftOrderTable = (props) => {
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
@@ -15,6 +15,7 @@ const DraftOrderTable = (props) => {
   const [draftOrders, setDraftOrders] = useState([]);
 
   useEffect(() => {
+    console.log("check props in draft order table", props);
     if (!!props.draftOrders) {
       const mappedDraftOrders = props.draftOrders.map((d) => {
         const mappedDraftOrder = d;
@@ -50,12 +51,7 @@ const DraftOrderTable = (props) => {
         >
           {draftOrders &&
             draftOrders.map((draftOrder, index) => (
-              <IndexTable.Row
-                id={index}
-                key={index}
-                position={index}
-                className={styles.fadeIn}
-              >
+              <IndexTable.Row id={index} key={index} position={index}>
                 <IndexTable.Cell>
                   <TextStyle variation="strong">{draftOrder.title}</TextStyle>
                 </IndexTable.Cell>
@@ -91,33 +87,33 @@ const DraftOrderTable = (props) => {
       {openDeleteConfirmation && (
         // <div style={{ height: "500px" }}>
         // <div>
-          <Modal
-            open={openDeleteConfirmation}
-            title="Are you sure you want to delete this draft order?"
-            onClose={() => setOpenDeleteConfirmation(false)}
-            primaryAction={{
-              content: "Yes, delete",
-              onAction: () => {
-                props.handleDeleteDraftOrder(currentEditedDraftOrder);
-                setOpenDeleteConfirmation(false);
-              },
-            }}
-            secondaryActions={[
-              {
-                content: "No, do not delete",
-                onAction: () => setOpenDeleteConfirmation(false),
-              },
-            ]}
-          >
-            <Modal.Section>
-              <TextContainer>
-                <p>
-                  You are about to delete the promotion{" "}
-                  <strong>{currentEditedDraftOrder.title}.</strong>
-                </p>
-              </TextContainer>
-            </Modal.Section>
-          </Modal>
+        <Modal
+          open={openDeleteConfirmation}
+          title="Are you sure you want to delete this draft order?"
+          onClose={() => setOpenDeleteConfirmation(false)}
+          primaryAction={{
+            content: "Yes, delete",
+            onAction: () => {
+              props.handleDeleteDraftOrder(currentEditedDraftOrder);
+              setOpenDeleteConfirmation(false);
+            },
+          }}
+          secondaryActions={[
+            {
+              content: "No, do not delete",
+              onAction: () => setOpenDeleteConfirmation(false),
+            },
+          ]}
+        >
+          <Modal.Section>
+            <TextContainer>
+              <p>
+                You are about to delete the promotion{" "}
+                <strong>{currentEditedDraftOrder.title}.</strong>
+              </p>
+            </TextContainer>
+          </Modal.Section>
+        </Modal>
         // </div>
       )}
     </div>

@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, TextContainer, Button, TextStyle, List } from "@shopify/polaris";
-import styles from "./instructions.module.scss";
+// import styles from "./instructions.module.scss";
 
 const Instructions = (props) => {
   return (
-    <Card title="Hello!" sectioned className={styles.instructionsContainer}>
+    <Card title="Hello!" sectioned>
       <TextContainer style={{ paddingTop: "0 !important" }}>
         <p>
           <strong>
@@ -25,12 +25,9 @@ const Instructions = (props) => {
         </p>
         <p>
           To get started creating a discount or exclusive access, click the{" "}
-          <span className={"styles.exampleButton"}>
+          <span>
             {" "}
-            <Button
-              className={styles.createDraftOrderButton}
-              onClick={() => props.setOpenCreateDraftOrderModal(true)}
-            >
+            <Button onClick={() => props.setOpenCreateDraftOrderModal(true)}>
               Create Token Access
             </Button>
           </span>{" "}
