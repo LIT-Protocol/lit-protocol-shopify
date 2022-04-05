@@ -49,12 +49,7 @@ app.prepare().then(async () => {
         const { shop, accessToken, scope } = ctx.state.shopify;
         const host = ctx.query.host;
         shopInfo = shop;
-        console.log("------> Assign shop info", shopInfo);
         ACTIVE_SHOPIFY_SHOPS[shop] = scope;
-        ctx.set(
-          "Content-Security-Policy",
-          `frame-ancestors https://${shop} https://admin.shopify.com`
-        );
 
         const responses = await Shopify.Webhooks.Registry.register({
           shop,
@@ -81,6 +76,10 @@ app.prepare().then(async () => {
           }
         );
         const parsedAccessTokenResponse = await saveAccessTokenResponse.json();
+        ctx.set(
+          "Content-Security-Policy",
+          `frame-ancestors https://${shop} https://admin.shopify.com`
+        );
 
         // Redirect to app with shop parameter upon auth
         ctx.redirect(`/?shop=${shop}&host=${host}`);
@@ -90,7 +89,7 @@ app.prepare().then(async () => {
 
   const handleRequest = async (ctx) => {
     await handle(ctx.req, ctx.res);
-    ctx.set(
+    ctx.append(
       "Content-Security-Policy",
       `frame-ancestors https://${shopInfo} https://admin.shopify.com`
     );
@@ -119,7 +118,7 @@ app.prepare().then(async () => {
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
   router.get("(.*)", async (ctx) => {
     const shop = ctx.query.shop;
-    ctx.set(
+    ctx.append(
       "Content-Security-Policy",
       `frame-ancestors https://${shop} https://admin.shopify.com`
     );
