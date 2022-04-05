@@ -36,6 +36,8 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
     delete ACTIVE_SHOPIFY_SHOPS[shop],
 });
 
+let shopInfo = "";
+
 app.prepare().then(async () => {
   const server = new Koa();
   const router = new Router();
@@ -46,6 +48,8 @@ app.prepare().then(async () => {
         // Access token and shop available in ctx.state.shopify
         const { shop, accessToken, scope } = ctx.state.shopify;
         const host = ctx.query.host;
+        shopInfo = shop;
+        console.log("------> Assign shop info", shopInfo);
         ACTIVE_SHOPIFY_SHOPS[shop] = scope;
         ctx.set(
           "Content-Security-Policy",
@@ -65,8 +69,6 @@ app.prepare().then(async () => {
           );
         }
 
-        console.log("check access Token", accessToken);
-
         const email =
           ctx.state.shopify?.onlineAccessInfo?.associated_user?.email;
 
@@ -79,7 +81,6 @@ app.prepare().then(async () => {
           }
         );
         const parsedAccessTokenResponse = await saveAccessTokenResponse.json();
-        console.log("check before auth");
 
         // Redirect to app with shop parameter upon auth
         ctx.redirect(`/?shop=${shop}&host=${host}`);
@@ -89,6 +90,10 @@ app.prepare().then(async () => {
 
   const handleRequest = async (ctx) => {
     await handle(ctx.req, ctx.res);
+    ctx.set(
+      "Content-Security-Policy",
+      `frame-ancestors https://${shopInfo} https://admin.shopify.com`
+    );
     ctx.respond = false;
     ctx.res.statusCode = 200;
   };
@@ -114,6 +119,10 @@ app.prepare().then(async () => {
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
   router.get("(.*)", async (ctx) => {
     const shop = ctx.query.shop;
+    ctx.set(
+      "Content-Security-Policy",
+      `frame-ancestors https://${shop} https://admin.shopify.com`
+    );
 
     // This shop hasn't been seen yet, go through OAuth to create a session
     if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
