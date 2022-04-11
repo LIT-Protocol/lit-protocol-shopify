@@ -87,7 +87,6 @@ const Main = (props) => {
   };
 
   const addAccessControlConditions = async (acc) => {
-    console.log("check setting acc", acc);
     const humanizedAcc = await humanizeAccessControlConditions(acc);
     setAccessControlConditions(acc);
     setHumanizedAccessControlConditions(humanizedAcc);
@@ -110,7 +109,6 @@ const Main = (props) => {
         extraData: "",
       };
 
-      console.log("!!!!Access", accessControlConditions);
       if (!!accessControlConditions && accessControlConditions[0]["chain"]) {
         chain = accessControlConditions[0].chain;
       } else if (!!accessControlConditions[0][0]["chain"]) {
@@ -122,8 +120,6 @@ const Main = (props) => {
         authSig: spoofAuthSig,
         resourceId,
       };
-
-      console.log("------> saveDraftOrder", signedTokenObj);
 
       litNodeClient.saveSigningCondition({
         accessControlConditions: accessControlConditions,
@@ -157,7 +153,6 @@ const Main = (props) => {
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
-      console.log("check all draft orders", allDraftOrders);
       setDraftOrders(allDraftOrders.data);
       setLoading(false);
     } catch (err) {
@@ -286,7 +281,6 @@ const Main = (props) => {
               setOpenCreateDraftOrderModal(true);
             }}
             onAccessControlConditionsSelected={async (restriction) => {
-              console.log("----> on add acc", restriction);
               await addAccessControlConditions(
                 restriction.accessControlConditions
               );

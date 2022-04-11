@@ -15,7 +15,6 @@ const DraftOrderTable = (props) => {
   const [draftOrders, setDraftOrders] = useState([]);
 
   useEffect(() => {
-    console.log("check props in draft order table", props);
     if (!!props.draftOrders) {
       const mappedDraftOrders = props.draftOrders.map((d) => {
         const mappedDraftOrder = d;
@@ -24,7 +23,6 @@ const DraftOrderTable = (props) => {
         );
         return mappedDraftOrder;
       });
-      console.log("---> MAPPED DRAFT ORDERS", mappedDraftOrders);
       setDraftOrders(mappedDraftOrders);
     }
   }, [props.draftOrders]);

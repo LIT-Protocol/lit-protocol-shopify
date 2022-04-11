@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const saveDraftOrder = async (draftOrder) => {
-  console.log("call saveDraftOrder", draftOrder);
   const resp = await axios.post(
     // `http://localhost:4000/api/shopify/saveDraftOrder`,
     // `https://oauth-app-dev.litgateway.com/api/shopify/saveDraftOrder`,
@@ -26,7 +25,6 @@ export const checkIfProductHasBeenUsed = async (gid) => {
 };
 
 export const getAllUserDraftOrders = async (shopId) => {
-  console.log("Get all draft orders call");
   return await axios.post(
     // `http://localhost:4000/api/shopify/getAllDraftOrders`,
     // `https://oauth-app-dev.litgateway.com/api/shopify/getAllDraftOrders`,

@@ -36,7 +36,6 @@ const CreateDraftOrderModal = (props) => {
   ];
 
   const exportDraftOrder = () => {
-    console.log("---> ACC", props.accessControlConditions);
     const draftOrderDetails = {
       id: draftOrderProduct.id,
       quantity: 1,
@@ -72,8 +71,6 @@ const CreateDraftOrderModal = (props) => {
     } else {
       draftOrderObj.summary = `${draftOrderDiscount}% off ${draftOrderProduct.title}`;
     }
-
-    console.log("---> DRAFT ORDER OBJECT", draftOrderObj);
 
     clearDraftOrder();
 
