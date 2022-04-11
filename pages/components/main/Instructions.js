@@ -7,23 +7,6 @@ const Instructions = (props) => {
     <Card title="Hello!" sectioned>
       <TextContainer style={{ paddingTop: "0 !important" }}>
         <p>
-          <strong>
-            For first time users - In order to function properly, the Lit Token
-            Access app block must be added to your Shopify store's product
-            template.{" "}
-          </strong>
-          <a
-            href={
-              "https://lit-services-docs.netlify.app/docs/shopify-docs/add-lit-block-to-store"
-            }
-            target="_blank"
-          >
-            <strong style={{ color: "#5E36B7" }}>
-              Instructions can be found here.
-            </strong>
-          </a>
-        </p>
-        <p>
           To get started creating a discount or exclusive access, click the{" "}
           <span>
             {" "}

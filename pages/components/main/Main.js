@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useInsertionEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LitJsSdk from "lit-js-sdk";
 import {
   Spinner,
@@ -10,7 +10,6 @@ import {
   Layout,
 } from "@shopify/polaris";
 import CreateDraftOrderModal from "../createDraftOrderModal/CreateDraftOrderModal";
-// import styles from "./main.module.scss";
 import DraftOrderTable from "../draftOrderTable/DraftOrderTable";
 import {
   saveDraftOrder,
@@ -103,7 +102,7 @@ const Main = (props) => {
 
       const resp = await saveDraftOrder(draftOrderObj);
       const resourceId = {
-        // baseUrl: "https://oauth-app-dev.litgateway.com",
+        // baseUrl: process.env.REACT_APP_LIT_PROTOCOL_OAUTH_API_HOST,
         baseUrl: "https://oauth-app.litgateway.com",
         path: "/shopify/l/" + resp.data,
         orgId: "",
@@ -117,7 +116,14 @@ const Main = (props) => {
       } else if (!!accessControlConditions[0][0]["chain"]) {
         chain = accessControlConditions[0][0].chain;
       }
-      console.log("Chain", chain);
+      const signedTokenObj = {
+        accessControlConditions: accessControlConditions,
+        chain,
+        authSig: spoofAuthSig,
+        resourceId,
+      };
+
+      console.log("------> saveDraftOrder", signedTokenObj);
 
       litNodeClient.saveSigningCondition({
         accessControlConditions: accessControlConditions,
@@ -220,6 +226,23 @@ const Main = (props) => {
                         Additional documentation can be found here
                       </strong>
                       .
+                    </a>
+                  </p>
+                  <p>
+                    <strong>
+                      For first time users - In order to function properly, the
+                      Lit Token Access app block must be added to your Shopify
+                      store's product template.{" "}
+                    </strong>
+                    <a
+                      href={
+                        "https://lit-services-docs.netlify.app/docs/shopify-docs/add-lit-block-to-store"
+                      }
+                      target="_blank"
+                    >
+                      <strong style={{ color: "#5E36B7" }}>
+                        Instructions can be found here.
+                      </strong>
                     </a>
                   </p>
                 </TextContainer>
