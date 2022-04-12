@@ -184,13 +184,11 @@ const Main = (props) => {
               </Card>
             </Layout.Section>
           )}
-          {draftOrders.length < 5 && (
-            <Layout.Section>
-              <Button onClick={() => setOpenCreateDraftOrderModal(true)}>
-                Create Token Access
-              </Button>
-            </Layout.Section>
-          )}
+          <Layout.Section>
+            <Button onClick={() => setOpenCreateDraftOrderModal(true)}>
+              Create Token Access
+            </Button>
+          </Layout.Section>
           <Layout.Section>
             <Card>
               <SettingToggle
