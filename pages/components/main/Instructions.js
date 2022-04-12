@@ -17,12 +17,26 @@ const Instructions = (props) => {
           button at the top of the page.
         </p>
         <h3>
-          <strong>There are a few things to be aware of:</strong>
+          <strong>
+            Lit Token Access is in early stages of development, and new features
+            will be added in the coming weeks and months. For now there are a
+            few things to be aware of:
+          </strong>
         </h3>
         <List type="bullet">
           <List.Item>
+            Exclusives and discounts are processed as draft orders. Records can
+            be found in the store's <strong>Orders</strong> page, accessible in
+            the left nav bar.
+          </List.Item>
+          <List.Item>
+            Lit Token Access currently <strong>does not</strong> check inventory
+            when redeeming a discount or exclusive. In the future this will be a
+            toggleable feature.
+          </List.Item>
+          <List.Item>
             Each set of access control conditions can only have one associated
-            product. In the future, this will be expanded to allow merchants to
+            product. Eventually this will be expanded to allow merchants to
             bundle multiple products.
           </List.Item>
           <List.Item>
