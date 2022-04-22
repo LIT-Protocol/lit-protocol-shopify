@@ -102,8 +102,8 @@ const Main = (props) => {
 
       const resp = await saveDraftOrder(draftOrderObj);
       const resourceId = {
-        baseUrl: "http://localhost:4000",
-        // baseUrl: "https://oauth-app-dev.litgateway.com",
+        // baseUrl: "http://localhost:4000",
+        baseUrl: "https://oauth-app-dev.litgateway.com",
         path: "/shopify/l/" + resp.data,
         orgId: "",
         role: "customer",
