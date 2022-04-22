@@ -244,16 +244,16 @@ const CreateDraftOrderModal = (props) => {
                       </Stack.Item>
                     )}
                     <Stack.Item fill></Stack.Item>
-                    <Stack.Item>
-                      <TextField
-                        type={"number"}
-                        label={"How many times can a user redeem the offer?"}
-                        helpText={"0 or leaving the box empty means no limit"}
-                        value={draftOrderRedeemLimit}
-                        onChange={setDraftOrderRedeemLimit}
-                        autoComplete={"off"}
-                      />
-                    </Stack.Item>
+                    {/*<Stack.Item>*/}
+                    {/*  <TextField*/}
+                    {/*    type={"number"}*/}
+                    {/*    label={"How many times can a user redeem the offer?"}*/}
+                    {/*    helpText={"0 or leaving the box empty means no limit"}*/}
+                    {/*    value={draftOrderRedeemLimit}*/}
+                    {/*    onChange={setDraftOrderRedeemLimit}*/}
+                    {/*    autoComplete={"off"}*/}
+                    {/*  />*/}
+                    {/*</Stack.Item>*/}
                     {!props.hideInstructions && (
                       <TextStyle>
                         <List style={{ color: "" }}>
