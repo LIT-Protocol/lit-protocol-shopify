@@ -35,52 +35,63 @@ const DraftOrderTable = (props) => {
   return (
     <div>
       <Card className={"draftOrders-table-container"}>
-        <IndexTable
-          selectable={false}
-          resourceName={resourceName}
-          itemCount={!props.draftOrders ? 0 : props.draftOrders.length}
-          headings={[
-            { title: "Title" },
-            { title: "Summary" },
-            { title: "Access Control Conditions" },
-            { title: "Chain" },
-            { title: "Actions" },
-          ]}
-        >
-          {draftOrders &&
-            draftOrders.map((draftOrder, index) => (
-              <IndexTable.Row id={index} key={index} position={index}>
-                <IndexTable.Cell>
-                  <TextStyle variation="strong">{draftOrder.title}</TextStyle>
-                </IndexTable.Cell>
-                {/*<IndexTable.Cell><strong>{draftOrder.summary[0]}%</strong>off of<strong>${draftOrder.summary[1]}</strong></IndexTable.Cell>*/}
-                <IndexTable.Cell>{draftOrder.summary}</IndexTable.Cell>
-                <IndexTable.Cell>
-                  <span>
-                    <strong>
-                      {!!draftOrder.accessControlConditions ? (
-                        <p>{draftOrder.humanizedAccessControlConditions}</p>
-                      ) : (
-                        <p>No access control conditions</p>
-                      )}
-                    </strong>
-                  </span>
-                </IndexTable.Cell>
-                <IndexTable.Cell>{draftOrder.extraData}</IndexTable.Cell>
-                <IndexTable.Cell>
-                  <Button
-                    outline
-                    onClick={() => {
-                      setCurrentEditedDraftOrder(draftOrder);
-                      setOpenDeleteConfirmation(true);
-                    }}
-                  >
-                    Delete Token Access
-                  </Button>
-                </IndexTable.Cell>
-              </IndexTable.Row>
-            ))}
-        </IndexTable>
+        <Card.Section>
+          <Button onClick={() => props.setOpenCreateDraftOrderModal(true)}>
+            Create Token Access
+          </Button>
+        </Card.Section>
+        {draftOrders.length > 0 && (
+          <Card.Section>
+            <IndexTable
+              selectable={false}
+              resourceName={resourceName}
+              itemCount={!props.draftOrders ? 0 : props.draftOrders.length}
+              headings={[
+                { title: "Title" },
+                { title: "Summary" },
+                { title: "Access Control Conditions" },
+                { title: "Chain" },
+                { title: "Actions" },
+              ]}
+            >
+              {draftOrders &&
+                draftOrders.map((draftOrder, index) => (
+                  <IndexTable.Row id={index} key={index} position={index}>
+                    <IndexTable.Cell>
+                      <TextStyle variation="strong">
+                        {draftOrder.title}
+                      </TextStyle>
+                    </IndexTable.Cell>
+                    {/*<IndexTable.Cell><strong>{draftOrder.summary[0]}%</strong>off of<strong>${draftOrder.summary[1]}</strong></IndexTable.Cell>*/}
+                    <IndexTable.Cell>{draftOrder.summary}</IndexTable.Cell>
+                    <IndexTable.Cell>
+                      <span>
+                        <strong>
+                          {!!draftOrder.accessControlConditions ? (
+                            <p>{draftOrder.humanizedAccessControlConditions}</p>
+                          ) : (
+                            <p>No access control conditions</p>
+                          )}
+                        </strong>
+                      </span>
+                    </IndexTable.Cell>
+                    <IndexTable.Cell>{draftOrder.extraData}</IndexTable.Cell>
+                    <IndexTable.Cell>
+                      <Button
+                        outline
+                        onClick={() => {
+                          setCurrentEditedDraftOrder(draftOrder);
+                          setOpenDeleteConfirmation(true);
+                        }}
+                      >
+                        Delete Token Access
+                      </Button>
+                    </IndexTable.Cell>
+                  </IndexTable.Row>
+                ))}
+            </IndexTable>
+          </Card.Section>
+        )}
       </Card>
       {openDeleteConfirmation && (
         // <div style={{ height: "500px" }}>

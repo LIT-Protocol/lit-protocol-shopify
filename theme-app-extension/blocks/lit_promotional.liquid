@@ -1,36 +1,38 @@
 <div>
-  {% for tag in product.tags %}
-    {% if tag == "lit-discount" %}
-      <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
-        <div class="discount-container" style="background: {{block.settings.background_color}}">
-          <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.discount_text}}</p>
-          <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
-            Click to connect wallet and view discount
-          </button>
+  {% if product.available == true %}
+    {% for tag in product.tags %}
+      {% if tag == "lit-discount" %}
+        <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
+          <div class="discount-container" style="background: {{block.settings.background_color}}">
+            <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.discount_text}}</p>
+            <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
+              Click to connect wallet and view discount
+            </button>
+          </div>
         </div>
-      </div>
       {% endif %}
       {% if tag == "lit-exclusive" %}
-      <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
-        <div class="discount-container" style="background: {{block.settings.background_color}}">
-          <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.exclusive_text}}</p>
-          <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
-            Click to connect wallet and check access
-          </button>
-        </div>
-        <script type="text/javascript">
-          const productFormButtons = document.getElementsByClassName("product-form__buttons");
-          setTimeout(() => {
-            if ("{{ tag }}" === 'lit-exclusive') {
-              for (let i = 0; i < productFormButtons.length; i++) {
-                productFormButtons[i].remove();
+        <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
+          <div class="discount-container" style="background: {{block.settings.background_color}}">
+            <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.exclusive_text}}</p>
+            <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
+              Click to connect wallet and check access
+            </button>
+          </div>
+          <script type="text/javascript">
+            const productFormButtons = document.getElementsByClassName("product-form__buttons");
+            setTimeout(() => {
+              if ("{{ tag }}" === 'lit-exclusive') {
+                for (let i = 0; i < productFormButtons.length; i++) {
+                  productFormButtons[i].remove();
+                }
               }
-            }
-          }, 0)
-        </script>
-      </div>
-    {% endif %}
-  {% endfor %}
+            }, 0)
+          </script>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 </div>
 
 {% schema %}

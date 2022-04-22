@@ -13,7 +13,6 @@ import {
   Layout,
   List,
 } from "@shopify/polaris";
-// import styles from "../createDraftOrderModal/create-draft-order-modal.module.scss";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import ProductTable from "./ProductTable";
 import { checkIfProductHasBeenUsed } from "../../../helpers/apiCalls.js";
@@ -23,6 +22,7 @@ const CreateDraftOrderModal = (props) => {
 
   const [draftOrderTitle, setDraftOrderTitle] = useState("");
   const [draftOrderDiscount, setDraftOrderDiscount] = useState("0");
+  const [draftOrderRedeemLimit, setDraftOrderRedeemLimit] = useState("0");
   const [draftOrderOriginalPrice, setDraftOrderOriginalPrice] = useState("10");
   const [draftOrderProduct, setDraftOrderProduct] = useState(null);
   const [draftOrderDescription, setDraftOrderDescription] = useState(null);
@@ -36,12 +36,17 @@ const CreateDraftOrderModal = (props) => {
   ];
 
   const exportDraftOrder = () => {
+    if (!draftOrderRedeemLimit || draftOrderRedeemLimit < 1) {
+      setDraftOrderRedeemLimit(null);
+    }
+
     const draftOrderDetails = {
       id: draftOrderProduct.id,
       quantity: 1,
       title: draftOrderTitle,
       description: draftOrderDescription,
       price: draftOrderOriginalPrice,
+      redeemLimit: draftOrderRedeemLimit,
       value: draftOrderDiscount,
       valueType: "PERCENTAGE",
     };
@@ -66,6 +71,8 @@ const CreateDraftOrderModal = (props) => {
       shop_name: props.shopInfo.name,
     };
 
+    console.log("check draftOrderObj", draftOrderObj);
+
     if (typeOfAccessControl === "exclusive") {
       draftOrderObj.summary = `Token gated ${draftOrderProduct.title}`;
     } else {
@@ -86,6 +93,7 @@ const CreateDraftOrderModal = (props) => {
     const productHasAlreadyBeenUsed = await checkIfProductHasBeenUsed(
       products.selection[0].id
     );
+    console.log("---> productHasAlreadyBeenUsed", productHasAlreadyBeenUsed);
     if (!!productHasAlreadyBeenUsed.data.length) {
       const product = productHasAlreadyBeenUsed.data[0];
       setErrorText(product.title);
@@ -193,38 +201,59 @@ const CreateDraftOrderModal = (props) => {
                     )}
                   </div>
                   <Stack alignment={"center"}>
-                    <TextField
-                      label={"Title"}
-                      value={draftOrderTitle}
-                      onChange={setDraftOrderTitle}
-                      autoComplete={"off"}
-                    />
-                    {!props.hideInstructions && (
-                      <TextStyle>
-                        <List>
-                          <List.Item>Enter a title for the discount.</List.Item>
-                        </List>
-                      </TextStyle>
-                    )}
-                  </Stack>
-                  <Stack alignment={"center"}>
-                    <Select
-                      label={"Type of Access"}
-                      options={typeOfAccessOptions}
-                      onChange={(e) => setTypeOfAccessControl(e)}
-                      value={typeOfAccessControl}
-                    />
-                    {typeOfAccessControl === "discount" && (
+                    <Stack.Item fill>
                       <TextField
-                        type={"number"}
-                        label={"Discount Amount"}
-                        suffix="% off"
-                        align={"right"}
-                        value={draftOrderDiscount}
-                        onChange={setDraftOrderDiscount}
+                        label={"Title"}
+                        value={draftOrderTitle}
+                        onChange={setDraftOrderTitle}
                         autoComplete={"off"}
                       />
+                    </Stack.Item>
+                    <Stack.Item>
+                      {!props.hideInstructions && (
+                        <TextStyle>
+                          <List>
+                            <List.Item>
+                              Enter a title for the discount.
+                            </List.Item>
+                          </List>
+                        </TextStyle>
+                      )}
+                    </Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item>
+                      <Select
+                        label={"Type of Access"}
+                        options={typeOfAccessOptions}
+                        onChange={(e) => setTypeOfAccessControl(e)}
+                        value={typeOfAccessControl}
+                      />
+                    </Stack.Item>
+                    {typeOfAccessControl === "discount" && (
+                      <Stack.Item>
+                        <TextField
+                          type={"number"}
+                          label={"Discount Amount"}
+                          suffix="% off"
+                          align={"right"}
+                          value={draftOrderDiscount}
+                          onChange={setDraftOrderDiscount}
+                          autoComplete={"off"}
+                        />
+                      </Stack.Item>
                     )}
+                    <Stack.Item fill></Stack.Item>
+                    <Stack.Item>
+                      <TextField
+                        type={"number"}
+                        label={"How many times can a user redeem the offer?"}
+                        helpText={"0 or leaving the box empty means no limit"}
+                        value={draftOrderRedeemLimit}
+                        onChange={setDraftOrderRedeemLimit}
+                        autoComplete={"off"}
+                      />
+                    </Stack.Item>
                     {!props.hideInstructions && (
                       <TextStyle>
                         <List style={{ color: "" }}>

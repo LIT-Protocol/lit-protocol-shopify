@@ -18,6 +18,9 @@ import {
 } from "../../../helpers/apiCalls.js";
 import ShareModal from "lit-share-modal";
 import Instructions from "./Instructions";
+// import dotenv from "dotenv";
+//
+// dotenv.config();
 
 const spoofAuthSig = {
   sig:
@@ -45,8 +48,6 @@ const Main = (props) => {
     humanizedAccessControlConditions,
     setHumanizedAccessControlConditions,
   ] = useState(null);
-
-  // console.log('document', document)
 
   // document.addEventListener(
   //   "lit-ready",
@@ -101,8 +102,8 @@ const Main = (props) => {
 
       const resp = await saveDraftOrder(draftOrderObj);
       const resourceId = {
-        // baseUrl: process.env.REACT_APP_LIT_PROTOCOL_OAUTH_API_HOST,
-        baseUrl: "https://oauth-app.litgateway.com",
+        baseUrl: "http://localhost:4000",
+        // baseUrl: "https://oauth-app-dev.litgateway.com",
         path: "/shopify/l/" + resp.data,
         orgId: "",
         role: "customer",
@@ -121,11 +122,10 @@ const Main = (props) => {
         resourceId,
       };
 
+      console.log("check signedTokenObj", signedTokenObj);
+
       litNodeClient.saveSigningCondition({
-        accessControlConditions: accessControlConditions,
-        chain,
-        authSig: spoofAuthSig,
-        resourceId,
+        ...signedTokenObj,
       });
 
       setAccessControlConditions(null);
@@ -153,6 +153,7 @@ const Main = (props) => {
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
+      console.log("allDraftOrders:", allDraftOrders);
       setDraftOrders(allDraftOrders.data);
       setLoading(false);
     } catch (err) {
@@ -174,21 +175,20 @@ const Main = (props) => {
         </Layout>
       ) : (
         <Layout>
-          {draftOrders.length > 0 && (
-            <Layout.Section>
-              <Card>
-                <DraftOrderTable
-                  draftOrders={draftOrders}
-                  handleDeleteDraftOrder={handleDeleteDraftOrder}
-                />
-              </Card>
-            </Layout.Section>
-          )}
           <Layout.Section>
-            <Button onClick={() => setOpenCreateDraftOrderModal(true)}>
-              Create Token Access
-            </Button>
+            <Card>
+              <DraftOrderTable
+                draftOrders={draftOrders}
+                handleDeleteDraftOrder={handleDeleteDraftOrder}
+                setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
+              />
+            </Card>
           </Layout.Section>
+          {/*<Layout.Section>*/}
+          {/*  <Button onClick={() => setOpenCreateDraftOrderModal(true)}>*/}
+          {/*    Create Token Access*/}
+          {/*  </Button>*/}
+          {/*</Layout.Section>*/}
           <Layout.Section>
             <Card>
               <SettingToggle
