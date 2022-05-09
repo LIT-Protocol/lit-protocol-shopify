@@ -102,8 +102,7 @@ const Main = (props) => {
 
       const resp = await saveDraftOrder(draftOrderObj);
       const resourceId = {
-        // baseUrl: "http://localhost:4000",
-        baseUrl: "https://oauth-app.litgateway.com",
+        baseUrl: `${process.env.NEXT_PUBLIC_LIT_PROTOCOL_OAUTH_API_HOST}`,
         path: "/shopify/l/" + resp.data,
         orgId: "",
         role: "customer",
@@ -153,7 +152,6 @@ const Main = (props) => {
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
-      console.log("allDraftOrders:", allDraftOrders);
       setDraftOrders(allDraftOrders.data);
       setLoading(false);
     } catch (err) {
@@ -222,6 +220,18 @@ const Main = (props) => {
                     </a>
                   </p>
                   <p>
+                    <strong>Lit Token Access</strong> is now in public beta! We
+                    will be rolling out new features over the coming weeks to
+                    make the app more robust and useful for merchants. Contact
+                    us with any questions, problems, suggestions, or let us know
+                    if you would like to receive email updates as features
+                    become available at{" "}
+                    <a href="mailto:shopifysupport@litprotocol.com.">
+                      shopifysupport@litprotocol.com
+                    </a>
+                    .
+                  </p>
+                  <p>
                     <strong>
                       For first time users - In order to function properly, the
                       Lit Token Access app block must be added to your Shopify
@@ -273,6 +283,7 @@ const Main = (props) => {
             className={"share-modal"}
             showModal={openShareModal}
             injectCSS={false}
+            darkTheme={true}
             onClose={() => {
               setOpenShareModal(false);
               setPermanent(true);

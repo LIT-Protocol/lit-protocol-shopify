@@ -10,9 +10,7 @@ const Instructions = (props) => {
           To get started creating a discount or exclusive access, click the{" "}
           <span>
             {" "}
-            <Button onClick={() => props.setOpenCreateDraftOrderModal(true)}>
-              Create Token Access
-            </Button>
+            <Button>Create Token Access</Button>
           </span>{" "}
           button at the top of the page.
         </p>

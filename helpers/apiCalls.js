@@ -2,9 +2,7 @@ import axios from "axios";
 
 export const saveDraftOrder = async (draftOrder) => {
   const resp = await axios.post(
-    // `http://localhost:4000/api/shopify/saveDraftOrder`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/saveDraftOrder`,
-    `https://oauth-app.litgateway.com/api/shopify/saveDraftOrder`,
+    `${process.env.NEXT_PUBLIC_LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveDraftOrder`,
     {
       ...draftOrder,
     }
@@ -15,9 +13,7 @@ export const saveDraftOrder = async (draftOrder) => {
 
 export const checkIfProductHasBeenUsed = async (gid) => {
   return await axios.post(
-    // `http://localhost:4000/api/shopify/checkIfProductHasBeenUsed`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/checkIfProductHasBeenUsed`,
-    `https://oauth-app.litgateway.com/api/shopify/checkIfProductHasBeenUsed`,
+    `${process.env.NEXT_PUBLIC_LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/checkIfProductHasBeenUsed`,
     {
       gid,
     }
@@ -26,9 +22,7 @@ export const checkIfProductHasBeenUsed = async (gid) => {
 
 export const getAllUserDraftOrders = async (shopId) => {
   return await axios.post(
-    // `http://localhost:4000/api/shopify/getAllDraftOrders`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/getAllDraftOrders`,
-    `https://oauth-app.litgateway.com/api/shopify/getAllDraftOrders`,
+    `${process.env.NEXT_PUBLIC_LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllDraftOrders`,
     {
       shopId,
     }
@@ -37,9 +31,7 @@ export const getAllUserDraftOrders = async (shopId) => {
 
 export const deleteDraftOrder = async (id, shopId) => {
   const resp = await axios.post(
-    // `http://localhost:4000/api/shopify/deleteDraftOrder`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/deleteDraftOrder`,
-    `https://oauth-app.litgateway.com/api/shopify/deleteDraftOrder`,
+    `${process.env.NEXT_PUBLIC_LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteDraftOrder`,
     {
       id,
       shopId,
