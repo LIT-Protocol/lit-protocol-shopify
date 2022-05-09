@@ -18,6 +18,7 @@ import {
 } from "../../../helpers/apiCalls.js";
 import ShareModal from "lit-share-modal";
 import Instructions from "./Instructions";
+import UpdateList from "../updateList/UpdateList";
 // import dotenv from "dotenv";
 //
 // dotenv.config();
@@ -258,6 +259,9 @@ const Main = (props) => {
                 setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
               />
             )}
+          </Layout.Section>
+          <Layout.Section>
+            <UpdateList />
           </Layout.Section>
         </Layout>
       )}
