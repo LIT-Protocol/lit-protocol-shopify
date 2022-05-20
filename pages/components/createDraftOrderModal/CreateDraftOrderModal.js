@@ -250,7 +250,7 @@ const CreateDraftOrderModal = (props) => {
                         type={"number"}
                         label={"How many times can a user redeem the offer?"}
                         helpText={
-                          "Limit is based on wallet address. 0 or leaving the box empty means no limit"
+                          "Limit is tracked by wallet address. 0 or leaving the box empty means no limit"
                         }
                         value={draftOrderRedeemLimit}
                         onChange={setDraftOrderRedeemLimit}
