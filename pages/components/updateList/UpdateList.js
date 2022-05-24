@@ -5,7 +5,7 @@ const UpdateList = (props) => {
   const [showUpdateList, setShowUpdateList] = useState(false);
 
   return (
-    <Card title="Last Update on 5-9-2022" sectioned>
+    <Card title="Last Update on 5-24-2022" sectioned>
       <TextContainer style={{ paddingTop: "0 !important" }}>
         <h3>Click here to see updates and new features.</h3>
         <Button onClick={() => setShowUpdateList(!showUpdateList)}>
@@ -13,6 +13,22 @@ const UpdateList = (props) => {
         </Button>
         {showUpdateList && (
           <List type="bullet">
+            <List.Item>
+              <p>
+                <strong>5-24-2022</strong>
+              </p>
+              <ul>
+                <li>
+                  <strong>Update regarding updates:</strong> we have been hard
+                  at work building the next version of Lit Protocol which will
+                  allow for the creation of access control conditions using
+                  Solana. Solana integration should be ready in the first weeks
+                  of June, and once that is complete we will be rolling out new
+                  features that will improve and smooth out both the merchant
+                  and customer experiences. Thank you for being patient!
+                </li>
+              </ul>
+            </List.Item>
             <List.Item>
               <p>
                 <strong>5-9-2022</strong>
