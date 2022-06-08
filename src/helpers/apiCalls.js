@@ -2,9 +2,7 @@ import axios from "axios";
 
 export const saveDraftOrder = async (draftOrder) => {
   const resp = await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveAuthPlaygroundDraftOrder`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/saveAuthPlaygroundDraftOrder`,
-    // `https://oauth-app.litgateway.com/api/shopify/saveAuthPlaygroundDraftOrder`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveDraftOrder`,
     {
       ...draftOrder,
     }
@@ -15,9 +13,7 @@ export const saveDraftOrder = async (draftOrder) => {
 
 export const checkIfProductHasBeenUsed = async (gid) => {
   return await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/checkIfAuthPlaygroundProductHasBeenUsed`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/checkIfAuthPlaygroundProductHasBeenUsed`,
-    // `https://oauth-app.litgateway.com/api/shopify/checkIfAuthPlaygroundProductHasBeenUsed`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/checkIfProductHasBeenUsed`,
     {
       gid,
     }
@@ -26,9 +22,7 @@ export const checkIfProductHasBeenUsed = async (gid) => {
 
 export const getAllUserDraftOrders = async (shopId) => {
   return await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllAuthPlaygroundDraftOrders`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/getAllAuthPlaygroundDraftOrders`,
-    // `https://oauth-app.litgateway.com/api/shopify/getAllAuthPlaygroundDraftOrders`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllDraftOrders`,
     {
       shopId,
     }
@@ -37,9 +31,7 @@ export const getAllUserDraftOrders = async (shopId) => {
 
 export const deleteDraftOrder = async (id, shopId) => {
   const resp = await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteAuthPlaygroundDraftOrder`,
-    // `https://oauth-app-dev.litgateway.com/api/shopify/deleteAuthPlaygroundDraftOrder`,
-    // `https://oauth-app.litgateway.com/api/shopify/deleteAuthPlaygroundDraftOrder`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteDraftOrder`,
     {
       id,
       shopId,
