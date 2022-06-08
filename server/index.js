@@ -65,8 +65,8 @@ export async function createServer(
     console.log("check old session", session);
 
     const saveAccessTokenResponse = await fetch(
-      // `https://oauth-app.litgateway.com/api/shopify/saveAccessToken`,
-      `https://oauth-app-dev.litgateway.com/api/shopify/saveAccessToken`,
+      `https://oauth-app.litgateway.com/api/shopify/saveAccessToken`,
+      // `https://oauth-app-dev.litgateway.com/api/shopify/saveAccessToken`,
       // `http://localhost:4000/api/shopify/saveAccessToken`,
       {
         method: "post",
