@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div id="app"><!--app-html--></div>
+    <script>
+      console.log("check process at entry");
+      window.global = globalThis;
+    </script>
+    <script src="/src/entry-client.jsx" type="module"></script>
+  </body>
+</html>
