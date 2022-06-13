@@ -1,18 +1,30 @@
-import React, { useState } from "react";
-import { Button, Card, List, TextContainer } from "@shopify/polaris";
+import React, {useState} from "react";
+import {Button, Card, List, TextContainer} from "@shopify/polaris";
 
 const UpdateList = (props) => {
   const [showUpdateList, setShowUpdateList] = useState(false);
 
   return (
     <Card title="Last Update on 6-8-2022" sectioned>
-      <TextContainer style={{ paddingTop: "0 !important" }}>
+      <TextContainer style={{paddingTop: "0 !important"}}>
         <h3>Click here to see updates and new features.</h3>
         <Button onClick={() => setShowUpdateList(!showUpdateList)}>
           {showUpdateList ? "Hide updates list" : "Show updates list"}
         </Button>
         {showUpdateList && (
           <List type="bullet">
+            <List.Item>
+              <p>
+                <strong>6-13-2022</strong>
+              </p>
+              <ul>
+                <li>
+                  <strong>Fixed issue with sudden lack of working after 24 hours: </strong> A bug was brought to our
+                  attention related to session tokens that would expire after 24 hours. This has been fixed and now
+                  things should work into the 25th hour and beyond.
+                </li>
+              </ul>
+            </List.Item>
             <List.Item>
               <p>
                 <strong>6-8-2022</strong>

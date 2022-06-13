@@ -9,7 +9,7 @@ import "isomorphic-fetch";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
 
-const USE_ONLINE_TOKENS = true;
+const USE_ONLINE_TOKENS = false;
 const TOP_LEVEL_OAUTH_COOKIE = "shopify_top_level_oauth";
 
 const PORT = parseInt(process.env.PORT || "8081", 10);
@@ -61,24 +61,22 @@ export async function createServer(
   });
 
   app.get("/log-store", verifyRequest(app), async (req, res) => {
-    const session = await Shopify.Utils.loadCurrentSession(req, res, true);
-    console.log("check old session", session);
+    const session = await Shopify.Utils.loadCurrentSession(req, res, false);
 
     const saveAccessTokenResponse = await fetch(
-      `https://oauth-app.litgateway.com/api/shopify/saveAccessToken`,
-      // `https://oauth-app-dev.litgateway.com/api/shopify/saveAccessToken`,
-      // `http://localhost:4000/api/shopify/saveAccessToken`,
+      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveAccessToken`,
       {
         method: "post",
         body: JSON.stringify({
           accessToken: session["accessToken"],
           shop: session["shop"],
-          email: session["onlineAccessInfo"]["associated_user"]["email"],
         }),
       }
     );
 
-    res.status(200).send(saveAccessTokenResponse);
+    const jsonSaveAccessTokenResponse = await saveAccessTokenResponse.json();
+
+    res.status(200).send(jsonSaveAccessTokenResponse);
   });
 
   app.post("/graphql", verifyRequest(app), async (req, res) => {

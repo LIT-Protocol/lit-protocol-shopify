@@ -10,21 +10,23 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 import { userLoggedInFetch } from "./App";
 
 export function HomePage() {
-
   const [shopInfo, setShopInfo] = useState({});
-  const { error, shopLoading, data } = useQuery(GET_SHOP_DATA);
 
-  console.log('check home page')
+  console.log("check home page");
   const app = useAppBridge();
-  const fetch = userLoggedInFetch(app);
+  const authFetch = userLoggedInFetch(app);
   async function logStore() {
-    const res = await fetch("/log-store").then((res) => res.json());
-    console.log('check log store', res)
+    const res = await authFetch("/log-store");
+    const jsonRes = await res.json();
+    setShopInfo({
+      name: jsonRes.name,
+      shopId: jsonRes.shopId,
+    });
   }
 
   useEffect(() => {
     logStore();
-  }, [])
+  }, []);
 
   axios.interceptors.request.use(function (config) {
     return getSessionToken(app) // requires a Shopify App Bridge instance
@@ -34,18 +36,6 @@ export function HomePage() {
         return config;
       });
   });
-
-  useEffect(() => {
-    if (data) {
-      const shopIdArray = data.shop.id.split("/");
-      const shopIdNumber = shopIdArray[shopIdArray.length - 1];
-      const formattedShopData = {
-        name: data.shop.myshopifyDomain,
-        shopId: shopIdNumber,
-      };
-      setShopInfo(formattedShopData);
-    }
-  }, [data]);
 
   return (
     <Page fullWidth>
