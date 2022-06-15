@@ -16,7 +16,7 @@ export function HomePage() {
     const res = await authFetch("/log-store");
     const jsonRes = await res.json();
     setShopInfo({
-      name: jsonRes.shop,
+      name: jsonRes.name,
       shopId: jsonRes.shopId,
     });
   }
