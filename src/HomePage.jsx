@@ -17,7 +17,7 @@ export function HomePage() {
     const jsonRes = await res.json();
     setShopInfo({
       name: jsonRes.shop,
-      shopId: jsonRes.id,
+      shopId: jsonRes.shopId,
     });
   }
 
