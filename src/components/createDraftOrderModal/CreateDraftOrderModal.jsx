@@ -36,18 +36,21 @@ const CreateDraftOrderModal = (props) => {
   ];
 
   const getChains = (accArray, chains = []) => {
-    console.log('check accArray', accArray)
+    console.log("check accArray", accArray);
     const chainHolder = [...chains];
     accArray.forEach((a) => {
       if (Array.isArray(a)) {
         const getNestedChains = getChains(a, chainHolder);
         chainHolder.push(getNestedChains);
-      } else if (a['conditionType'] && chainHolder.indexOf(a['conditionType']) < 0) {
-        chainHolder.push(a.conditionType)
+      } else if (
+        a["conditionType"] &&
+        chainHolder.indexOf(a["conditionType"]) < 0
+      ) {
+        chainHolder.push(a.conditionType);
       }
-    })
+    });
     return chainHolder;
-  }
+  };
 
   const exportDraftOrder = () => {
     if (!draftOrderRedeemLimit || draftOrderRedeemLimit < 1) {
@@ -69,19 +72,24 @@ const CreateDraftOrderModal = (props) => {
       draftOrderDetails.value = 0;
     }
 
-    console.log('check conditionTypes', getChains(props.unifiedAccessControlConditions))
+    console.log(
+      "check conditionTypes",
+      getChains(props.unifiedAccessControlConditions)
+    );
 
     const draftOrderObj = {
       title: draftOrderTitle,
-      access_control_conditions: JSON.stringify(props.unifiedAccessControlConditions),
+      access_control_conditions: JSON.stringify(
+        props.unifiedAccessControlConditions
+      ),
       humanized_access_control_conditions:
-      props.humanizedAccessControlConditions,
+        props.humanizedAccessControlConditions,
       asset_type: typeOfAccessControl,
       asset_id_on_service: draftOrderProduct.id,
       user_id: "",
       draft_order_details: JSON.stringify(draftOrderDetails),
       summary: `${draftOrderDiscount}% off ${draftOrderProduct.title}`,
-      extra_data: getChains(props.unifiedAccessControlConditions).join(', '),
+      extra_data: getChains(props.unifiedAccessControlConditions).join(", "),
       active: true,
       shop_id: props.shopInfo.shopId,
       shop_name: props.shopInfo.name,
@@ -107,7 +115,7 @@ const CreateDraftOrderModal = (props) => {
     const productHasAlreadyBeenUsed = await checkIfProductHasBeenUsed(
       products.selection[0].id
     );
-    console.log('---> productHasAlreadyBeenUsed', productHasAlreadyBeenUsed);
+    console.log("---> productHasAlreadyBeenUsed", productHasAlreadyBeenUsed);
     if (!!productHasAlreadyBeenUsed.data.length) {
       const product = productHasAlreadyBeenUsed.data[0];
       setErrorText(product.title);
@@ -228,7 +236,9 @@ const CreateDraftOrderModal = (props) => {
                       {!props.hideInstructions && (
                         <TextStyle>
                           <List>
-                            <List.Item>Enter a title for the discount.</List.Item>
+                            <List.Item>
+                              Enter a title for the discount.
+                            </List.Item>
                           </List>
                         </TextStyle>
                       )}
@@ -256,17 +266,15 @@ const CreateDraftOrderModal = (props) => {
                         />
                       </Stack.Item>
                     )}
-                    <Stack.Item fill>
-
-                    </Stack.Item>
+                    <Stack.Item fill></Stack.Item>
                     <Stack.Item>
-                      <TextField type={"number"}
-                                 label={'How many times can a user redeem the offer?'}
-                                 helpText={"0 or leaving the box empty means no limit"}
-                                 value={draftOrderRedeemLimit}
-                                 onChange={setDraftOrderRedeemLimit}
-                                 autoComplete={"off"}
-
+                      <TextField
+                        type={"number"}
+                        label={"How many times can a user redeem the offer?"}
+                        helpText={"0 or leaving the box empty means no limit"}
+                        value={draftOrderRedeemLimit}
+                        onChange={setDraftOrderRedeemLimit}
+                        autoComplete={"off"}
                       />
                     </Stack.Item>
                     {!props.hideInstructions && (

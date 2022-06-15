@@ -1,8 +1,8 @@
 // @ts-check
-import { resolve } from "path";
+import {resolve} from "path";
 import express from "express";
 import cookieParser from "cookie-parser";
-import { Shopify, ApiVersion } from "@shopify/shopify-api";
+import {Shopify, ApiVersion} from "@shopify/shopify-api";
 import "dotenv/config";
 import "isomorphic-fetch";
 
@@ -74,6 +74,8 @@ export async function createServer(
       }
     );
 
+    console.log('----> Check saveAccessTokenResponse', saveAccessTokenResponse);
+
     const jsonSaveAccessTokenResponse = await saveAccessTokenResponse.json();
 
     res.status(200).send(jsonSaveAccessTokenResponse);
@@ -120,7 +122,7 @@ export async function createServer(
    */
   let vite;
   if (!isProd) {
-    vite = await import("vite").then(({ createServer }) =>
+    vite = await import("vite").then(({createServer}) =>
       createServer({
         root,
         logLevel: isTest ? "error" : "info",
@@ -139,10 +141,10 @@ export async function createServer(
     app.use(vite.middlewares);
   } else {
     const compression = await import("compression").then(
-      ({ default: fn }) => fn
+      ({default: fn}) => fn
     );
     const serveStatic = await import("serve-static").then(
-      ({ default: fn }) => fn
+      ({default: fn}) => fn
     );
     const fs = await import("fs");
     app.use(compression());
@@ -156,9 +158,9 @@ export async function createServer(
     });
   }
 
-  return { app, vite };
+  return {app, vite};
 }
 
 if (!isTest) {
-  createServer().then(({ app }) => app.listen(PORT));
+  createServer().then(({app}) => app.listen(PORT));
 }

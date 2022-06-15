@@ -68,7 +68,8 @@ const Main = (props) => {
   // );
 
   useEffect(() => {
-    if (!!props.shopInfo.shopId) {
+    console.log("props.shop", props.shopInfo);
+    if (!!props.shopInfo.name) {
       toggleGetAllDraftOrders();
     }
   }, [props.shopInfo]);
@@ -171,7 +172,6 @@ const Main = (props) => {
   };
 
   const toggleGetAllDraftOrders = async () => {
-    console.log("start of toggleGetAllDraftOrders");
     setLoading(true);
     try {
       const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
