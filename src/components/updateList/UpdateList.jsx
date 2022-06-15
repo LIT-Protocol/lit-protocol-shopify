@@ -5,7 +5,7 @@ const UpdateList = (props) => {
   const [showUpdateList, setShowUpdateList] = useState(false);
 
   return (
-    <Card title="Last Update on 6-8-2022" sectioned>
+    <Card title="Last Update on 6-13-2022" sectioned>
       <TextContainer style={{paddingTop: "0 !important"}}>
         <h3>Click here to see updates and new features.</h3>
         <Button onClick={() => setShowUpdateList(!showUpdateList)}>

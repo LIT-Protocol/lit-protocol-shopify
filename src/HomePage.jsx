@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Page } from "@shopify/polaris";
-
-import { useQuery } from "@apollo/client";
-import { GET_SHOP_DATA } from "./helpers/get-shop-data";
+import React, {useEffect, useState} from "react";
+import {Page} from "@shopify/polaris";
 import Main from "./components/main/Main";
 import axios from "axios";
-import { getSessionToken } from "@shopify/app-bridge-utils";
-import { useAppBridge } from "@shopify/app-bridge-react";
-import { userLoggedInFetch } from "./App";
+import {getSessionToken} from "@shopify/app-bridge-utils";
+import {useAppBridge} from "@shopify/app-bridge-react";
+import {userLoggedInFetch} from "./App";
 
 export function HomePage() {
   const [shopInfo, setShopInfo] = useState({});
@@ -19,8 +16,8 @@ export function HomePage() {
     const res = await authFetch("/log-store");
     const jsonRes = await res.json();
     setShopInfo({
-      name: jsonRes.name,
-      shopId: jsonRes.shopId,
+      name: jsonRes.shop,
+      shopId: jsonRes.id,
     });
   }
 
@@ -39,7 +36,7 @@ export function HomePage() {
 
   return (
     <Page fullWidth>
-      <Main shopInfo={shopInfo} />
+      <Main shopInfo={shopInfo}/>
     </Page>
     // <Page fullWidth>
     //   <Layout>
