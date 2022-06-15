@@ -74,9 +74,9 @@ export async function createServer(
       }
     );
 
-    console.log('----> Check saveAccessTokenResponse', saveAccessTokenResponse);
-
     const jsonSaveAccessTokenResponse = await saveAccessTokenResponse.json();
+
+    console.log('----> Check saveAccessTokenResponse', jsonSaveAccessTokenResponse);
 
     res.status(200).send(jsonSaveAccessTokenResponse);
   });
