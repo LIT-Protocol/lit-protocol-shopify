@@ -34,7 +34,7 @@
     "graphql": "^16.5.0",
     "isomorphic-fetch": "^3.0.0",
     "lit-js-sdk": "^1.1.181",
-    "lit-share-modal-v3": "^0.0.66",
+    "lit-share-modal-v3": "^0.0.72",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "serve-static": "^1.15.0",
