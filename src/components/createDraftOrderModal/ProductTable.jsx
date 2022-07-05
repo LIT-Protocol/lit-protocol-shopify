@@ -1,18 +1,23 @@
-import { DataTable, Button } from "@shopify/polaris";
-import React, { useState, useEffect } from "react";
+import {DataTable, Button} from "@shopify/polaris";
+import React, {useState, useEffect} from "react";
 
-const ProductTable = ({ id, draftOrderProduct, setDraftOrderProduct }) => {
-  const [dataTableEntries, setDataTableEntries] = useState(null);
+const ProductTable = ({draftOrderProducts, setDraftOrderProducts}) => {
+  const [dataTableEntries, setDataTableEntries] = useState([]);
 
   useEffect(() => {
-    const modifyProductInfo = [
-      draftOrderProduct.title,
-      draftOrderProduct.id,
-      <Button onClick={() => setDraftOrderProduct(null)}>Remove</Button>,
-    ];
+    const modifyProductInfo = draftOrderProducts.map(p => {
+      return [
+        p.title,
+        p.id,
+        <Button onClick={() => removeProduct(p.id)}>Remove</Button>]
+    });
+    setDataTableEntries(modifyProductInfo);
+  }, [draftOrderProducts]);
 
-    setDataTableEntries([modifyProductInfo]);
-  }, [draftOrderProduct]);
+  const removeProduct = (id) => {
+    const filteredProducts = draftOrderProducts.filter(p => p.id !== id);
+    setDraftOrderProducts(filteredProducts);
+  }
 
   return (
     <span>

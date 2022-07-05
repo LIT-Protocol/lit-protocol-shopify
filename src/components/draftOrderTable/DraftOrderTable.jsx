@@ -10,9 +10,9 @@ import {
 import './DraftOrderTable.css';
 
 const DraftOrderTable = (props) => {
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-  const [currentEditedDraftOrder, setCurrentEditedDraftOrder] = useState(false);
-  const [draftOrders, setDraftOrders] = useState([]);
+  const [ openDeleteConfirmation, setOpenDeleteConfirmation ] = useState(false);
+  const [ currentEditedDraftOrder, setCurrentEditedDraftOrder ] = useState(false);
+  const [ draftOrders, setDraftOrders ] = useState([]);
 
   useEffect(() => {
     if (!!props.draftOrders) {
@@ -25,7 +25,7 @@ const DraftOrderTable = (props) => {
       });
       setDraftOrders(mappedDraftOrders);
     }
-  }, [props.draftOrders]);
+  }, [ props.draftOrders ]);
 
   const resourceName = {
     singular: "draft order",
@@ -47,15 +47,14 @@ const DraftOrderTable = (props) => {
               resourceName={resourceName}
               itemCount={!props.draftOrders ? 0 : props.draftOrders.length}
               headings={[
-                { title: "Title" },
-                { title: "Summary" },
-                { title: "Access Control Conditions" },
-                { title: "Condition Type(s)" },
-                { title: "Actions" },
+                {title: "Title"},
+                {title: "Summary"},
+                {title: "Access Control Conditions"},
+                {title: "Condition Type(s)"},
+                {title: "Actions"},
               ]}
             >
-              {draftOrders &&
-              draftOrders.map((draftOrder, index) => (
+              {draftOrders && draftOrders.map((draftOrder, index) => (
                 <IndexTable.Row id={index} key={index} position={index}>
                   <IndexTable.Cell>
                     <TextStyle variation="strong">{draftOrder.title}</TextStyle>

@@ -40,17 +40,17 @@ const storedAuthSigs = {
 };
 
 const Main = (props) => {
-  const [draftOrders, setDraftOrders] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [connectedToLit, setConnectedToLit] = useState(false);
+  const [ draftOrders, setDraftOrders ] = useState(null);
+  const [ loading, setLoading ] = useState(true);
+  const [ connectedToLit, setConnectedToLit ] = useState(false);
 
-  const [openCreateDraftOrderModal, setOpenCreateDraftOrderModal] =
+  const [ openCreateDraftOrderModal, setOpenCreateDraftOrderModal ] =
     useState(false);
-  const [openShareModal, setOpenShareModal] = useState(false);
-  const [unifiedAccessControlConditions, setUnifiedAccessControlConditions] =
+  const [ openShareModal, setOpenShareModal ] = useState(false);
+  const [ unifiedAccessControlConditions, setUnifiedAccessControlConditions ] =
     useState(null);
-  const [permanent, setPermanent] = useState(true);
-  const [hideInstructions, setHideInstructions] = useState(true);
+  const [ permanent, setPermanent ] = useState(true);
+  const [ hideInstructions, setHideInstructions ] = useState(true);
 
   const [
     humanizedAccessControlConditions,
@@ -72,13 +72,13 @@ const Main = (props) => {
     if (!!props.shopInfo.name) {
       toggleGetAllDraftOrders();
     }
-  }, [props.shopInfo]);
+  }, [ props.shopInfo ]);
 
   useEffect(() => {
     if (!connectedToLit) {
       connectToNode();
     }
-  }, [connectedToLit]);
+  }, [ connectedToLit ]);
 
   const connectToNode = async () => {
     const litNodeClient = new LitJsSdk.LitNodeClient();
@@ -160,6 +160,7 @@ const Main = (props) => {
   };
 
   const handleDeleteDraftOrder = async (draftOrderObj) => {
+    console.log('draft order obj', draftOrderObj)
     try {
       const res = await deleteDraftOrder(
         draftOrderObj.id,
@@ -185,16 +186,22 @@ const Main = (props) => {
   };
 
   return (
-    <div style={{ paddingBottom: "5rem" }}>
+    <div style={{paddingBottom: "5rem"}}>
       {loading || !connectedToLit || draftOrders === null ? (
-        <Layout>
-          <Layout.Section>
-            <TextContainer>
-              <Heading>Loading...</Heading>
-              <Spinner size="large" />
-            </TextContainer>
-          </Layout.Section>
-        </Layout>
+        // {true ? (
+        // <Layout>
+        //   <Layout.Section>
+        //     <TextContainer>
+        //       <Heading>Loading...</Heading>
+        //       <Spinner size="large"/>
+        //     </TextContainer>
+        //   </Layout.Section>
+        // </Layout>
+        <div className="lit-loader">
+          <Heading>Loading...</Heading>
+          <Spinner size="large"/>
+        </div>
+
       ) : (
         <Layout>
           <Layout.Section>
@@ -231,7 +238,7 @@ const Main = (props) => {
                   </p>
                   <p>
                     <a
-                      style={{ color: "#5E36B7" }}
+                      style={{color: "#5E36B7"}}
                       href={
                         "https://lit-services-docs.netlify.app/docs/shopify-docs/intro"
                       }
@@ -255,7 +262,7 @@ const Main = (props) => {
                       }
                       target="_blank"
                     >
-                      <strong style={{ color: "#5E36B7" }}>
+                      <strong style={{color: "#5E36B7"}}>
                         Instructions can be found here.
                       </strong>
                     </a>
@@ -272,7 +279,7 @@ const Main = (props) => {
             )}
           </Layout.Section>
           <Layout.Section>
-            <UpdateList />
+            <UpdateList/>
           </Layout.Section>
         </Layout>
       )}

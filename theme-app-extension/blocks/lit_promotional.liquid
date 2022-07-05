@@ -4,7 +4,7 @@
       fetch('/cart.js')
         .then(response => response.json())
         .then(cart => {
-          console.log('holy shit its a cart!', cart)
+          console.log('holy its a cart!', cart)
         })
 
       window.open(
@@ -13,24 +13,30 @@
         // `https://oauth-app-dev.litgateway.com/shopify?shop=${window.Shopify["shop"]}&productId=${window.ShopifyAnalytics?.meta?.product["gid"]}`
       );
     };
+    const checkLoaded = () => console.log('this thing is all loaded')
   </script>
+  <script onload='checkLoaded()' src="https://jscdn.litgateway.com/index.web.js"></script>
   {% if product.available == true %}
     {% for tag in product.tags %}
       {% if tag == "lit-discount" %}
-        <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
-          <div class="discount-container" style="background: {{block.settings.background_color}}">
-            <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.discount_text}}</p>
-            <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
+        <div id="lit-promotional-container" style="border: 2px solid {{ block.settings.border_color }}"
+             onclick="forwardToLitPromotion()">
+          <div class="discount-container" style="background: {{ block.settings.background_color }}">
+            <p class="redeem-text"
+               style="color: {{ block.settings.detail_text_color }}"> {{ block.settings.discount_text }}</p>
+            <button id="log-discounts" class="redeem-button" style="color: {{ block.settings.connect_text_color }}">
               Click to connect wallet and view discount
             </button>
           </div>
         </div>
       {% endif %}
       {% if tag == "lit-exclusive" %}
-        <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
-          <div class="discount-container" style="background: {{block.settings.background_color}}">
-            <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.exclusive_text}}</p>
-            <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
+        <div id="lit-promotional-container" style="border: 2px solid {{ block.settings.border_color }}"
+             onclick="forwardToLitPromotion()">
+          <div class="discount-container" style="background: {{ block.settings.background_color }}">
+            <p class="redeem-text"
+               style="color: {{ block.settings.detail_text_color }}"> {{ block.settings.exclusive_text }}</p>
+            <button id="log-discounts" class="redeem-button" style="color: {{ block.settings.connect_text_color }}">
               Click to connect wallet and check access
             </button>
           </div>
@@ -52,18 +58,48 @@
 
 {% schema %}
 {
-"name": "Lit App Block",
-"target": "section",
-"javascript": "lit-promotional.js",
-"stylesheet": "lit-promotional.css",
-"settings": [
-{ "type": "text", "id": "exclusive_text", "label": "Text for exclusive offers", "default": "This product is token-gated and only available to qualified users." },
-{ "type": "text", "id": "discount_text", "label": "Text for discount offers", "default": "This product qualifies for a token-based discount!" },
-{ "type": "color_background", "id": "background_color", "label": "Background Color", "default": "#ffffff" },
-{ "type": "color", "id": "border_color", "label": "Border Color", "default": "#757575" },
-{ "type": "color", "id": "detail_text_color", "label": "Detail Text Color", "default": "#757575" },
-{ "type": "color", "id": "connect_text_color", "label": "Connect Text Color", "default": "#2c0c72" }
-]
+  "name": "Lit App Block",
+  "target": "section",
+  "javascript": "lit-promotional.js",
+  "stylesheet": "lit-promotional.css",
+  "settings": [
+    {
+      "type": "text",
+      "id": "exclusive_text",
+      "label": "Text for exclusive offers",
+      "default": "This product is token-gated and only available to qualified users."
+    },
+    {
+      "type": "text",
+      "id": "discount_text",
+      "label": "Text for discount offers",
+      "default": "This product qualifies for a token-based discount!"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#757575"
+    },
+    {
+      "type": "color",
+      "id": "detail_text_color",
+      "label": "Detail Text Color",
+      "default": "#757575"
+    },
+    {
+      "type": "color",
+      "id": "connect_text_color",
+      "label": "Connect Text Color",
+      "default": "#2c0c72"
+    }
+  ]
 }
 {% endschema %}
 

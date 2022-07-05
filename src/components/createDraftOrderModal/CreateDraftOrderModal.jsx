@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
   Form,
   FormLayout,
@@ -13,9 +13,8 @@ import {
   Layout,
   List,
 } from "@shopify/polaris";
-import { ResourcePicker } from "@shopify/app-bridge-react";
+import {ResourcePicker} from "@shopify/app-bridge-react";
 import ProductTable from "./ProductTable";
-import { checkIfProductHasBeenUsed } from "../../helpers/apiCalls.js";
 
 const CreateDraftOrderModal = (props) => {
   const [showProductSelect, setShowProductSelect] = useState(false);
@@ -23,20 +22,18 @@ const CreateDraftOrderModal = (props) => {
   const [draftOrderTitle, setDraftOrderTitle] = useState("");
   const [draftOrderDiscount, setDraftOrderDiscount] = useState("0");
   const [draftOrderRedeemLimit, setDraftOrderRedeemLimit] = useState("0");
-  const [draftOrderOriginalPrice, setDraftOrderOriginalPrice] = useState("10");
-  const [draftOrderProduct, setDraftOrderProduct] = useState(null);
+  const [draftOrderProducts, setDraftOrderProducts] = useState([]);
   const [draftOrderDescription, setDraftOrderDescription] = useState(null);
 
   const [typeOfAccessControl, setTypeOfAccessControl] = useState("exclusive");
   const [errorText, setErrorText] = useState(null);
 
   const typeOfAccessOptions = [
-    { label: "Exclusive Access", value: "exclusive" },
-    { label: "Discount", value: "discount" },
+    {label: "Exclusive Access", value: "exclusive"},
+    {label: "Discount", value: "discount"},
   ];
 
   const getChains = (accArray, chains = []) => {
-    console.log("check accArray", accArray);
     const chainHolder = [...chains];
     accArray.forEach((a) => {
       if (Array.isArray(a)) {
@@ -57,12 +54,15 @@ const CreateDraftOrderModal = (props) => {
       setDraftOrderRedeemLimit(null);
     }
 
+    const draftOrderProductIds = draftOrderProducts.map(p => {
+      return p.id;
+    })
+
     const draftOrderDetails = {
-      id: draftOrderProduct.id,
+      id: draftOrderProductIds,
       quantity: 1,
       title: draftOrderTitle,
       description: draftOrderDescription,
-      price: draftOrderOriginalPrice,
       redeemLimit: draftOrderRedeemLimit,
       value: draftOrderDiscount,
       valueType: "PERCENTAGE",
@@ -77,18 +77,32 @@ const CreateDraftOrderModal = (props) => {
       getChains(props.unifiedAccessControlConditions)
     );
 
+    let productTitles = '';
+    for (let i = 0; i < draftOrderProducts.length; i++) {
+      console.log('productTitles index', i, draftOrderProducts.length)
+      if (i === 0) {
+        productTitles = productTitles.concat(`${draftOrderProducts[i].title}`);
+      } else if (i < draftOrderProducts.length - 1) {
+        productTitles = productTitles.concat(`, ${draftOrderProducts[i].title}`);
+      } else {
+        productTitles = productTitles.concat(` and ${draftOrderProducts[i].title}`);
+      }
+    }
+
+    console.log('productTitles', productTitles);
+
     const draftOrderObj = {
       title: draftOrderTitle,
       access_control_conditions: JSON.stringify(
         props.unifiedAccessControlConditions
       ),
       humanized_access_control_conditions:
-        props.humanizedAccessControlConditions,
+      props.humanizedAccessControlConditions,
       asset_type: typeOfAccessControl,
-      asset_id_on_service: draftOrderProduct.id,
+      asset_id_on_service: JSON.stringify(draftOrderProductIds),
       user_id: "",
       draft_order_details: JSON.stringify(draftOrderDetails),
-      summary: `${draftOrderDiscount}% off ${draftOrderProduct.title}`,
+      summary: `${draftOrderDiscount}% off ${productTitles}`,
       extra_data: getChains(props.unifiedAccessControlConditions).join(", "),
       active: true,
       shop_id: props.shopInfo.shopId,
@@ -96,9 +110,9 @@ const CreateDraftOrderModal = (props) => {
     };
 
     if (typeOfAccessControl === "exclusive") {
-      draftOrderObj.summary = `Token gated ${draftOrderProduct.title}`;
+      draftOrderObj.summary = `Token gated ${productTitles}`;
     } else {
-      draftOrderObj.summary = `${draftOrderDiscount}% off ${draftOrderProduct.title}`;
+      draftOrderObj.summary = `${draftOrderDiscount}% off ${productTitles}`;
     }
 
     clearDraftOrder();
@@ -106,26 +120,11 @@ const CreateDraftOrderModal = (props) => {
     props.sendDraftOrderToDb(draftOrderObj);
   };
 
-  // TODO: remove search for price after MVP demo
-  const getVariantPrice = (product) => {
-    return product.selection[0].variants[0].price;
-  };
-
   const saveProducts = async (products) => {
-    const productHasAlreadyBeenUsed = await checkIfProductHasBeenUsed(
-      products.selection[0].id
-    );
-    console.log("---> productHasAlreadyBeenUsed", productHasAlreadyBeenUsed);
-    if (!!productHasAlreadyBeenUsed.data.length) {
-      const product = productHasAlreadyBeenUsed.data[0];
-      setErrorText(product.title);
-    } else {
-      const productPrice = getVariantPrice(products);
-      setDraftOrderOriginalPrice(productPrice);
-      const product = products.selection[0];
-      setDraftOrderProduct(product);
-      setErrorText(null);
-    }
+    console.log('CREATE_DRAFT_ORDER_MODAL', products);
+    // const product = products.selection[0];
+    setDraftOrderProducts(products.selection);
+    setErrorText(null);
     setShowProductSelect(false);
   };
 
@@ -142,13 +141,13 @@ const CreateDraftOrderModal = (props) => {
     setDraftOrderDescription("");
     setTypeOfAccessControl("exclusive");
     setShowProductSelect(false);
-    setDraftOrderProduct(null);
+    setDraftOrderProducts(null);
     setErrorText(null);
     clearAccessControlCondition();
   };
 
   const checkIfButtonDisabled = () => {
-    if (!draftOrderTitle || !draftOrderProduct) return true;
+    if (!draftOrderTitle || !draftOrderProducts) return true;
     if (typeOfAccessControl === "discount" && !draftOrderDiscount) return true;
     return false;
   };
@@ -200,16 +199,15 @@ const CreateDraftOrderModal = (props) => {
                     </Layout>
                   )}
                   <div>
-                    {!!draftOrderProduct && draftOrderProduct["id"] ? (
+                    {!!draftOrderProducts && draftOrderProducts.length ? (
                       <ProductTable
-                        productId={[draftOrderProduct.id]}
-                        setDraftOrderProduct={setDraftOrderProduct}
-                        draftOrderProduct={draftOrderProduct}
+                        setDraftOrderProducts={setDraftOrderProducts}
+                        draftOrderProducts={draftOrderProducts}
                       />
                     ) : (
                       <Stack align="center">
                         <Button onClick={() => setShowProductSelect(true)}>
-                          Choose Product
+                          Choose Product(s)
                         </Button>
                         {!props.hideInstructions && (
                           <TextStyle>
@@ -279,7 +277,7 @@ const CreateDraftOrderModal = (props) => {
                     </Stack.Item>
                     {!props.hideInstructions && (
                       <TextStyle>
-                        <List style={{ color: "" }}>
+                        <List style={{color: ""}}>
                           <List.Item>
                             Select whether to gate product as exclusive or
                             discounted.
@@ -301,7 +299,7 @@ const CreateDraftOrderModal = (props) => {
                               }
                               target="_blank"
                             >
-                              <strong style={{ color: "#5E36B7" }}>
+                              <strong style={{color: "#5E36B7"}}>
                                 {" "}
                                 Creating a new product template.
                               </strong>
@@ -331,7 +329,7 @@ const CreateDraftOrderModal = (props) => {
               <ResourcePicker
                 onSelection={saveProducts}
                 resourceType={"Product"}
-                allowMultiple={false}
+                allowMultiple={true}
                 open={showProductSelect}
                 onCancel={() => {
                   setShowProductSelect(false);
