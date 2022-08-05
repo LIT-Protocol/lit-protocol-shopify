@@ -1,9 +1,13 @@
 .humanized-conditions-cell {
-    overflow-wrap: break-word;
-    max-width: 43em;
-    margin: 0;
+  overflow-wrap: break-word;
+  max-width: 43em;
+  margin: 0;
 }
 
 .Polaris-IndexTable__TableCell {
-    white-space: normal;
+  white-space: normal;
+}
+
+.edit-button {
+  cursor: pointer;
 }

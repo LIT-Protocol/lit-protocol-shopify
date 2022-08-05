@@ -89,3 +89,31 @@ export const deleteDraftOrder = async (id, shopId) => {
     return resp;
   }
 };
+
+export const updateRedeemedList = async (redeemedList, typeOfRedeem, id) => {
+  // endpoints for development
+  if (process.env.DEVELOPMENT) {
+    const resp = await axios.post(
+      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/updateDevRedeemedList`,
+      {
+        id,
+        typeOfRedeem,
+        redeemedList
+      }
+    );
+
+    return resp;
+  } else {
+    // endpoints for prod
+    const resp = await axios.post(
+      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/updateRedeemedList`,
+      {
+        id,
+        typeOfRedeem,
+        redeemedList
+      }
+    );
+
+    return resp;
+  }
+};

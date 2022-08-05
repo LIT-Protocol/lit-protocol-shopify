@@ -5,27 +5,54 @@ import {
   TextStyle,
   Button,
   Modal,
+  Icon,
   TextContainer,
+  Stack
 } from "@shopify/polaris";
+import {
+  EditMajor, DeleteMajor
+} from '@shopify/polaris-icons';
 import './DraftOrderTable.css';
+import RedeemedByEdit from "./redeeemedByEdit/RedeemedByEdit.jsx";
+
+const redeemLimitTypes = {
+  nftId: 'NFT ID',
+  walletAddress: 'Wallet Address'
+}
 
 const DraftOrderTable = (props) => {
   const [ openDeleteConfirmation, setOpenDeleteConfirmation ] = useState(false);
-  const [ currentEditedDraftOrder, setCurrentEditedDraftOrder ] = useState(false);
+  const [ currentEditedDraftOrder, setCurrentEditedDraftOrder ] = useState(null);
   const [ draftOrders, setDraftOrders ] = useState([]);
+  const [ openRedeemEdit, setOpenRedeemEdit ] = useState(false);
+  const [ originalRedeemList, setOriginalRedeemList ] = useState({});
+  const [ updatedRedeemList, setUpdatedRedeemList ] = useState({});
+  const [ redeemEditTabData, setRedeemEditTabData ] = useState({});
 
   useEffect(() => {
     if (!!props.draftOrders) {
       const mappedDraftOrders = props.draftOrders.map((d) => {
+        console.log('d', d)
         const mappedDraftOrder = d;
         mappedDraftOrder["draftOrderDetailsObj"] = JSON.parse(
           d.draftOrderDetails
         );
+        mappedDraftOrder['parsedRedeemedBy'] = JSON.parse(
+          d.redeemedBy
+        )
+        mappedDraftOrder['parsedRedeemedNfts'] = JSON.parse(
+          d.redeemedNfts
+        )
         return mappedDraftOrder;
       });
       setDraftOrders(mappedDraftOrders);
     }
   }, [ props.draftOrders ]);
+
+  const toggleOpenRedeemEdit = (draftOrder) => {
+    setCurrentEditedDraftOrder(draftOrder);
+    setOpenRedeemEdit(true);
+  }
 
   const resourceName = {
     singular: "draft order",
@@ -49,9 +76,10 @@ const DraftOrderTable = (props) => {
               headings={[
                 {title: "Title"},
                 {title: "Summary"},
+                {title: "Redeem Limit"},
                 {title: "Access Control Conditions"},
-                {title: "Condition Type(s)"},
-                {title: "Actions"},
+                {title: "Chain(s) Used"},
+                {title: ""},
               ]}
             >
               {draftOrders && draftOrders.map((draftOrder, index) => (
@@ -62,22 +90,42 @@ const DraftOrderTable = (props) => {
                   {/*<IndexTable.Cell><strong>{draftOrder.summary[0]}%</strong>off of<strong>${draftOrder.summary[1]}</strong></IndexTable.Cell>*/}
                   <IndexTable.Cell>{draftOrder.summary}</IndexTable.Cell>
                   <IndexTable.Cell>
+                    {!draftOrder.draftOrderDetailsObj.hasRedeemLimit ? (
+                      <p style={{marginLeft: '2.6em'}}>None</p>
+                    ) : (
+                      <Stack alignment={'center'} wrap={false}>
+                        <Stack.Item>
+                          <Button plain onClick={() => {
+                            toggleOpenRedeemEdit(draftOrder);
+                          }}>
+                            <Icon source={EditMajor}
+                                  color={"base"}/>
+                          </Button>
+                        </Stack.Item>
+                        <Stack.Item fill>
+                          <p>{redeemLimitTypes[draftOrder.draftOrderDetailsObj.typeOfRedeem]}</p>
+                        </Stack.Item>
+                      </Stack>
+                    )}
+                  </IndexTable.Cell>
+                  <IndexTable.Cell>
                     {!!draftOrder.accessControlConditions ? (
-                      <p className={'humanized-conditions-cell'}>{draftOrder.humanizedAccessControlConditions}</p>
+                      <span>
+                        <p className={'humanized-conditions-cell'}>{draftOrder.humanizedAccessControlConditions}</p>
+                      </span>
                     ) : (
                       <p>No access control conditions</p>
                     )}
                   </IndexTable.Cell>
-                  <IndexTable.Cell>{draftOrder.extraData}</IndexTable.Cell>
+                  <IndexTable.Cell>{draftOrder.usedChains}</IndexTable.Cell>
                   <IndexTable.Cell>
-                    <Button
-                      outline
-                      onClick={() => {
-                        setCurrentEditedDraftOrder(draftOrder);
-                        setOpenDeleteConfirmation(true);
-                      }}
+                    <Button outline
+                            onClick={() => {
+                              setCurrentEditedDraftOrder(draftOrder);
+                              setOpenDeleteConfirmation(true);
+                            }}
                     >
-                      Delete Token Access
+                      <Icon source={DeleteMajor} color={"base"}/>
                     </Button>
                   </IndexTable.Cell>
                 </IndexTable.Row>
@@ -87,8 +135,6 @@ const DraftOrderTable = (props) => {
         )}
       </Card>
       {openDeleteConfirmation && (
-        // <div style={{ height: "500px" }}>
-        // <div>
         <Modal
           open={openDeleteConfirmation}
           title="Are you sure you want to delete this draft order?"
@@ -116,7 +162,13 @@ const DraftOrderTable = (props) => {
             </TextContainer>
           </Modal.Section>
         </Modal>
-        // </div>
+      )}
+      {openRedeemEdit && (
+        <RedeemedByEdit currentEditedDraftOrder={currentEditedDraftOrder}
+                        openRedeemEdit={openRedeemEdit}
+                        setOpenRedeemEdit={setOpenRedeemEdit}
+                        toggleGetAllDraftOrders={props.toggleGetAllDraftOrders}
+        />
       )}
     </div>
   );

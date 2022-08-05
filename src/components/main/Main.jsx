@@ -51,6 +51,7 @@ const Main = (props) => {
     useState(null);
   const [ permanent, setPermanent ] = useState(true);
   const [ hideInstructions, setHideInstructions ] = useState(true);
+  const [ shopInfo, setShopInfo ] = useState({});
 
   const [
     humanizedAccessControlConditions,
@@ -68,11 +69,14 @@ const Main = (props) => {
   // );
 
   useEffect(() => {
-    console.log("props.shop", props.shopInfo);
-    if (!!props.shopInfo.name) {
+    console.log("props.shop", props);
+    if (!!props.shopInfo.name && !shopInfo.name) {
+      setShopInfo(props.shopInfo)
+    }
+    if (!!shopInfo.name) {
       toggleGetAllDraftOrders();
     }
-  }, [ props.shopInfo ]);
+  }, [ props.shopInfo, shopInfo ]);
 
   useEffect(() => {
     if (!connectedToLit) {
@@ -105,17 +109,13 @@ const Main = (props) => {
   };
 
   const addAccessControlConditions = async (acc) => {
-    console.log("check acc before humanizedAcc", acc);
     const humanizedAcc = await humanizeAccessControlConditions(acc);
-    console.log("humanizedAcc", humanizedAcc);
     setUnifiedAccessControlConditions(acc);
     setHumanizedAccessControlConditions(humanizedAcc);
   };
 
   const sendDraftOrderToDb = async (draftOrderObj) => {
-    console.log("draftOrderObj", draftOrderObj);
-
-    const chainArray = draftOrderObj.extra_data.split(",");
+    const chainArray = draftOrderObj.condition_types.split(",");
     let authSigs = {};
     chainArray.forEach((c) => {
       if (c === "evmBasic") {
@@ -138,15 +138,11 @@ const Main = (props) => {
         extraData: "",
       };
 
-      console.log('check creation resource ID', resourceId)
-
       const signedTokenObj = {
         unifiedAccessControlConditions: unifiedAccessControlConditions,
         authSig: authSigs,
         resourceId,
       };
-
-      console.log("check signedTokenObj", signedTokenObj);
 
       litNodeClient.saveSigningCondition({
         ...signedTokenObj,
@@ -162,7 +158,6 @@ const Main = (props) => {
   };
 
   const handleDeleteDraftOrder = async (draftOrderObj) => {
-    console.log('draft order obj', draftOrderObj)
     try {
       const res = await deleteDraftOrder(
         draftOrderObj.id,
@@ -175,11 +170,12 @@ const Main = (props) => {
   };
 
   const toggleGetAllDraftOrders = async () => {
+    console.log('shopinfo', shopInfo)
     setLoading(true);
     try {
-      const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
+      const allDraftOrders = await getAllUserDraftOrders(shopInfo.shopId);
+      console.log('#$%^&*( - ', allDraftOrders.data);
       setDraftOrders(allDraftOrders.data);
-      console.log("allDraftOrders", allDraftOrders);
       setLoading(false);
     } catch (err) {
       console.error("Error getting draft orders:", err);
@@ -190,15 +186,6 @@ const Main = (props) => {
   return (
     <div style={{paddingBottom: "5rem"}}>
       {loading || !connectedToLit || draftOrders === null ? (
-        // {true ? (
-        // <Layout>
-        //   <Layout.Section>
-        //     <TextContainer>
-        //       <Heading>Loading...</Heading>
-        //       <Spinner size="large"/>
-        //     </TextContainer>
-        //   </Layout.Section>
-        // </Layout>
         <div className="lit-loader">
           <Heading>Loading...</Heading>
           <Spinner size="large"/>
@@ -210,16 +197,12 @@ const Main = (props) => {
             <Card>
               <DraftOrderTable
                 draftOrders={draftOrders}
+                toggleGetAllDraftOrders={toggleGetAllDraftOrders}
                 handleDeleteDraftOrder={handleDeleteDraftOrder}
                 setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
               />
             </Card>
           </Layout.Section>
-          {/*<Layout.Section>*/}
-          {/*  <Button onClick={() => setOpenCreateDraftOrderModal(true)}>*/}
-          {/*    Create Token Access*/}
-          {/*  </Button>*/}
-          {/*</Layout.Section>*/}
           <Layout.Section>
             <Card>
               <SettingToggle
