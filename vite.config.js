@@ -11,7 +11,6 @@ export default {
     "process.env.LIT_PROTOCOL_OAUTH_API_HOST": JSON.stringify(
       process.env.LIT_PROTOCOL_OAUTH_API_HOST
     ),
-    WebSocket: WebSocket,
   },
-  plugins: [react()],
+  plugins: [ react() ],
 };
