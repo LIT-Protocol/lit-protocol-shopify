@@ -1,69 +1,413 @@
 <div>
   <script type="text/javascript">
-    const forwardToLitPromotion = () => {
-      fetch('/cart.js')
-        .then(response => response.json())
-        .then(cart => {
-          console.log('holy shit its a cart!', cart)
+    console.log('UPGRADE VI')
+
+    // NOTE: hide buttons on render before anyone sees them
+    const productFormButtons = document.getElementsByClassName("product-form__buttons");
+    for (let i = 0; i < productFormButtons.length; i++) {
+      productFormButtons[i].style.display = "none";
+    }
+
+    // NOTE: set initial loader
+    let loading = true;
+    let showRedeemedOffers = false;
+    let showUnavailableOffers = false;
+    let conditionTypes = [];
+
+    function removeBuyAndAddButtons() {
+      productFormButtons.forEach(p => {
+        p.remove();
+      })
+    }
+
+    function renderInitialDisplay() {
+      const litAnchor = document.getElementById('lit-page-anchor');
+      const currentBlock = window.LitTokenGatingData.blockInfo;
+      const anchorInnerHtml = `
+        <div id="lit-promotional-container"
+             style="transition-duration: 0.2s; border: 1px solid ${currentBlock.border_color}; border-radius: ${currentBlock.border_radius}px; background: ${currentBlock.background_color}"
+             onclick="operations()">
+          <div class="lit-offer-loader"
+               style="border: 0.75rem solid ${currentBlock.primary_loader_color}; border-top: 0.75rem solid ${currentBlock.accent_loader_color}"></div>
+        </div>
+      `;
+      litAnchor.innerHTML = anchorInnerHtml;
+    }
+
+    async function initializePage() {
+      window.alert = function () {
+      }
+      let litNodeClient = new window.LitJsSdk.LitNodeClient();
+      await litNodeClient.connect();
+      window.litNodeClient = litNodeClient;
+
+      const blockInfo = {{ block.settings | json }};
+      const productInfo = {{ product | json }};
+      let isExclusive = false;
+
+      const metafieldData = {{ product.metafields.lit_offer | json }};
+      const metafieldArray = [];
+
+      console.log('@@@@@@->', metafieldData)
+
+      let conditionTypesHolder = [];
+
+      Object.values(metafieldData).forEach(m => {
+        const parsedOffer = JSON.parse(m);
+        console.log('PARSED OFFER', parsedOffer)
+        const splitConditionTypes = parsedOffer.conditionTypes.split(',');
+        splitConditionTypes.forEach(c => {
+          conditionTypesHolder.push(c);
         })
 
-      window.open(
-        // `http://localhost:4000/shopify?shop=${window.Shopify["shop"]}&productId=${window.ShopifyAnalytics?.meta?.product["gid"]}`
-        `https://oauth-app.litgateway.com/shopify?shop=${window.Shopify["shop"]}&productId=${window.ShopifyAnalytics?.meta?.product["gid"]}`
-        // `https://oauth-app-dev.litgateway.com/shopify?shop=${window.Shopify["shop"]}&productId=${window.ShopifyAnalytics?.meta?.product["gid"]}`
-      );
-    };
+        if (parsedOffer.offerType === 'exclusive') {
+          isExclusive = true;
+        }
+        metafieldArray.push(parsedOffer);
+      });
+
+      conditionTypes = Array.from(new Set(conditionTypesHolder));
+
+      if (!metafieldArray.length) {
+        for (let i = 0; i < productFormButtons.length; i++) {
+          productFormButtons[i].style.display = "revert";
+        }
+        return;
+      }
+
+      const litTokenGatingObj = {
+        authSig: null,
+        productInfo,
+        metafieldArray,
+        blockInfo,
+      };
+
+      window.LitTokenGatingData = litTokenGatingObj;
+      renderInitialDisplay();
+
+      // if exclusive is present, delete buttons entirely
+      if (isExclusive) {
+        removeBuyAndAddButtons();
+      } else {
+        for (let i = 0; i < productFormButtons.length; i++) {
+          productFormButtons[i].style.display = "revert";
+        }
+      }
+
+      loading = false;
+      updateContainer();
+    }
+
+    function updateShowUnavailable() {
+      showUnavailableOffers = true;
+    }
+
+    function updateShowRedeemed() {
+      showRedeemedOffers = true;
+    }
+
+    function updateContainer(toggleError = null) {
+      const litContainer = document.getElementById('lit-promotional-container');
+      const currentBlock = window.LitTokenGatingData.blockInfo;
+      if (!!toggleError) {
+        litContainer.innerHTML = `
+            <div>Something went wrong</div>
+        `
+        return;
+      }
+      if (loading) {
+        litContainer.innerHTML = `
+            <div class="lit-offer-loader" style="border: 0.75rem solid ${currentBlock.primary_loader_color}; border-top: 0.75rem solid ${currentBlock.accent_loader_color}"></div>
+<!--          <div class="lit-loader">TEST-->
+<!--            <div></div>-->
+<!--            <div></div>-->
+<!--          </div>-->
+        `
+      } else if (!window.LitTokenGatingData['authSig']) {
+        litContainer.innerHTML = `
+          <div class="lit-discount-container" id="lit-discount-container" style="background-color: transparent; border-radius: ${currentBlock.border_radius}">
+            <p class="redeem-text"
+            style="color: ${currentBlock.primary_text_color}"> There ${window.LitTokenGatingData.metafieldArray.length === 1 ? `is ${window.LitTokenGatingData.metafieldArray.length} offer ` : `are ${window.LitTokenGatingData.metafieldArray.length} offers`} available for this product.</p>
+            <button id="log-discounts" class="redeem-button"
+            style="color: ${currentBlock.accent_text_color}">
+            Click to connect wallet and view offers.
+            </button>
+          </div>
+        `
+      } else {
+        let qualifiedHtmlHolder = ``;
+        let offersRedeemedHtmlHolder = ``;
+        let unqualifiedHtmlHolder = ``;
+
+        // map over metafield array and assign blocks to correct holder
+        window.LitTokenGatingData.metafieldArray.forEach(m => {
+          if (m['resolved'] && m.redeemStatus['allowRedeem']) {
+            qualifiedHtmlHolder = qualifiedHtmlHolder + `
+              <a class='lit-offer-container' target="_blank" href="${m.redeemAddress}" style="color: ${currentBlock.primary_text_color}">
+                <p class='lit-offer-container-title' style="color: ${currentBlock.accent_text_color}">${m.title}</p>
+                <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
+                <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
+                <p class='lit-offer-condition-type-and-chain'><strong>Condition Types:</strong> ${m.conditionTypes} || <strong>Chains Used:</strong> ${m.usedChains}</p>
+              </a>
+            `
+          } else if (m['resolved'] && !m.redeemStatus['allowRedeem']) {
+            if (showRedeemedOffers) {
+              offersRedeemedHtmlHolder = offersRedeemedHtmlHolder + `
+                <span class='lit-offer-container' style="color: ${currentBlock.primary_text_color}">
+                  <p class='lit-offer-container-title'>${m.title}</p>
+                  <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
+                  <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
+                  <p class='lit-offer-condition-type-and-chain'><strong>Condition Types:</strong> ${m.conditionTypes} || <strong>Chains Used:</strong> ${m.usedChains}</p>
+                </span>
+              `
+            } else {
+              offersRedeemedHtmlHolder = offersRedeemedHtmlHolder + `
+              <span class="lit-click-to-show-offers-button" onclick="updateShowRedeemed()">Click to show previously redeemed offers</span>
+              `
+            }
+          } else {
+            if (showUnavailableOffers) {
+              unqualifiedHtmlHolder = unqualifiedHtmlHolder + `
+                <span class='lit-offer-container' style="color: ${currentBlock.primary_text_color}">
+                  <p class='lit-offer-container-title'>${m.title}</p>
+                  <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
+                  <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
+                  <p class='lit-offer-condition-type-and-chain'><strong>Condition Types:</strong> ${m.conditionTypes} || <strong>Chains Used:</strong> ${m.usedChains}</p>
+                </span>
+              `
+            } else {
+              unqualifiedHtmlHolder = unqualifiedHtmlHolder + `
+                <span class="lit-click-to-show-offers-button" onclick="updateShowUnavailable()">Click to show unavailable offers</span>
+              `
+            }
+          }
+        })
+
+        litContainer.innerHTML = `
+          <div class="lit-offers-container">
+            <div class="lit-qualified-offers" style="${!offersRedeemedHtmlHolder.length && !unqualifiedHtmlHolder.length ? '' : `border-bottom: 1px solid ${currentBlock.border_color}`}">
+                <span style="color: ${currentBlock.primary_text_color}">${qualifiedHtmlHolder.length ? 'Available Offers' : 'You do not currently qualify for any offers.'}</span>
+                ${qualifiedHtmlHolder}
+            </div>
+            <div class="lit-redeemed-offers" style="${offersRedeemedHtmlHolder.length ? '' : 'display: none'}; ${!unqualifiedHtmlHolder.length ? '' : 'border: 1px solid ${currentBlock.border_color'}">
+                <span style="color: ${currentBlock.primary_text_color}" style="${showRedeemedOffers ? '' : 'display: none'}">Offers you have already redeemed</span>
+                ${offersRedeemedHtmlHolder}
+            </div>
+            <div class="lit-unqualified-offers" style="${unqualifiedHtmlHolder.length ? '' : 'display: none'}">
+               <span style="color: ${currentBlock.primary_text_color}" style="${showUnavailableOffers ? '' : 'display: none'}">Unavailable Offers</span>
+               ${unqualifiedHtmlHolder}
+            </div>
+          </div>
+        `
+      }
+    }
+
+    async function operations(backendLink = null) {
+      if (!window.LitTokenGatingData?.authSig?.['ethereum'] && !window.LitTokenGatingData?.authSig?.['solana']) {
+        loading = true;
+        updateContainer();
+        const authSigPromises = conditionTypes.map(async c => {
+          console.log('CHECK ON C', c)
+          // todo: will need to update this as some point to describe EVM chains as something better than 'not solRpc'
+          if (c !== 'solRpc') {
+            return await getEVMAuthSig();
+          } else if (c === 'solRpc') {
+            return await getSolanaAuthSig();
+          }
+        });
+        const authSigsRes = await Promise.all(authSigPromises);
+        let authSigs = {};
+        for (let i = 0; i < conditionTypes.length; i++) {
+          if (conditionTypes[i] !== 'solRpc') {
+            authSigs['ethereum'] = authSigsRes[i];
+          } else if (conditionTypes[i] === 'solRpc') {
+            authSigs['solana'] = authSigsRes[i];
+          }
+        }
+        window.LitTokenGatingData.authSig = authSigs;
+        await mapThroughOffers();
+        loading = false;
+        updateContainer();
+      }
+    }
+
+    async function getEVMAuthSig() {
+      try {
+        return await window.LitJsSdk.checkAndSignAuthMessage({chain: 'ethereum', switchChain: false});
+      } catch (e) {
+        loading = false;
+        updateContainer(true);
+        if (e.code === 4001) {
+          alert('Something went wrong. Please check that your wallet is compatible.')
+          return;
+        }
+        if (e?.errorCode === "no_wallet") {
+          alert("You need a wallet to use the Lit Protocol")
+          return false;
+        } else if (e?.errorCode === "wrong_network") {
+          alert(e.message);
+          return false;
+        } else {
+          throw e;
+          return false;
+        }
+      }
+    }
+
+    async function getSolanaAuthSig() {
+      try {
+        return window.LitJsSdk.checkAndSignAuthMessage({chain: 'solana', switchChain: false});
+      } catch (err) {
+        loading = false;
+        updateContainer(true);
+      }
+    }
+
+    async function mapThroughOffers() {
+      let jwt = null;
+      let authSigHolder = null;
+
+      // map through offers and mark them as viable or not
+      const updateMetafieldArray = window.LitTokenGatingData.metafieldArray.map(async (m) => {
+        let updateForMetafield = m;
+        const resourceId = {
+          // baseUrl: process.env.REACT_APP_LIT_PROTOCOL_OAUTH_API_HOST,
+          // baseUrl: "http://localhost:4000",
+          // baseUrl: "https://oauth-app-dev.litgateway.com",
+          baseUrl: "https://oauth-app.litgateway.com",
+          path: "/shopify/l/" + m['offerId'],
+          orgId: "",
+          role: "customer",
+          extraData: "",
+        };
+        authSigHolder = {}
+
+        const splitConditionTypes = m.conditionTypes.split(',')
+
+        if (splitConditionTypes.indexOf('evmBasic') !== -1) {
+          authSigHolder['ethereum'] = window.LitTokenGatingData.authSig['ethereum'];
+        }
+        if (splitConditionTypes.indexOf('solRpc') !== -1) {
+          authSigHolder['solana'] = window.LitTokenGatingData.authSig['solana'];
+        }
+
+        console.log('!!!!!! resourceId', resourceId)
+
+        try {
+          console.log('CHECK JWT', {
+            unifiedAccessControlConditions: JSON.parse(m.accessControlConditions),
+            authSig: authSigHolder,
+            resourceId: resourceId,
+          })
+          jwt = await window.litNodeClient.getSignedToken({
+            unifiedAccessControlConditions: JSON.parse(m.accessControlConditions),
+            authSig: authSigHolder,
+            resourceId: resourceId,
+          });
+
+          console.log('check resolved JWT', jwt)
+
+          updateForMetafield['resolved'] = true;
+        } catch (err) {
+          console.log('check unresolves err', err)
+          updateForMetafield['resolved'] = false;
+        }
+        return updateForMetafield;
+      });
+
+      let resolvedUpdatedMetafieldArray = await Promise.all(updateMetafieldArray);
+
+      console.log('@@@@@ - POST BODY', {
+        offerArray: resolvedUpdatedMetafieldArray,
+        jwt,
+        authSig: window.LitTokenGatingData.authSig
+      })
+
+      const postBody = {
+        offerArray: resolvedUpdatedMetafieldArray,
+        jwt,
+        authSig: window.LitTokenGatingData.authSig,
+        shopName: window.Shopify.shop,
+        product: window.ShopifyAnalytics.meta.product.gid
+      };
+
+      // check offers to see if they have previously been redeemed
+      try {
+        // const checkedRedeemLimits = await fetch(`http://localhost:4000/api/shopify/getRedeemStats`, {
+        // const checkedRedeemLimits = await fetch(`https://oauth-app-dev.litgateway.com/api/shopify/getRedeemStats`, {
+        const checkedRedeemLimits = await fetch(`https://oauth-app.litgateway.com/api/shopify/getRedeemStats`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postBody)
+        })
+        resolvedUpdatedMetafieldArray = await checkedRedeemLimits.json();
+      } catch (err) {
+        console.log('Error checking redemption status:', err);
+        updateContainer(true);
+
+      }
+      window.LitTokenGatingData.metafieldArray = resolvedUpdatedMetafieldArray;
+    }
+
   </script>
+  <script onload="initializePage()" src="https://jscdn.litgateway.com/index.web.js" defer></script>
   {% if product.available == true %}
-    {% for tag in product.tags %}
-      {% if tag == "lit-discount" %}
-        <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
-          <div class="discount-container" style="background: {{block.settings.background_color}}">
-            <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.discount_text}}</p>
-            <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
-              Click to connect wallet and view discount
-            </button>
-          </div>
-        </div>
-      {% endif %}
-      {% if tag == "lit-exclusive" %}
-        <div id="lit-promotional-container" style="border: 2px solid {{block.settings.border_color}}" onclick="forwardToLitPromotion()">
-          <div class="discount-container" style="background: {{block.settings.background_color}}">
-            <p class="redeem-text" style="color: {{block.settings.detail_text_color}}"> {{block.settings.exclusive_text}}</p>
-            <button id="log-discounts" class="redeem-button" style="color: {{block.settings.connect_text_color}}">
-              Click to connect wallet and check access
-            </button>
-          </div>
-          <script type="text/javascript">
-            const productFormButtons = document.getElementsByClassName("product-form__buttons");
-            setTimeout(() => {
-              if ("{{ tag }}" === 'lit-exclusive') {
-                for (let i = 0; i < productFormButtons.length; i++) {
-                  productFormButtons[i].remove();
-                }
-              }
-            }, 0)
-          </script>
-        </div>
-      {% endif %}
-    {% endfor %}
+    <div id="lit-page-anchor"></div>
   {% endif %}
 </div>
 
 {% schema %}
 {
-"name": "Lit App Block",
-"target": "section",
-"javascript": "lit-promotional.js",
-"stylesheet": "lit-promotional.css",
-"settings": [
-{ "type": "text", "id": "exclusive_text", "label": "Text for exclusive offers", "default": "This product is token-gated and only available to qualified users." },
-{ "type": "text", "id": "discount_text", "label": "Text for discount offers", "default": "This product qualifies for a token-based discount!" },
-{ "type": "color_background", "id": "background_color", "label": "Background Color", "default": "#ffffff" },
-{ "type": "color", "id": "border_color", "label": "Border Color", "default": "#757575" },
-{ "type": "color", "id": "detail_text_color", "label": "Detail Text Color", "default": "#757575" },
-{ "type": "color", "id": "connect_text_color", "label": "Connect Text Color", "default": "#2c0c72" }
-]
+  "name": "Lit App Block",
+  "target": "section",
+  "javascript": "lit-promotional.js",
+  "stylesheet": "lit-promotional.css",
+  "settings": [
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#efecec"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#757575"
+    },
+    {
+      "type": "color",
+      "id": "primary_text_color",
+      "label": "Primary Text Color",
+      "default": "#757575"
+    },
+    {
+      "type": "color",
+      "id": "accent_text_color",
+      "label": "Accent Text Color",
+      "default": "#2c0c72"
+    },
+    {
+      "type": "color",
+      "id": "primary_loader_color",
+      "label": "Primary Loader Color",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "accent_loader_color",
+      "label": "Accent Loader Color",
+      "default": "#3498db"
+    },
+    {
+      "type": "text",
+      "id": "border_radius",
+      "label": "Border Radius in pixels (0 is none)",
+      "default": "4"
+    }
+  ]
 }
 {% endschema %}
 

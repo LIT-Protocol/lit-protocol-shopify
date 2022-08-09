@@ -1,6 +1,6 @@
 import react from "@vitejs/plugin-react";
 import "dotenv/config";
-import WebSocket from "ws";
+// import WebSocket from "ws";
 
 /**
  * @type {import('vite').UserConfig}

@@ -40,17 +40,18 @@ const storedAuthSigs = {
 };
 
 const Main = (props) => {
-  const [draftOrders, setDraftOrders] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [connectedToLit, setConnectedToLit] = useState(false);
+  const [ draftOrders, setDraftOrders ] = useState(null);
+  const [ loading, setLoading ] = useState(true);
+  const [ connectedToLit, setConnectedToLit ] = useState(false);
 
-  const [openCreateDraftOrderModal, setOpenCreateDraftOrderModal] =
+  const [ openCreateDraftOrderModal, setOpenCreateDraftOrderModal ] =
     useState(false);
-  const [openShareModal, setOpenShareModal] = useState(false);
-  const [unifiedAccessControlConditions, setUnifiedAccessControlConditions] =
+  const [ openShareModal, setOpenShareModal ] = useState(false);
+  const [ unifiedAccessControlConditions, setUnifiedAccessControlConditions ] =
     useState(null);
-  const [permanent, setPermanent] = useState(true);
-  const [hideInstructions, setHideInstructions] = useState(true);
+  const [ permanent, setPermanent ] = useState(true);
+  const [ hideInstructions, setHideInstructions ] = useState(true);
+  const [ shopInfo, setShopInfo ] = useState({});
 
   const [
     humanizedAccessControlConditions,
@@ -68,17 +69,20 @@ const Main = (props) => {
   // );
 
   useEffect(() => {
-    console.log("props.shop", props.shopInfo);
-    if (!!props.shopInfo.name) {
+    console.log("props.shop", props);
+    if (!!props.shopInfo.name && !shopInfo.name) {
+      setShopInfo(props.shopInfo)
+    }
+    if (!!shopInfo.name) {
       toggleGetAllDraftOrders();
     }
-  }, [props.shopInfo]);
+  }, [ props.shopInfo, shopInfo ]);
 
   useEffect(() => {
     if (!connectedToLit) {
       connectToNode();
     }
-  }, [connectedToLit]);
+  }, [ connectedToLit ]);
 
   const connectToNode = async () => {
     const litNodeClient = new LitJsSdk.LitNodeClient();
@@ -105,17 +109,13 @@ const Main = (props) => {
   };
 
   const addAccessControlConditions = async (acc) => {
-    console.log("check acc before humanizedAcc", acc);
     const humanizedAcc = await humanizeAccessControlConditions(acc);
-    console.log("humanizedAcc", humanizedAcc);
     setUnifiedAccessControlConditions(acc);
     setHumanizedAccessControlConditions(humanizedAcc);
   };
 
   const sendDraftOrderToDb = async (draftOrderObj) => {
-    console.log("draftOrderObj", draftOrderObj);
-
-    const chainArray = draftOrderObj.extra_data.split(",");
+    const chainArray = draftOrderObj.condition_types.split(",");
     let authSigs = {};
     chainArray.forEach((c) => {
       if (c === "evmBasic") {
@@ -138,13 +138,13 @@ const Main = (props) => {
         extraData: "",
       };
 
+      console.log('CHECK RESOURCE ID', resourceId)
+
       const signedTokenObj = {
         unifiedAccessControlConditions: unifiedAccessControlConditions,
         authSig: authSigs,
         resourceId,
       };
-
-      console.log("check signedTokenObj", signedTokenObj);
 
       litNodeClient.saveSigningCondition({
         ...signedTokenObj,
@@ -172,11 +172,12 @@ const Main = (props) => {
   };
 
   const toggleGetAllDraftOrders = async () => {
+    console.log('shopinfo', shopInfo)
     setLoading(true);
     try {
-      const allDraftOrders = await getAllUserDraftOrders(props.shopInfo.shopId);
+      const allDraftOrders = await getAllUserDraftOrders(shopInfo.shopId);
+      console.log('#$%^&*( - ', allDraftOrders.data);
       setDraftOrders(allDraftOrders.data);
-      console.log("allDraftOrders", allDraftOrders);
       setLoading(false);
     } catch (err) {
       console.error("Error getting draft orders:", err);
@@ -185,32 +186,25 @@ const Main = (props) => {
   };
 
   return (
-    <div style={{ paddingBottom: "5rem" }}>
+    <div style={{paddingBottom: "5rem"}}>
       {loading || !connectedToLit || draftOrders === null ? (
-        <Layout>
-          <Layout.Section>
-            <TextContainer>
-              <Heading>Loading...</Heading>
-              <Spinner size="large" />
-            </TextContainer>
-          </Layout.Section>
-        </Layout>
+        <div className="lit-loader">
+          <Heading>Loading...</Heading>
+          <Spinner size="large"/>
+        </div>
+
       ) : (
         <Layout>
           <Layout.Section>
             <Card>
               <DraftOrderTable
                 draftOrders={draftOrders}
+                toggleGetAllDraftOrders={toggleGetAllDraftOrders}
                 handleDeleteDraftOrder={handleDeleteDraftOrder}
                 setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
               />
             </Card>
           </Layout.Section>
-          {/*<Layout.Section>*/}
-          {/*  <Button onClick={() => setOpenCreateDraftOrderModal(true)}>*/}
-          {/*    Create Token Access*/}
-          {/*  </Button>*/}
-          {/*</Layout.Section>*/}
           <Layout.Section>
             <Card>
               <SettingToggle
@@ -231,7 +225,7 @@ const Main = (props) => {
                   </p>
                   <p>
                     <a
-                      style={{ color: "#5E36B7" }}
+                      style={{color: "#5E36B7"}}
                       href={
                         "https://lit-services-docs.netlify.app/docs/shopify-docs/intro"
                       }
@@ -255,7 +249,7 @@ const Main = (props) => {
                       }
                       target="_blank"
                     >
-                      <strong style={{ color: "#5E36B7" }}>
+                      <strong style={{color: "#5E36B7"}}>
                         Instructions can be found here.
                       </strong>
                     </a>
@@ -272,7 +266,7 @@ const Main = (props) => {
             )}
           </Layout.Section>
           <Layout.Section>
-            <UpdateList />
+            <UpdateList/>
           </Layout.Section>
         </Layout>
       )}
