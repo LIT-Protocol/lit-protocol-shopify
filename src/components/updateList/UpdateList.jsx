@@ -5,8 +5,9 @@ const UpdateList = (props) => {
   const [ showUpdateList, setShowUpdateList ] = useState(false);
 
   return (
-    <Card title="Last Update on 8-9-2022  - IMPORTANT: if this breaks your current conditions please contact us."
-          sectioned>
+    <Card
+      title="Last Update on 8-9-2022  - IMPORTANT: if this breaks your current conditions please contact us at shopifysupport@litprotocol.com."
+      sectioned>
       <TextContainer style={{paddingTop: "0 !important"}}>
         <h3>Click here to see updates and new features.</h3>
         <Button onClick={() => setShowUpdateList(!showUpdateList)}>
@@ -21,7 +22,7 @@ const UpdateList = (props) => {
               <ul>
                 <li style={{listStyleType: 'none'}}>
                   <strong>
-                    IMPORTANT: if this breaks your current conditions please contact us as soon as possible.
+                    IMPORTANT: if this breaks your current conditions please contact us.
                   </strong>
                 </li>
                 <li style={{listStyleType: 'none'}}>
