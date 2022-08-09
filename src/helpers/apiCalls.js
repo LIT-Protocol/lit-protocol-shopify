@@ -1,119 +1,46 @@
 import axios from "axios";
 
 export const saveDraftOrder = async (draftOrder) => {
-  // endpoints for development
-  if (process.env.DEVELOPMENT) {
-    const resp = await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveDevDraftOrder`,
-      {
-        ...draftOrder,
-      }
-    );
+  const resp = await axios.post(
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveDevDraftOrder`,
+    {
+      ...draftOrder,
+    }
+  );
 
-    return resp;
-  } else {
-    // endpoints for production
-    const resp = await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveDraftOrder`,
-      {
-        ...draftOrder,
-      }
-    );
-
-    return resp;
-  }
-};
-
-export const checkIfProductHasBeenUsed = async (gid) => {
-  // endpoints for development
-  if (process.env.DEVELOPMENT) {
-    return await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/checkIfDevProductHasBeenUsed`,
-      {
-        gid,
-      }
-    );
-  } else {
-    // endpoints for prod
-    return await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/checkIfProductHasBeenUsed`,
-      {
-        gid,
-      }
-    );
-  }
+  return resp;
 };
 
 export const getAllUserDraftOrders = async (shopId) => {
-  // endpoints for development
-  if (process.env.DEVELOPMENT) {
-    return await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllDevDraftOrders`,
-      {
-        shopId,
-      }
-    );
-  } else {
-    // endpoints for prod
-    return await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllDraftOrders`,
-      {
-        shopId,
-      }
-    );
-  }
+  return await axios.post(
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllDevDraftOrders`,
+    {
+      shopId,
+    }
+  );
 };
 
 export const deleteDraftOrder = async (id, shopId) => {
-  // endpoints for development
-  if (process.env.DEVELOPMENT) {
-    const resp = await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteDevDraftOrder`,
-      {
-        id,
-        shopId,
-      }
-    );
+  const resp = await axios.post(
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteDevDraftOrder`,
+    {
+      id,
+      shopId,
+    }
+  );
 
-    return resp;
-  } else {
-    // endpoints for prod
-    const resp = await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteDraftOrder`,
-      {
-        id,
-        shopId,
-      }
-    );
-
-    return resp;
-  }
+  return resp;
 };
 
 export const updateRedeemedList = async (redeemedList, typeOfRedeem, id) => {
-  // endpoints for development
-  if (process.env.DEVELOPMENT) {
-    const resp = await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/updateDevRedeemedList`,
-      {
-        id,
-        typeOfRedeem,
-        redeemedList
-      }
-    );
+  const resp = await axios.post(
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/updateDevRedeemedList`,
+    {
+      id,
+      typeOfRedeem,
+      redeemedList
+    }
+  );
 
-    return resp;
-  } else {
-    // endpoints for prod
-    const resp = await axios.post(
-      `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/updateRedeemedList`,
-      {
-        id,
-        typeOfRedeem,
-        redeemedList
-      }
-    );
-
-    return resp;
-  }
+  return resp;
 };
