@@ -48,13 +48,10 @@
       const metafieldData = {{ product.metafields.lit_offer | json }};
       const metafieldArray = [];
 
-      console.log('@@@@@@->', metafieldData)
-
       let conditionTypesHolder = [];
 
       Object.values(metafieldData).forEach(m => {
         const parsedOffer = JSON.parse(m);
-        console.log('PARSED OFFER', parsedOffer)
         const splitConditionTypes = parsedOffer.conditionTypes.split(',');
         splitConditionTypes.forEach(c => {
           conditionTypesHolder.push(c);
