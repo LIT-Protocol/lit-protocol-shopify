@@ -230,7 +230,7 @@ const CreateDraftOrderModal = (props) => {
                         <TextStyle>
                           <List>
                             <List.Item>
-                              Select a product to put behind token access.
+                              Select product(s) to put behind token access.
                             </List.Item>
                           </List>
                         </TextStyle>
@@ -247,17 +247,17 @@ const CreateDraftOrderModal = (props) => {
                       autoComplete={"off"}
                     />
                   </Stack.Item>
-                  <Stack.Item>
-                    {!props.hideInstructions && (
-                      <TextStyle>
-                        <List>
-                          <List.Item>
-                            Enter a title for the offer.
-                          </List.Item>
-                        </List>
-                      </TextStyle>
-                    )}
-                  </Stack.Item>
+                  {/*<Stack.Item>*/}
+                  {/*  {!props.hideInstructions && (*/}
+                  {/*    <TextStyle>*/}
+                  {/*      <List>*/}
+                  {/*        <List.Item>*/}
+                  {/*          Enter a title for the offer.*/}
+                  {/*        </List.Item>*/}
+                  {/*      </List>*/}
+                  {/*    </TextStyle>*/}
+                  {/*  )}*/}
+                  {/*</Stack.Item>*/}
                   <Select
                     label={"Type of Access"}
                     options={typeOfAccessOptions}
@@ -290,7 +290,8 @@ const CreateDraftOrderModal = (props) => {
                       <TextStyle>
                         <List>
                           <List.Item>
-                            Enter a description that users will see for this offer.
+                            Enter a description that users will see for this offer. If no description is made, the
+                            humanized access control conditions will display.
                           </List.Item>
                         </List>
                       </TextStyle>

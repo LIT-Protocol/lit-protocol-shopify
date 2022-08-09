@@ -22,11 +22,6 @@ const UpdateList = (props) => {
               <ul>
                 <li style={{listStyleType: 'none'}}>
                   <strong>
-                    IMPORTANT: if this breaks your current conditions please contact us.
-                  </strong>
-                </li>
-                <li style={{listStyleType: 'none'}}>
-                  <strong>
                     Update for app theme extension and redemption limits using NFT IDs:{" "}
                   </strong>{" "}
                 </li>
