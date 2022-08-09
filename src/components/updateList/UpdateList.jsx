@@ -2,17 +2,45 @@ import React, { useState } from "react";
 import { Button, Card, List, TextContainer } from "@shopify/polaris";
 
 const UpdateList = (props) => {
-  const [showUpdateList, setShowUpdateList] = useState(false);
+  const [ showUpdateList, setShowUpdateList ] = useState(false);
 
   return (
-    <Card title="Last Update on 6-13-2022" sectioned>
-      <TextContainer style={{ paddingTop: "0 !important" }}>
+    <Card title="Last Update on 8-9-2022" sectioned>
+      <TextContainer style={{paddingTop: "0 !important"}}>
         <h3>Click here to see updates and new features.</h3>
         <Button onClick={() => setShowUpdateList(!showUpdateList)}>
           {showUpdateList ? "Hide updates list" : "Show updates list"}
         </Button>
         {showUpdateList && (
           <List type="bullet">
+            <List.Item>
+              <p>
+                <strong>8-9-2022</strong>
+              </p>
+              <ul>
+                <li style={{listStyleType: 'none'}}>
+                  <strong>
+                    IMPORTANT: if this breaks your current conditions please contact us as soon as possible.
+                  </strong>
+                </li>
+                <li style={{listStyleType: 'none'}}>
+                  <strong>
+                    Update for app theme extension and redemption limits using NFT IDs:{" "}
+                  </strong>{" "}
+                </li>
+                <ul>
+                  <li>Discounts can now have multiple products</li>
+                  <li>Products can now be associated with multiple discounts</li>
+                  <li>Single condition gates for Ethereum and Polygon can now be redemption limited by NFT ID</li>
+                  <li>The list of previously redeemed wallets can now be edited</li>
+                  <li>The list of previously redeemed NFT IDs can be edited</li>
+                  <li>App block shows available discounts in-store</li>
+                  <li>App block shows users discounts they qualify for, as well as those they do not, and
+                    have already redeemed.
+                  </li>
+                </ul>
+              </ul>
+            </List.Item>
             <List.Item>
               <p>
                 <strong>6-13-2022</strong>

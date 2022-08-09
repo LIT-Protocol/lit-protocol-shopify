@@ -138,6 +138,8 @@ const Main = (props) => {
         extraData: "",
       };
 
+      console.log('CHECK RESOURCE ID', resourceId)
+
       const signedTokenObj = {
         unifiedAccessControlConditions: unifiedAccessControlConditions,
         authSig: authSigs,
