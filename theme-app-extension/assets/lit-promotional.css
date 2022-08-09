@@ -2,16 +2,26 @@
   /* border: 2px solid #757575; */
   /* border-style: solid;
   border-width: 2px; */
+  display: flex;
+  justify-content: center;
+  align-content: center;
   cursor: pointer;
+  margin: 1rem;
+  transition: width 0.5s, height 0.5s;
+  transform: scaleY(1);
+  /*min-height: 5rem;*/
 }
 
-.discount-container {
+.lit-discount-container {
   padding: 0.5rem 0.8rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  width: 100%;
+  animation-name: fadein;
+  animation-duration: 0.5s;
 }
 
 .redeem-text {
@@ -23,10 +33,166 @@
 
 .redeem-button {
   border: none;
-  /* background-color: white; */
   background-color: transparent;
+  font-family: inherit;
   margin-bottom: 0.7rem;
-  /* color: #2c0c72; */
   cursor: pointer;
   text-align: center;
+}
+
+.lit-offers-container {
+  text-decoration: none;
+  width: 100%;
+  box-sizing: border-box;
+  /*padding: 0.5em;*/
+}
+
+.lit-click-to-show-offers-button {
+  font-style: italic;
+  cursor: pointer;
+}
+
+.lit-offer-container {
+  box-sizing: border-box;
+  padding: 0 0.5em 0.5em;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition-duration: 0.2s;
+  border-top: #777 solid 1px;
+}
+
+.lit-qualified-offers, .lit-redeemed-offers, .lit-unqualified-offers {
+  padding: 0.2rem 0.5rem;
+}
+
+.lit-offer-loader {
+  display: block !important;
+  border: 0.75rem solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 0.75rem solid #3498db;
+  width: 8rem;
+  height: 8rem;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  margin: 1rem;
+}
+
+.lit-loader {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border: 1px solid #000;
+}
+
+.lit-loader div {
+  position: absolute;
+  border: 4px solid #000;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lit-loader 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.lit-loader div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+
+@keyframes lit-loader {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
+/*.lit-offer-container-top-row {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+
+.lit-offer-container-title, .lit-offer-container-products, .lit-offer-condition-type-and-chain, .lit-offer-container-description {
+  margin: 0;
+  padding: 0 0.1rem;
+  text-decoration: none;
+}
+
+.lit-offer-container-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.lit-offer-container-description {
+  font-size: 1.35rem;
+  word-break: break-all;
+}
+
+.lit-offer-container-products, .lit-offer-condition-type-and-chain {
+  font-size: 1.2rem;
+}
+
+.lit-offer-condition-type-and-chain {
+
+}
+
+.lit-redeemed-offers, .lit-unqualified-offers {
+  cursor: not-allowed;
+}
+
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadein;
+  animation-duration: 0.5s;
 }

@@ -15,7 +15,8 @@ const UpdateList = (props) => {
           <List type="bullet">
             <List.Item>
               <p>
-                <strong>8-9-2022</strong>
+                <strong>8-9-2022 - IMPORTANT: if this breaks your current conditions please contact us as soon as
+                  possible.</strong>
               </p>
               <ul>
                 <li style={{listStyleType: 'none'}}>
