@@ -202,6 +202,7 @@ const Main = (props) => {
                 toggleGetAllDraftOrders={toggleGetAllDraftOrders}
                 handleDeleteDraftOrder={handleDeleteDraftOrder}
                 setOpenCreateDraftOrderModal={setOpenCreateDraftOrderModal}
+                hideInstructions={hideInstructions}
               />
             </Card>
           </Layout.Section>

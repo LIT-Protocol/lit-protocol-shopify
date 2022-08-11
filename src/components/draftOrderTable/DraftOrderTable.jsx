@@ -168,6 +168,7 @@ const DraftOrderTable = (props) => {
                         openRedeemEdit={openRedeemEdit}
                         setOpenRedeemEdit={setOpenRedeemEdit}
                         toggleGetAllDraftOrders={props.toggleGetAllDraftOrders}
+                        hideInstructions={props.hideInstructions}
         />
       )}
     </div>

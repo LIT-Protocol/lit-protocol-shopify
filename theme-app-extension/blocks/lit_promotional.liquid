@@ -1,12 +1,27 @@
 <div>
   <script type="text/javascript">
-    console.log('UPGRADE X')
+    console.log('UPGRADE XIII')
 
     // NOTE: hide buttons on render before anyone sees them
-    const productFormButtons = document.getElementsByClassName("product-form__buttons");
-    for (let i = 0; i < productFormButtons.length; i++) {
-      productFormButtons[i].style.display = "none";
+    let productFormButtons = [];
+    let productFormElement = []
+
+    function getProductFormButtons() {
+      productFormElement = document.getElementsByClassName("product-form");
+      for (let i = 0; i < productFormElement.length; i++) {
+        console.log('product form', productFormElement[i])
+        productFormElement[i].style.display = "none";
+      }
+
+      productFormButtons = document.getElementsByClassName("product-form__buttons");
+      for (let i = 0; i < productFormButtons.length; i++) {
+        console.log('product form buttons.length', productFormButtons[i])
+        productFormButtons[i].style.display = "none";
+      }
+      console.log('initial productFormButtons', productFormButtons)
     }
+
+    getProductFormButtons();
 
     // NOTE: set initial loader
     let loading = true;
@@ -15,9 +30,18 @@
     let conditionTypes = [];
 
     function removeBuyAndAddButtons() {
-      productFormButtons.forEach(p => {
-        p.remove();
-      })
+      console.log('productFormButtons', productFormButtons)
+      if (productFormButtons && productFormButtons.length) {
+        for (let i = 0; i < productFormButtons.length; i++) {
+          productFormButtons[i].remove();
+        }
+      }
+
+      productFormElement = document.getElementsByClassName("product-form");
+      for (let i = 0; i < productFormElement.length; i++) {
+        console.log('product form', productFormElement[i])
+        productFormElement[i].style.display = "revert";
+      }
     }
 
     function renderInitialDisplay() {
@@ -64,10 +88,14 @@
       });
 
       conditionTypes = Array.from(new Set(conditionTypesHolder));
+      getProductFormButtons();
 
       if (!metafieldArray.length) {
         for (let i = 0; i < productFormButtons.length; i++) {
           productFormButtons[i].style.display = "revert";
+        }
+        for (let i = 0; i < productFormElement.length; i++) {
+          productFormElement[i].style.display = "revert";
         }
         return;
       }
@@ -86,8 +114,12 @@
       if (isExclusive) {
         removeBuyAndAddButtons();
       } else {
+        console.log('not exclusive')
         for (let i = 0; i < productFormButtons.length; i++) {
           productFormButtons[i].style.display = "revert";
+        }
+        for (let i = 0; i < productFormElement.length; i++) {
+          productFormElement[i].style.display = "revert";
         }
       }
 
@@ -97,10 +129,12 @@
 
     function updateShowUnavailable() {
       showUnavailableOffers = true;
+      updateContainer();
     }
 
     function updateShowRedeemed() {
       showRedeemedOffers = true;
+      updateContainer();
     }
 
     function updateContainer(toggleError = null) {
@@ -124,9 +158,9 @@
         litContainer.innerHTML = `
           <div class="lit-discount-container" id="lit-discount-container" style="background-color: transparent; border-radius: ${currentBlock.border_radius}">
             <p class="redeem-text"
-            style="color: ${currentBlock.primary_text_color}"> There ${window.LitTokenGatingData.metafieldArray.length === 1 ? `is ${window.LitTokenGatingData.metafieldArray.length} offer ` : `are ${window.LitTokenGatingData.metafieldArray.length} offers`} available for this product.</p>
+            style="color: ${currentBlock.detail_text_color}"> There ${window.LitTokenGatingData.metafieldArray.length === 1 ? `is ${window.LitTokenGatingData.metafieldArray.length} offer ` : `are ${window.LitTokenGatingData.metafieldArray.length} offers`} available for this product.</p>
             <button id="log-discounts" class="redeem-button"
-            style="color: ${currentBlock.accent_text_color}">
+            style="color: ${currentBlock.connect_text_color}">
             Click to connect wallet and view offers.
             </button>
           </div>
@@ -140,8 +174,8 @@
         window.LitTokenGatingData.metafieldArray.forEach(m => {
           if (m['resolved'] && m.redeemStatus['allowRedeem']) {
             qualifiedHtmlHolder = qualifiedHtmlHolder + `
-              <a class='lit-offer-container' target="_blank" href="${m.redeemAddress}" style="color: ${currentBlock.primary_text_color}">
-                <p class='lit-offer-container-title' style="color: ${currentBlock.accent_text_color}">${m.title}</p>
+              <a class='lit-offer-container' target="_blank" href="${m.redeemAddress}" style="color: ${currentBlock.detail_text_color}">
+                <p class='lit-offer-container-title' style="color: ${currentBlock.connect_text_color}">${m.title}</p>
                 <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
                 <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
                 <p class='lit-offer-condition-type-and-chain'><strong>Condition Types:</strong> ${m.conditionTypes} || <strong>Chains Used:</strong> ${m.usedChains}</p>
@@ -150,7 +184,7 @@
           } else if (m['resolved'] && !m.redeemStatus['allowRedeem']) {
             if (showRedeemedOffers) {
               offersRedeemedHtmlHolder = offersRedeemedHtmlHolder + `
-                <span class='lit-offer-container' style="color: ${currentBlock.primary_text_color}">
+                <span class='lit-offer-container' style="color: ${currentBlock.detail_text_color}">
                   <p class='lit-offer-container-title'>${m.title}</p>
                   <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
                   <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
@@ -165,7 +199,7 @@
           } else {
             if (showUnavailableOffers) {
               unqualifiedHtmlHolder = unqualifiedHtmlHolder + `
-                <span class='lit-offer-container' style="color: ${currentBlock.primary_text_color}">
+                <span class='lit-offer-container' style="color: ${currentBlock.detail_text_color}">
                   <p class='lit-offer-container-title'>${m.title}</p>
                   <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
                   <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
@@ -183,15 +217,15 @@
         litContainer.innerHTML = `
           <div class="lit-offers-container">
             <div class="lit-qualified-offers" style="${!offersRedeemedHtmlHolder.length && !unqualifiedHtmlHolder.length ? '' : `border-bottom: 1px solid ${currentBlock.border_color}`}">
-                <span style="color: ${currentBlock.primary_text_color}">${qualifiedHtmlHolder.length ? 'Available Offers' : 'You do not currently qualify for any offers.'}</span>
+                <span style="color: ${currentBlock.detail_text_color}">${qualifiedHtmlHolder.length ? 'Available Offers' : 'You do not currently qualify for any offers.'}</span>
                 ${qualifiedHtmlHolder}
             </div>
             <div class="lit-redeemed-offers" style="${offersRedeemedHtmlHolder.length ? '' : 'display: none'}; ${!unqualifiedHtmlHolder.length ? '' : 'border: 1px solid ${currentBlock.border_color'}">
-                <span style="color: ${currentBlock.primary_text_color}" style="${showRedeemedOffers ? '' : 'display: none'}">Offers you have already redeemed</span>
+                <span style="color: ${currentBlock.detail_text_color}" style="${showRedeemedOffers ? '' : 'display: none'}">Offers you have already redeemed</span>
                 ${offersRedeemedHtmlHolder}
             </div>
             <div class="lit-unqualified-offers" style="${unqualifiedHtmlHolder.length ? '' : 'display: none'}">
-               <span style="color: ${currentBlock.primary_text_color}" style="${showUnavailableOffers ? '' : 'display: none'}">Unavailable Offers</span>
+               <span style="color: ${currentBlock.detail_text_color}" style="${showUnavailableOffers ? '' : 'display: none'}">Unavailable Offers</span>
                ${unqualifiedHtmlHolder}
             </div>
           </div>
@@ -376,13 +410,13 @@
     },
     {
       "type": "color",
-      "id": "primary_text_color",
+      "id": "detail_text_color",
       "label": "Primary Text Color",
       "default": "#757575"
     },
     {
       "type": "color",
-      "id": "accent_text_color",
+      "id": "connect_text_color",
       "label": "Accent Text Color",
       "default": "#2c0c72"
     },

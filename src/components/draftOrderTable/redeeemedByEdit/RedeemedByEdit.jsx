@@ -23,7 +23,13 @@ const chainTabKeys = {
   ethereum: 'Ethereum NFTs'
 };
 
-const RedeemedByEdit = ({currentEditedDraftOrder, openRedeemEdit, setOpenRedeemEdit, toggleGetAllDraftOrders}) => {
+const RedeemedByEdit = ({
+                          currentEditedDraftOrder,
+                          openRedeemEdit,
+                          setOpenRedeemEdit,
+                          toggleGetAllDraftOrders,
+                          hideInstructions
+                        }) => {
   let redeemObj = {};
 
   const [ conditionTypesTabs, setConditionTypesTabs ] = useState([]);
@@ -248,6 +254,18 @@ const RedeemedByEdit = ({currentEditedDraftOrder, openRedeemEdit, setOpenRedeemE
       <Modal.Section>
         <div>
           <DisplayText size={'small'}>{tableName}</DisplayText>
+          {!hideInstructions && (
+            <Stack>
+              <TextStyle>
+                <List>
+                  <List.Item>
+                    Redemptions and user IDs can be edited here. The trash can icon will delete an entry, while you can
+                    add or update redemptions in the input at the bottom.
+                  </List.Item>
+                </List>
+              </TextStyle>
+            </Stack>
+          )}
           {typeOfRedeem === 'walletAddress' && (
             <div>
               <IndexTable selectable={false}

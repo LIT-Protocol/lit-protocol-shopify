@@ -30,6 +30,17 @@ const Instructions = (props) => {
             the left nav bar.
           </List.Item>
           <List.Item>
+            Draft orders can be searched by type. All draft orders created by Lit Token Access will be given
+            a <strong>lit-offer</strong> tag. Additional searchable tags
+            are <strong>lit-exclusive</strong> for exclusive offers, <strong>lit-discount</strong> for discount
+            offers, <strong>lit-wallet-address</strong> for offers redeem limited by wallet address,
+            and <strong>lit-nft-id</strong> for offers redeem limited by NFT ID.
+          </List.Item>
+          <List.Item>
+            If an offer is redeem limited by wallet address or NFT ID, the list of previously redeemed users can be
+            edited by clicking the edit icon in the offer table entry.
+          </List.Item>
+          <List.Item>
             <strong>
               We highly recommend cloning a product template for use with
               products designated for Exclusive Access.
