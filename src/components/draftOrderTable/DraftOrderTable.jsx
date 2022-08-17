@@ -103,7 +103,7 @@ const DraftOrderTable = (props) => {
                           </Button>
                         </Stack.Item>
                         <Stack.Item fill>
-                          <p>{redeemLimitTypes[draftOrder.draftOrderDetailsObj.typeOfRedeem]}</p>
+                          <p>{redeemLimitTypes[draftOrder.draftOrderDetailsObj.typeOfRedeem]} - {draftOrder.draftOrderDetailsObj.redeemLimit}</p>
                         </Stack.Item>
                       </Stack>
                     )}

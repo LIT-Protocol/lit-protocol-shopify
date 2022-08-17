@@ -6,7 +6,7 @@ const UpdateList = (props) => {
 
   return (
     <Card
-      title="Last Update on 8-9-2022  - IMPORTANT: if this breaks your current conditions please contact us at shopifysupport@litprotocol.com."
+      title="Last Update on 8-9-2022  - IMPORTANT: we have seen issues with the migration from the old data model to the new one.  The easiest way to fix any broken conditions is to delete the old one and recreate it. If you would rather not do that please contact us at shopifysupport@litprotocol.com and we'll get it sorted."
       sectioned>
       <TextContainer style={{paddingTop: "0 !important"}}>
         <h3>Click here to see updates and new features.</h3>
@@ -28,6 +28,9 @@ const UpdateList = (props) => {
                 <ul>
                   <li>Discounts can now have multiple products</li>
                   <li>Products can now be associated with multiple discounts</li>
+                  <li>Customer information (wallet address, NFT ID, discount type, etc...) is included in the notes for
+                    a given draft order
+                  </li>
                   <li>Single condition gates for Ethereum and Polygon can now be redemption limited by NFT ID</li>
                   <li>The list of previously redeemed wallets can now be edited</li>
                   <li>The list of previously redeemed NFT IDs can be edited</li>

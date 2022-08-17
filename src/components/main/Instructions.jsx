@@ -30,7 +30,8 @@ const Instructions = (props) => {
             the left nav bar.
           </List.Item>
           <List.Item>
-            Draft orders can be searched by type. All draft orders created by Lit Token Access will be given
+            Draft orders can be searched by type in the Shopify Orders screen. All draft orders created by Lit Token
+            Access will be given
             a <strong>lit-offer</strong> tag. Additional searchable tags
             are <strong>lit-exclusive</strong> for exclusive offers, <strong>lit-discount</strong> for discount
             offers, <strong>lit-wallet-address</strong> for offers redeem limited by wallet address,

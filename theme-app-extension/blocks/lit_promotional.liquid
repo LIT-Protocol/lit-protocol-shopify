@@ -1,24 +1,20 @@
 <div>
   <script type="text/javascript">
-    console.log('UPGRADE XIII')
-
     // NOTE: hide buttons on render before anyone sees them
+    console.log('Lit Token Access app block V1.02')
     let productFormButtons = [];
     let productFormElement = []
 
     function getProductFormButtons() {
       productFormElement = document.getElementsByClassName("product-form");
       for (let i = 0; i < productFormElement.length; i++) {
-        console.log('product form', productFormElement[i])
         productFormElement[i].style.display = "none";
       }
 
       productFormButtons = document.getElementsByClassName("product-form__buttons");
       for (let i = 0; i < productFormButtons.length; i++) {
-        console.log('product form buttons.length', productFormButtons[i])
         productFormButtons[i].style.display = "none";
       }
-      console.log('initial productFormButtons', productFormButtons)
     }
 
     getProductFormButtons();
@@ -30,7 +26,6 @@
     let conditionTypes = [];
 
     function removeBuyAndAddButtons() {
-      console.log('productFormButtons', productFormButtons)
       if (productFormButtons && productFormButtons.length) {
         for (let i = 0; i < productFormButtons.length; i++) {
           productFormButtons[i].remove();
@@ -39,7 +34,6 @@
 
       productFormElement = document.getElementsByClassName("product-form");
       for (let i = 0; i < productFormElement.length; i++) {
-        console.log('product form', productFormElement[i])
         productFormElement[i].style.display = "revert";
       }
     }
@@ -114,7 +108,6 @@
       if (isExclusive) {
         removeBuyAndAddButtons();
       } else {
-        console.log('not exclusive')
         for (let i = 0; i < productFormButtons.length; i++) {
           productFormButtons[i].style.display = "revert";
         }
@@ -135,6 +128,12 @@
     function updateShowRedeemed() {
       showRedeemedOffers = true;
       updateContainer();
+    }
+
+    function makeProductLink(redeemAddress) {
+      const stringifiedAuthSig = JSON.stringify(window.LitTokenGatingData.authSig);
+      const fullAddress = encodeURI(`${redeemAddress}&authSig=${stringifiedAuthSig}`);
+      return fullAddress;
     }
 
     function updateContainer(toggleError = null) {
@@ -174,7 +173,7 @@
         window.LitTokenGatingData.metafieldArray.forEach(m => {
           if (m['resolved'] && m.redeemStatus['allowRedeem']) {
             qualifiedHtmlHolder = qualifiedHtmlHolder + `
-              <a class='lit-offer-container' target="_blank" href="${m.redeemAddress}" style="color: ${currentBlock.detail_text_color}">
+              <a class='lit-offer-container' target="_blank" href="${makeProductLink(m.redeemAddress)}" style="color: ${currentBlock.detail_text_color}">
                 <p class='lit-offer-container-title' style="color: ${currentBlock.connect_text_color}">${m.title}</p>
                 <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
                 <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
@@ -238,7 +237,6 @@
         loading = true;
         updateContainer();
         const authSigPromises = conditionTypes.map(async c => {
-          console.log('CHECK ON C', c)
           // todo: will need to update this as some point to describe EVM chains as something better than 'not solRpc'
           if (c !== 'solRpc') {
             return await getEVMAuthSig();
@@ -322,37 +320,22 @@
           authSigHolder['solana'] = window.LitTokenGatingData.authSig['solana'];
         }
 
-        console.log('!!!!!! resourceId', resourceId)
 
         try {
-          console.log('CHECK JWT', {
-            unifiedAccessControlConditions: JSON.parse(m.accessControlConditions),
-            authSig: authSigHolder,
-            resourceId: resourceId,
-          })
           jwt = await window.litNodeClient.getSignedToken({
             unifiedAccessControlConditions: JSON.parse(m.accessControlConditions),
             authSig: authSigHolder,
             resourceId: resourceId,
           });
 
-          console.log('check resolved JWT', jwt)
-
           updateForMetafield['resolved'] = true;
         } catch (err) {
-          console.log('check unresolves err', err)
           updateForMetafield['resolved'] = false;
         }
         return updateForMetafield;
       });
 
       let resolvedUpdatedMetafieldArray = await Promise.all(updateMetafieldArray);
-
-      console.log('@@@@@ - POST BODY', {
-        offerArray: resolvedUpdatedMetafieldArray,
-        jwt,
-        authSig: window.LitTokenGatingData.authSig
-      })
 
       const postBody = {
         offerArray: resolvedUpdatedMetafieldArray,
