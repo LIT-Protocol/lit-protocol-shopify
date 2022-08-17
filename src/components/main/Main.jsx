@@ -8,7 +8,7 @@ import {
   Heading,
   Card,
   Layout,
-  Modal,
+  Modal, List,
 } from "@shopify/polaris";
 import CreateDraftOrderModal from "../createDraftOrderModal/CreateDraftOrderModal";
 import DraftOrderTable from "../draftOrderTable/DraftOrderTable";
@@ -252,6 +252,24 @@ const Main = (props) => {
                     >
                       <strong style={{color: "#5E36B7"}}>
                         Instructions can be found here.
+                      </strong>
+                    </a>
+                  </p>
+                  <p>
+                    <strong>
+                      We highly recommend cloning a product template for use with
+                      products designated for Exclusive Access.
+                    </strong>{" "}
+                    Directions can be found in our docs under
+                    <a
+                      href={
+                        "https://lit-services-docs.netlify.app/docs/shopify-docs/creating-a-new-product-template"
+                      }
+                      target="_blank"
+                    >
+                      <strong style={{color: "#5E36B7"}}>
+                        {" "}
+                        Creating a new product template.
                       </strong>
                     </a>
                   </p>
