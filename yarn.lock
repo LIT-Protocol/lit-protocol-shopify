@@ -3297,10 +3297,10 @@ lit-connect-modal@^0.1.8:
   dependencies:
     micromodal "^0.4.10"
 
-lit-js-sdk@^1.1.198:
-  version "1.1.207"
-  resolved "https://registry.yarnpkg.com/lit-js-sdk/-/lit-js-sdk-1.1.207.tgz#30bb51eb57047c5895851834b54787adac350264"
-  integrity sha512-VT/il4914cyBNk0KMNPRru55R4SCDE04JNI3V0bWgucU3/MQ8TJxOfGEDn4pap72qor20tk4gF4HVoCk2ZGmEQ==
+lit-js-sdk@^1.1.198, lit-js-sdk@^1.1.212:
+  version "1.1.212"
+  resolved "https://registry.yarnpkg.com/lit-js-sdk/-/lit-js-sdk-1.1.212.tgz#97f202773fe70f853df786222f8b745825ab63cd"
+  integrity sha512-uX9ShpntlR0LsVsliQ3jl6ZTkVpbcNQRTtnq1QkItYGdvyrMMEaQdoJIntiYEWXi9FS13tIbtp//NF+owoNXmA==
   dependencies:
     "@ethersproject/bytes" "^5.5.0"
     "@ethersproject/contracts" "^5.2.0"
@@ -3324,37 +3324,10 @@ lit-js-sdk@^1.1.198:
     uint8arrays "^3.0.0"
     utf-8-validate "^5.0.8"
 
-lit-js-sdk@^1.1.206:
-  version "1.1.206"
-  resolved "https://registry.yarnpkg.com/lit-js-sdk/-/lit-js-sdk-1.1.206.tgz#30accb9c363d99088e7cb0494f91c17019d82d0f"
-  integrity sha512-q0lCNKlSHBdZYj1+CB5ttc3M9Pig83xAgDCzL50b9GxR7mrNlrq1HcMPXwzT1bCnYhdJquzm/pqFxOWQOi3GGw==
-  dependencies:
-    "@ethersproject/bytes" "^5.5.0"
-    "@ethersproject/contracts" "^5.2.0"
-    "@ethersproject/hash" "^5.4.0"
-    "@ethersproject/providers" "^5.2.0"
-    "@ethersproject/strings" "^5.5.0"
-    "@ethersproject/units" "^5.4.0"
-    "@ethersproject/wallet" "^5.2.0"
-    "@walletconnect/ethereum-provider" "^1.7.8"
-    buffer "^6.0.3"
-    bufferutil "^4.0.6"
-    cross-blob "^3.0.1"
-    jszip "^3.6.0"
-    lit-connect-modal "^0.1.8"
-    lit-siwe "^1.1.8"
-    node-fetch "^3.2.3"
-    pako "^2.0.4"
-    tslib "^2.3.1"
-    tweetnacl "^1.0.3"
-    tweetnacl-util "^0.15.1"
-    uint8arrays "^3.0.0"
-    utf-8-validate "^5.0.8"
-
-lit-share-modal-v3@^0.0.88:
-  version "0.0.88"
-  resolved "https://registry.yarnpkg.com/lit-share-modal-v3/-/lit-share-modal-v3-0.0.88.tgz#2c7abb5312a1370c0f12b4bdf3a7947ff38c91af"
-  integrity sha512-mtXd4PIUbsORlM2dxvuEvyggf4ClTebCTpYRUFpfpIS3lDgAfOkrZtgASdlwZjtS1jRi01Vf2LwCF9qgGpoGJQ==
+lit-share-modal-v3@^0.0.90:
+  version "0.0.90"
+  resolved "https://registry.yarnpkg.com/lit-share-modal-v3/-/lit-share-modal-v3-0.0.90.tgz#96faee1c4e1f29e120706822138189fa93f89ccf"
+  integrity sha512-tZLgBwaQpwyliUbDotfjORetAyJYfU6eY5W0LD1WcHaYcQ2+ZILI+iRYTRuVc6o9bhUG3FBdii9yoIEg0UHHsQ==
   dependencies:
     ethers "^5.5.4"
     events "^3.3.0"
