@@ -318,6 +318,11 @@
         }
         if (splitConditionTypes.indexOf('solRpc') !== -1) {
           authSigHolder['solana'] = window.LitTokenGatingData.authSig['solana'];
+          if (authSigHolder['solana']['pdaParams']) {
+            authSigHolder['solana']['pdaParams'] = [];
+            authSigHolder['solana']['pdaInterface'] = {offset: 0, fields: {}};
+            authSigHolder['solana']['pdaKey'] = "";
+          }
         }
 
 
