@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const saveDraftOrder = async (draftOrder) => {
   const resp = await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveDevDraftOrder`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/saveDraftOrder`,
     {
       ...draftOrder,
     }
@@ -13,7 +13,7 @@ export const saveDraftOrder = async (draftOrder) => {
 
 export const getAllUserDraftOrders = async (shopId) => {
   return await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllDevDraftOrders`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/getAllDraftOrders`,
     {
       shopId,
     }
@@ -22,7 +22,7 @@ export const getAllUserDraftOrders = async (shopId) => {
 
 export const deleteDraftOrder = async (id, shopId) => {
   const resp = await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteDevDraftOrder`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/deleteDraftOrder`,
     {
       id,
       shopId,
@@ -34,7 +34,7 @@ export const deleteDraftOrder = async (id, shopId) => {
 
 export const updateRedeemedList = async (redeemedList, typeOfRedeem, id) => {
   const resp = await axios.post(
-    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/updateDevRedeemedList`,
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/updateRedeemedList`,
     {
       id,
       typeOfRedeem,
