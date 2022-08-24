@@ -109,6 +109,7 @@ const Main = (props) => {
   };
 
   const addAccessControlConditions = async (acc) => {
+    console.log('------> check ACC', acc)
     const humanizedAcc = await humanizeAccessControlConditions(acc);
     setUnifiedAccessControlConditions(acc);
     setHumanizedAccessControlConditions(humanizedAcc);

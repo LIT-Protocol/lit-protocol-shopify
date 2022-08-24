@@ -132,7 +132,8 @@
 
     function makeProductLink(redeemAddress) {
       const stringifiedAuthSig = JSON.stringify(window.LitTokenGatingData.authSig);
-      const fullAddress = encodeURI(`${redeemAddress}&authSig=${stringifiedAuthSig}`);
+      // const fullAddress = encodeURI(`${redeemAddress}&authSig=${stringifiedAuthSig}`);
+      const fullAddress = encodeURI(`${redeemAddress}`);
       return fullAddress;
     }
 
@@ -178,6 +179,7 @@
                 <p class='lit-offer-container-description'>${m.description.length ? m.description : m.humanizedAccessControlConditions}</p>
                 <p class='lit-offer-container-products'><strong>Includes:</strong> ${m.summary}</p>
                 <p class='lit-offer-condition-type-and-chain'><strong>Condition Types:</strong> ${m.conditionTypes} || <strong>Chains Used:</strong> ${m.usedChains}</p>
+                <p class='lit-offer-condition-type-and-chain' style="color: ${currentBlock.connect_text_color}"><strong>Click to redeem this offer</strong></p>
               </a>
             `
           } else if (m['resolved'] && !m.redeemStatus['allowRedeem']) {
@@ -318,13 +320,7 @@
         }
         if (splitConditionTypes.indexOf('solRpc') !== -1) {
           authSigHolder['solana'] = window.LitTokenGatingData.authSig['solana'];
-          if (authSigHolder['solana']['pdaParams']) {
-            authSigHolder['solana']['pdaParams'] = [];
-            authSigHolder['solana']['pdaInterface'] = {offset: 0, fields: {}};
-            authSigHolder['solana']['pdaKey'] = "";
-          }
         }
-
 
         try {
           jwt = await window.litNodeClient.getSignedToken({
@@ -335,6 +331,7 @@
 
           updateForMetafield['resolved'] = true;
         } catch (err) {
+          console.log('Offer not resolved:', err)
           updateForMetafield['resolved'] = false;
         }
         return updateForMetafield;
