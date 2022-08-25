@@ -6,7 +6,7 @@ const UpdateList = (props) => {
 
   return (
     <Card
-      title="Last Update on 8-9-2022  - IMPORTANT: we have seen issues with the migration from the old data model to the new one.  The easiest way to fix any broken conditions is to delete the old one and recreate it. If you would rather not do that please contact us at shopifysupport@litprotocol.com and we'll get it sorted."
+      title="Last Update on 8-25-2022"
       sectioned>
       <TextContainer style={{paddingTop: "0 !important"}}>
         <h3>Click here to see updates and new features.</h3>
@@ -15,6 +15,24 @@ const UpdateList = (props) => {
         </Button>
         {showUpdateList && (
           <List type="bullet">
+            <List.Item>
+              <p>
+                <strong>8-25-2022</strong>
+              </p>
+              <ul>
+                <li>
+                  <strong>
+                    Products variants selected in shop now prepopulate in checkout:
+                  </strong>{" "} When a customer selects a variant (small, medium, or large on a shirt for example) that
+                  selection will carry over and prepopulate in the Lit Token Access screen
+                </li>
+                <li>
+                  <strong>
+                    Fixed authsig redirect to prevent double login.
+                  </strong>{" "}
+                </li>
+              </ul>
+            </List.Item>
             <List.Item>
               <p>
                 <strong>8-9-2022</strong>
