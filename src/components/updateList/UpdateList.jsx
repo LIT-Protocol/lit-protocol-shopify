@@ -33,7 +33,7 @@ const UpdateList = (props) => {
                 </li>
                 <li>
                   <strong>
-                    Out of stock items will no longer appear as options in Lit Token Access screen.
+                    Out of stock items will no longer appear as options in redeem offer screen.
                   </strong>{" "}
                 </li>
                 <li>
