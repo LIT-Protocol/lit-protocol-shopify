@@ -36,6 +36,11 @@ const UpdateList = (props) => {
                     Out of stock items will no longer appear as options in Lit Token Access screen.
                   </strong>{" "}
                 </li>
+                <li>
+                  <strong>
+                    Removed edit customers permission.
+                  </strong>{" "}
+                </li>
               </ul>
             </List.Item>
             <List.Item>
