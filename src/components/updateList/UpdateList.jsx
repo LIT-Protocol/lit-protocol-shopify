@@ -31,6 +31,11 @@ const UpdateList = (props) => {
                     Fixed authsig redirect to prevent double login.
                   </strong>{" "}
                 </li>
+                <li>
+                  <strong>
+                    Out of stock items will no longer appear as options in Lit Token Access screen.
+                  </strong>{" "}
+                </li>
               </ul>
             </List.Item>
             <List.Item>
