@@ -169,10 +169,6 @@
       if (loading) {
         litContainer.innerHTML = `
             <div class="lit-offer-loader" style="border: 0.75rem solid ${currentBlock.primary_loader_color}; border-top: 0.75rem solid ${currentBlock.accent_loader_color}"></div>
-<!--          <div class="lit-loader">TEST-->
-<!--            <div></div>-->
-<!--            <div></div>-->
-<!--          </div>-->
         `
       } else if (!window.LitTokenGatingData['authSig']) {
         litContainer.innerHTML = `
@@ -254,7 +250,7 @@
       }
     }
 
-    async function operations(backendLink = null) {
+    async function operations() {
       if (!window.LitTokenGatingData?.authSig?.['ethereum'] && !window.LitTokenGatingData?.authSig?.['solana']) {
         loading = true;
         updateContainer();
@@ -322,9 +318,6 @@
       const updateMetafieldArray = window.LitTokenGatingData.metafieldArray.map(async (m) => {
         let updateForMetafield = m;
         const resourceId = {
-          // baseUrl: process.env.REACT_APP_LIT_PROTOCOL_OAUTH_API_HOST,
-          // baseUrl: "http://localhost:4000",
-          // baseUrl: "https://oauth-app-dev.litgateway.com",
           baseUrl: "https://oauth-app.litgateway.com",
           path: "/shopify/l/" + m['offerId'],
           orgId: "",
@@ -369,8 +362,6 @@
 
       // check offers to see if they have previously been redeemed
       try {
-        // const checkedRedeemLimits = await fetch(`http://localhost:4000/api/shopify/getRedeemStats`, {
-        // const checkedRedeemLimits = await fetch(`https://oauth-app-dev.litgateway.com/api/shopify/getRedeemStats`, {
         const checkedRedeemLimits = await fetch(`https://oauth-app.litgateway.com/api/shopify/getRedeemStats`, {
           method: 'POST',
           headers: {
