@@ -311,6 +311,7 @@ const Main = (props) => {
           <div className={"lit-share-modal-overlay"}>
             <div className={"lit-share-modal"}>
               <ShareModal
+                allowDevMode={true}
                 className={"share-modal"}
                 onClose={() => {
                   setOpenShareModal(false);

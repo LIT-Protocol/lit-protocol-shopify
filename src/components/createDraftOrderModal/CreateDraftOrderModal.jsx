@@ -10,13 +10,12 @@ import {
   Button,
   Heading,
   TextStyle,
-  Checkbox,
   List,
 } from "@shopify/polaris";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import ProductTable from "./ProductTable";
 import RedeemLimiter from "./redeemLimiter/RedeemLimiter.jsx";
-import { humanizeAccessControlConditions } from "lit-js-sdk";
+import PrepopulateDraftOrders from "./prepopulateDraftOrders/PrepopulateDraftOrders.jsx";
 
 const CreateDraftOrderModal = (props) => {
   const [ showProductSelect, setShowProductSelect ] = useState(false);
@@ -26,8 +25,9 @@ const CreateDraftOrderModal = (props) => {
   const [ draftOrderRedeemLimit, setDraftOrderRedeemLimit ] = useState("1");
   const [ draftOrderProducts, setDraftOrderProducts ] = useState([]);
   const [ draftOrderDescription, setDraftOrderDescription ] = useState("");
-  // const [ productsAreExclusive, setProductsAreExclusive ] = useState(false);
-  // const [ exclusivePrice, setExclusivePrice ] = useState('');
+  const [ allowPrepopulate, setAllowPrepopulate ] = useState(false);
+  const [ productDetails, setProductDetails ] = useState(null);
+  const [ prepopulateData, setPrepopulateData ] = useState(null);
 
   const [ typeOfAccessControl, setTypeOfAccessControl ] = useState("exclusive");
   const [ typeOfRedeem, setTypeOfRedeem ] = useState("walletAddress");
@@ -89,14 +89,21 @@ const CreateDraftOrderModal = (props) => {
       title: draftOrderTitle,
       description: draftOrderDescription,
       typeOfRedeem: typeOfRedeem,
+      shopName: props.shopInfo.name,
       typeOfAccessControl: typeOfAccessControl,
       hasRedeemLimit: hasRedeemLimit,
       redeemLimit: draftOrderRedeemLimit,
       value: draftOrderDiscount,
       valueType: "PERCENTAGE",
       usedChains,
-      conditionTypes
+      conditionTypes,
+      allowPrepopulate,
     };
+
+    if (allowPrepopulate) {
+      draftOrderDetails['productDetails'] = productDetails;
+      // draftOrderDetails['prepopulateData'] = prepopulateData;
+    }
 
     if (typeOfAccessControl === "exclusive") {
       draftOrderDetails.value = 0;
@@ -142,6 +149,9 @@ const CreateDraftOrderModal = (props) => {
       asset_name_on_service: productTitles,
       summary: productTitles,
       discount: typeOfAccessControl === 'exclusive' ? '' : draftOrderDiscount,
+      allow_prepopulate: allowPrepopulate,
+      product_details: productDetails,
+      prepopulate_data: prepopulateData,
 
       user_id: "",
       extra_data: '',
@@ -178,6 +188,8 @@ const CreateDraftOrderModal = (props) => {
     setShowProductSelect(false);
     setDraftOrderProducts(null);
     setErrorText(null);
+    setAllowPrepopulate(false);
+    setProductDetails(null);
     clearAccessControlCondition();
   };
 
@@ -239,7 +251,7 @@ const CreateDraftOrderModal = (props) => {
                   )}
                 </div>
                 <Stack alignment={"center"}>
-                  <Stack.Item>
+                  <Stack.Item fill>
                     <TextField
                       label={"Title"}
                       value={draftOrderTitle}
@@ -247,17 +259,6 @@ const CreateDraftOrderModal = (props) => {
                       autoComplete={"off"}
                     />
                   </Stack.Item>
-                  {/*<Stack.Item>*/}
-                  {/*  {!props.hideInstructions && (*/}
-                  {/*    <TextStyle>*/}
-                  {/*      <List>*/}
-                  {/*        <List.Item>*/}
-                  {/*          Enter a title for the offer.*/}
-                  {/*        </List.Item>*/}
-                  {/*      </List>*/}
-                  {/*    </TextStyle>*/}
-                  {/*  )}*/}
-                  {/*</Stack.Item>*/}
                   <Select
                     label={"Type of Access"}
                     options={typeOfAccessOptions}
@@ -298,26 +299,6 @@ const CreateDraftOrderModal = (props) => {
                     )}
                   </Stack.Item>
                 </Stack>
-                {/*<Stack>*/}
-                {/*  <Select*/}
-                {/*    label={"Type of Access"}*/}
-                {/*    options={typeOfAccessOptions}*/}
-                {/*    onChange={(e) => setTypeOfAccessControl(e)}*/}
-                {/*    value={typeOfAccessControl}*/}
-                {/*  />*/}
-                {/*  {typeOfAccessControl === "discount" && (*/}
-                {/*    <TextField*/}
-                {/*      type={"number"}*/}
-                {/*      label={"Discount Amount"}*/}
-                {/*      suffix="% off"*/}
-                {/*      align={"right"}*/}
-                {/*      value={draftOrderDiscount}*/}
-                {/*      onChange={setDraftOrderDiscount}*/}
-                {/*      autoComplete={"off"}*/}
-                {/*    />*/}
-                {/*  )}*/}
-                {/*  <Stack.Item fill></Stack.Item>*/}
-                {/*</Stack>*/}
                 <Stack>
                   {!props.hideInstructions && (
                     <TextStyle>
@@ -376,6 +357,17 @@ const CreateDraftOrderModal = (props) => {
                                setTypeOfRedeem={setTypeOfRedeem}
                                draftOrderRedeemLimit={draftOrderRedeemLimit}
                                setDraftOrderRedeemLimit={setDraftOrderRedeemLimit}
+                               disabled={allowPrepopulate}
+                />
+                <PrepopulateDraftOrders draftOrderProducts={draftOrderProducts}
+                                        allowPrepopulate={allowPrepopulate}
+                                        setAllowPrepopulate={setAllowPrepopulate}
+                                        productDetails={productDetails}
+                                        setProductDetails={setProductDetails}
+                                        prepopulateData={prepopulateData}
+                                        setPrepopulateData={setPrepopulateData}
+                                        unifiedAccessControlConditions={props.unifiedAccessControlConditions}
+                                        disabled={hasRedeemLimit || (draftOrderProducts && draftOrderProducts.length > 1)}
                 />
               </TextContainer>
             </div>

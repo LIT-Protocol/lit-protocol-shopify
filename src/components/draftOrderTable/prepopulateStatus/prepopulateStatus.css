@@ -1,0 +1,15 @@
+.prepopulate-status-title {
+  font-size: 1.3em;
+  width: 100%;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #777;
+  margin-bottom: 0.5em;
+  display: flex;
+}
+
+.prepopulate-status-row {
+  width: 100%;
+  padding: 0.5em 0.25em;
+  display: flex;
+  border-bottom: 1px solid #ededed;
+}

@@ -44,3 +44,25 @@ export const updateRedeemedList = async (redeemedList, typeOfRedeem, id) => {
 
   return resp;
 };
+
+export const checkOnPrepopulateStatus = async (offerId) => {
+  const resp = await axios.post(
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/checkOnPrepopulateStatus`,
+    {
+      offerId
+    }
+  );
+
+  return resp;
+};
+
+export const restartPrepopulate = async (offerId) => {
+  const resp = await axios.post(
+    `${process.env.LIT_PROTOCOL_OAUTH_API_HOST}/api/shopify/restartPrepopulate`,
+    {
+      offerId
+    }
+  );
+
+  return resp;
+};

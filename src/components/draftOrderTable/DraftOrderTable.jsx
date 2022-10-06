@@ -10,14 +10,16 @@ import {
   Stack
 } from "@shopify/polaris";
 import {
-  EditMajor, DeleteMajor
+  EditMajor, DeleteMajor, ViewMajor
 } from '@shopify/polaris-icons';
 import './DraftOrderTable.css';
 import RedeemedByEdit from "./redeeemedByEdit/RedeemedByEdit.jsx";
+import PrepopulateStatus from "./prepopulateStatus/PrepopulateStatus.jsx";
+
 
 const redeemLimitTypes = {
-  nftId: 'NFT ID',
-  walletAddress: 'Wallet Address'
+  nftId: 'nft ID',
+  walletAddress: 'wallet address'
 }
 
 const DraftOrderTable = (props) => {
@@ -25,6 +27,7 @@ const DraftOrderTable = (props) => {
   const [ currentEditedDraftOrder, setCurrentEditedDraftOrder ] = useState(null);
   const [ draftOrders, setDraftOrders ] = useState([]);
   const [ openRedeemEdit, setOpenRedeemEdit ] = useState(false);
+  const [ openPrepopulateStatus, setOpenPrepopulateStatus ] = useState(false);
   const [ originalRedeemList, setOriginalRedeemList ] = useState({});
   const [ updatedRedeemList, setUpdatedRedeemList ] = useState({});
   const [ redeemEditTabData, setRedeemEditTabData ] = useState({});
@@ -54,6 +57,11 @@ const DraftOrderTable = (props) => {
     setOpenRedeemEdit(true);
   }
 
+  const toggleOpenPrepopulateStatus = (draftOrder) => {
+    setCurrentEditedDraftOrder(draftOrder);
+    setOpenPrepopulateStatus(true);
+  }
+
   const resourceName = {
     singular: "draft order",
     plural: "draft orders",
@@ -76,7 +84,7 @@ const DraftOrderTable = (props) => {
               headings={[
                 {title: "Title"},
                 {title: "Summary"},
-                {title: "Redeem Limit"},
+                {title: "Type"},
                 {title: "Access Control Conditions"},
                 {title: "Chain(s) Used"},
                 {title: ""},
@@ -90,9 +98,11 @@ const DraftOrderTable = (props) => {
                   {/*<IndexTable.Cell><strong>{draftOrder.summary[0]}%</strong>off of<strong>${draftOrder.summary[1]}</strong></IndexTable.Cell>*/}
                   <IndexTable.Cell>{draftOrder.summary}</IndexTable.Cell>
                   <IndexTable.Cell>
-                    {!draftOrder.draftOrderDetailsObj.hasRedeemLimit ? (
-                      <p style={{marginLeft: '2.6em'}}>None</p>
-                    ) : (
+                    {/*Type column*/}
+                    {!draftOrder.draftOrderDetailsObj.hasRedeemLimit && !draftOrder.draftOrderDetailsObj.allowPrepopulate && (
+                      <p>{draftOrder.draftOrderDetailsObj.typeOfAccessControl}</p>
+                    )}
+                    {draftOrder.draftOrderDetailsObj.hasRedeemLimit && !draftOrder.draftOrderDetailsObj.allowPrepopulate && (
                       <Stack alignment={'center'} wrap={false}>
                         <Stack.Item>
                           <Button plain onClick={() => {
@@ -103,7 +113,23 @@ const DraftOrderTable = (props) => {
                           </Button>
                         </Stack.Item>
                         <Stack.Item fill>
-                          <p>{redeemLimitTypes[draftOrder.draftOrderDetailsObj.typeOfRedeem]} - {draftOrder.draftOrderDetailsObj.redeemLimit}</p>
+                          <p>redeem limited
+                            by {redeemLimitTypes[draftOrder.draftOrderDetailsObj.typeOfRedeem]} - {draftOrder.draftOrderDetailsObj.redeemLimit} time(s)</p>
+                        </Stack.Item>
+                      </Stack>
+                    )}
+                    {!draftOrder.draftOrderDetailsObj.hasRedeemLimit && draftOrder.draftOrderDetailsObj.allowPrepopulate && (
+                      <Stack alignment={'center'} wrap={false}>
+                        <Stack.Item>
+                          <Button plain onClick={() => {
+                            toggleOpenPrepopulateStatus(draftOrder);
+                          }}>
+                            <Icon source={ViewMajor}
+                                  color={"base"}/>
+                          </Button>
+                        </Stack.Item>
+                        <Stack.Item fill>
+                          <p>prepopulated</p>
                         </Stack.Item>
                       </Stack>
                     )}
@@ -169,6 +195,12 @@ const DraftOrderTable = (props) => {
                         setOpenRedeemEdit={setOpenRedeemEdit}
                         toggleGetAllDraftOrders={props.toggleGetAllDraftOrders}
                         hideInstructions={props.hideInstructions}
+        />
+      )}
+      {openPrepopulateStatus && (
+        <PrepopulateStatus openPrepopulateStatus={openPrepopulateStatus}
+                           setOpenPrepopulateStatus={setOpenPrepopulateStatus}
+                           currentEditedDraftOrder={currentEditedDraftOrder}
         />
       )}
     </div>

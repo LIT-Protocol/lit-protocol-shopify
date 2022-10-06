@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Stack,
   Checkbox,
@@ -14,7 +14,8 @@ const RedeemLimiter = ({
                          draftOrderRedeemLimit,
                          setDraftOrderRedeemLimit,
                          typeOfRedeem,
-                         setTypeOfRedeem
+                         setTypeOfRedeem,
+                         disabled
                        }) => {
 
   const [ isAbleToUseNftId, setIsAbleToUseNftId ] = useState(false);
@@ -45,18 +46,18 @@ const RedeemLimiter = ({
 
 
   return (
-    <div>
-      <p style={{'color': 'blue'}}><strong>Note:</strong> Redemption limiting by <strong>NFT
-        ID</strong> currently works
-        with
-        single conditions (no
-        multiple or
-        nested
-        conditions), and with NFTs on Ethereum and Polygon.</p>
-      <div style={{marginTop: '0.5rem'}}></div>
+    <Fragment>
       {unifiedAccessControlConditions?.length && (
-        <div>
+        <div style={{borderTop: '1px solid #777', paddingTop: '1em'}}>
+          <p style={{'color': 'blue'}}><strong>Note:</strong> Redemption limiting by <strong>NFT
+            ID</strong> works
+            with
+            single conditions (no
+            multiple or
+            nested
+            conditions), and with NFTs on Ethereum and Polygon. Cannot be used with pre-populate.</p>
           <Checkbox
+            disabled={disabled}
             label="Limit number of times a user can redeem"
             checked={hasRedeemLimit}
             onChange={setHasRedeemLimit}
@@ -82,7 +83,7 @@ const RedeemLimiter = ({
           )}
         </div>
       )}
-    </div>
+    </Fragment>
   )
 }
 
