@@ -75,8 +75,13 @@ const PrepopulateStatus = ({
                       variation={getVariation(s.variantStatus)}>Status: {s.variantStatus}</TextStyle>
                   </span>
                   <span style={{width: '25%'}}>
-                    <TextStyle>Total number of draft
-                    orders: {s.length}</TextStyle>
+                    {s.status === 'complete' ? (
+                      <TextStyle>Number of draft
+                        orders: {s.length}</TextStyle>
+                    ) : (
+                      <TextStyle>Number of draft
+                        orders made: {s.currentLength} of {s.length}</TextStyle>
+                    )}
                   </span>
                   <span style={{width: '25%'}}>
                     <TextStyle>Number of draft orders
