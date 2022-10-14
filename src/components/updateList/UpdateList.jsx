@@ -127,8 +127,8 @@ const UpdateList = (props) => {
                   <strong>IMPORTANT!: </strong> if something breaks regarding
                   this update please send a message with details regarding the
                   steps taken, chain, token type, and anything else relevant to{" "}
-                  <a href="mailto: shopifysupport@litprotocol.com">
-                    <strong>shopifysupport@litprotocol.com</strong>
+                  <a href="mailto: LitTokenAccessSupport@litprotocol.com">
+                    <strong>LitTokenAccessSupport@litprotocol.com</strong>
                   </a>
                   . We've tested this thing to ensure it's backwards compatible
                   and won't mess anything up, but we're exploring new feature
