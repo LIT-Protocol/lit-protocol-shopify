@@ -6,7 +6,7 @@ const UpdateList = (props) => {
 
   return (
     <Card
-      title="Last Update on 8-25-2022"
+      title="Last Update on 10-10-2022"
       sectioned>
       <TextContainer style={{paddingTop: "0 !important"}}>
         <h3>Click here to see updates and new features.</h3>
