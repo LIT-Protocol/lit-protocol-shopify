@@ -17,6 +17,40 @@ const UpdateList = (props) => {
           <List type="bullet">
             <List.Item>
               <p>
+                <strong>10-10-2022</strong>
+              </p>
+              <ul>
+                <li>
+                  <strong>
+                    Lit Token Access is now open source
+                  </strong>{" "} All code is now publicly available on Github. The repo will be maintained and accepting
+                  PRs if there is community interest in further development. We will still provide support to interested
+                  parties and fix any bugs that we created, though we will not be actively working on new features.
+                </li>
+                <li>
+                  <strong>
+                    Code for the app itself:
+                  </strong>{" "}<a target="_blank" href={"https://github.com/LIT-Protocol/lit-protocol-shopify"}>Lit
+                  Token Access GitHub Repo</a>
+                </li>
+                <li>
+                  <strong>
+                    Code for the product select portal (frontend):
+                  </strong>{" "}<a target="_blank"
+                                   href={"https://github.com/LIT-Protocol/lit-oauth/tree/main/src/pages/shopify"}>
+                  Product Select GitHub Repo</a>
+                </li>
+                <li>
+                  <strong>
+                    Code for the Lit Token Access backend:
+                  </strong>{" "}<a target="_blank"
+                                   href={"https://github.com/LIT-Protocol/lit-oauth/tree/main/server/oauth"}>
+                  Lit Token Access backend code</a>
+                </li>
+              </ul>
+            </List.Item>
+            <List.Item>
+              <p>
                 <strong>8-25-2022</strong>
               </p>
               <ul>
