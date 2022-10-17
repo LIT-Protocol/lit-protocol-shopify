@@ -1,8 +1,20 @@
 This is the source code for the Lit Token Access Shopify app.
 
-This is no longer maintained as of Oct 10th, 2022.
+As of Oct 10th, 2022, Lit Token Access has been open sourced. The hope is this becomes a community supported, free, and
+transparent alternative for token gating on Shopify.
 
-MIT License. Go nuts.
+We hope this will become a living project, and will continue to actively maintain the repo to that end. This includes
+answering questions, providing support wherever we can, and reviewing PRs if anyone wishes to contribute additional
+features.
+
+This repo is the Shopify app itself, along with the theme app extension that allows interaction
+within the storefront. There are two other parts to the full thing, the first of which is the product select
+screen, available [here](https://github.com/LIT-Protocol/lit-oauth/tree/main/src/pages/shopify), and the backend
+that interacts with the database, available [here](https://github.com/LIT-Protocol/lit-oauth/tree/main/server/oauth).
+
+Feel free to reach out with any questions to LitTokenAccessSupport@litprotocol.com
+
+MIT License.
 
 ---
 
