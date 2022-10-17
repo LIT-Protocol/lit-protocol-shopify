@@ -1,9 +1,9 @@
 This is the source code for the Lit Token Access Shopify app.
 
-As of Oct 10th, 2022, Lit Token Access has been open sourced. The hope is this becomes a community supported, free, and
-transparent alternative for token gating on Shopify.
+As of Oct 10th, 2022, Lit Token Access has been open sourced. The hope is this transparent, free, and
+practical tool for token gating on Shopify becomes a community supported endeavor that anyone can use and trust.
 
-We hope this will become a living project, and will continue to actively maintain the repo to that end. This includes
+To that end, we will continue to actively maintain the repo. This includes
 answering questions, providing support wherever we can, and reviewing PRs if anyone wishes to contribute additional
 features.
 
