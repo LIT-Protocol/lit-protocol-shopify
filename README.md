@@ -4,8 +4,7 @@ As of Oct 10th, 2022, Lit Token Access has been open sourced. The hope is this t
 practical tool for token gating on Shopify becomes a community supported endeavor that anyone can use and trust.
 
 To that end, we will continue to actively maintain the repo. This includes
-answering questions, providing support wherever we can, and reviewing PRs if anyone wishes to contribute additional
-features.
+answering questions, providing support wherever we can, and reviewing PRs if anyone wishes to contribute.
 
 This repo is the Shopify app itself, along with the theme app extension that allows interaction
 within the storefront. There are two other parts to the full thing, the first of which is the product select
